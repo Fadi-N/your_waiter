@@ -6,7 +6,7 @@ import {db} from "@/lib/db";
 import {UserRole} from "@prisma/client";
 
 export const {auth, handlers, signIn, signOut} = NextAuth({
-    pages:{
+    pages: {
         signIn: "/auth/login",
         error: "/auth/error"
     },
@@ -18,11 +18,22 @@ export const {auth, handlers, signIn, signOut} = NextAuth({
             })
         }
     },
-    /*To pass something to our session start with token callback */
-    /*Get the data from our db*/
-    /*In session callback extend what you want to get in*/
     callbacks: {
+        async signIn({user, account}) {
+            // Allow OAuth without email verification
+            if (account?.provider !== "credentials") return true;
+
+            const existingUser = await getUserById(user.id);
+
+            // Prevent sign in without email verification
+            if (!existingUser?.emailVerified) return false;
+
+            return true;
+        },
         async session({token, session}) {
+            /*To pass something to our session start with token callback */
+            /*Get the data from our db*/
+            /*In session callback extend what you want to get in*/
             console.log({SESSIONTOKEN: token})
 
             if (token.sub && session.user) {
