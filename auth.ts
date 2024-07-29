@@ -6,6 +6,18 @@ import {db} from "@/lib/db";
 import {UserRole} from "@prisma/client";
 
 export const {auth, handlers, signIn, signOut} = NextAuth({
+    pages:{
+        signIn: "/auth/login",
+        error: "/auth/error"
+    },
+    events: {
+        async linkAccount({user}) {
+            await db.user.update({
+                where: {id: user.id},
+                data: {emailVerified: new Date()}
+            })
+        }
+    },
     /*To pass something to our session start with token callback */
     /*Get the data from our db*/
     /*In session callback extend what you want to get in*/
