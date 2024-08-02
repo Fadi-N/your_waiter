@@ -12,7 +12,7 @@ interface BackButtonProps{
 const BackButton = ({href, label}: BackButtonProps) => {
     return (
         <Button
-            className="font-normal w-full underline"
+            className="font-normal w-full"
             variant="link"
             size="sm"
             asChild
