@@ -4,11 +4,8 @@ import * as z from "zod";
 import QRCode from 'qrcode';
 import {CreateRestaurantWithQRCodeSchema} from "@/schemas";
 import {db} from "@/lib/db";
-import {useCurrentUser} from "@/hooks/use-current-user";
 
 export const createRestaurantWithQRCode  = async (values: z.infer<typeof CreateRestaurantWithQRCodeSchema>, userId: string) => {
-
-    console.log(userId)
     const validateFields = CreateRestaurantWithQRCodeSchema.safeParse(values);
 
     if (!validateFields.success) {
