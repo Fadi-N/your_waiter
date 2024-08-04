@@ -58,7 +58,7 @@ const GenerateQrcodeForm = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        placeholder="Restaurant Name"
+                                        placeholder="Your waiter"
                                         type="text"
                                         disabled={isPending}
                                     />
@@ -76,7 +76,7 @@ const GenerateQrcodeForm = () => {
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        placeholder="Number of tables"
+                                        placeholder="10"
                                         type="text"
                                         disabled={isPending}
                                     />

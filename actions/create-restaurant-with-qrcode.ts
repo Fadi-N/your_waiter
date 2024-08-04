@@ -18,6 +18,18 @@ export const createRestaurantWithQRCode  = async (values: z.infer<typeof CreateR
     const {restaurantName, numberOfTables} = validateFields.data;
 
     try {
+        // Check if restaurant name already exists for this user
+        const existingRestaurant = await db.restaurant.findFirst({
+            where: {
+                name: restaurantName,
+                userId: userId,
+            },
+        });
+
+        if (existingRestaurant) {
+            return { error: "Restaurant name already exists." };
+        }
+
         // Create the restaurant
         const restaurant = await db.restaurant.create({
             data: {
