@@ -35,3 +35,14 @@ export const RegisterSchema = z.object({
         message: "Name is required"
     })
 })
+
+export const CreateRestaurantWithQRCodeSchema  = z.object({
+    restaurantName: z.string()
+        .min(1, {message: "Restaurant name is required"}),
+    numberOfTables: z.string()
+        .min(1, {message: "Number of tables is required"})
+        .refine(val => {
+            const num = parseInt(val, 10);
+            return !isNaN(num) && num > 0;
+        }, {message: "Number of tables must be a number greater than 0"})
+});

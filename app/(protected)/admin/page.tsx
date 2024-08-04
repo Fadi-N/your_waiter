@@ -3,14 +3,15 @@ import {Card, CardContent} from "@/components/ui/card";
 import RoleGate from "@/components/auth/role-gate";
 import FormSuccess from "@/components/form-success";
 import {UserRole} from "@prisma/client";
+import GenerateQrcodeForm from "@/components/admin/generate-qrcode-form";
 
 const AdminPage = () => {
 
     return (
-        <Card className="w-[600px]">
-            <CardContent>
+        <Card className="w-[600px] mt-6">
+            <CardContent className="p-6">
                 <RoleGate allowedRole={UserRole.ADMIN}>
-                    <FormSuccess message="you are allowed to see this content!"/>
+                    <GenerateQrcodeForm/>
                 </RoleGate>
             </CardContent>
         </Card>

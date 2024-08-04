@@ -19,15 +19,16 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   surname       String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
   password      String?
-  role          UserRole  @default(USER)
+  role          UserRole     @default(USER)
   accounts      Account[]
+  Restaurant    Restaurant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,4 +72,27 @@ model PasswordResetToken {
   expires DateTime
 
   @@unique([email, token])
+}
+
+model Restaurant {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  tables Table[]
+  userId String  @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Table {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  tableNumber  Int
+  qrCode       String
+  restaurantId String     @db.ObjectId
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -29,7 +29,6 @@ const RegisterForm = () => {
     });
 
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        console.log("ZAQ")
         setError("");
         setSuccess("");
 
