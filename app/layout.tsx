@@ -18,7 +18,9 @@ export default async function RootLayout({children,}: Readonly<{ children: React
         <SessionProvider session={session}>
             <html lang="en">
             <body className={inter.className}>
-            {children}
+            <div className="h-screen flex flex-col">
+                {children}
+            </div>
             </body>
             </html>
         </SessionProvider>

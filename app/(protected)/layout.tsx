@@ -3,7 +3,7 @@ import Navbar from "@/app/(protected)/_components/navbar";
 
 const ProtectedLayout = ({children}) => {
     return (
-        <div className="h-full w-full flex flex-col gap-y-110 items-center justify-center">
+        <div className="mx-6">
             <Navbar/>
             {children}
         </div>

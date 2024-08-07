@@ -10,11 +10,14 @@ const Navbar = () => {
     const pathname = usePathname();
 
     return (
-        <nav className="bg-secondary flex justify-between items-center p-4 rounded-xl w-[600px] shadow-sm">
-            <div className="flex gap-x-2">
-                
+        <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-between items-center p-4 md:relative md:bottom-auto md:left-auto md:right-auto">
+            <p>
+                Your Waiter
+            </p>
+            <div className="flex gap-x-2 p-2 shadow rounded-full">
                 <Button
-                    variant={pathname === "/client" ? "default" : "outline"}
+                    className="rounded-full"
+                    variant={pathname === "/client" ? "default" : "ghost"}
                     asChild
                 >
                     <Link href="/client">
@@ -22,7 +25,8 @@ const Navbar = () => {
                     </Link>
                 </Button>
                 <Button
-                    variant={pathname === "/admin" ? "default" : "outline"}
+                    className="rounded-full"
+                    variant={pathname === "/admin" ? "default" : "ghost"}
                     asChild
                 >
                     <Link href="/admin">
@@ -30,7 +34,8 @@ const Navbar = () => {
                     </Link>
                 </Button>
                 <Button
-                    variant={pathname === "/settings" ? "default" : "outline"}
+                    className="rounded-full"
+                    variant={pathname === "/settings" ? "default" : "ghost"}
                     asChild
                 >
                     <Link href="/settings">
@@ -38,7 +43,10 @@ const Navbar = () => {
                     </Link>
                 </Button>
             </div>
+
+
             <UserButton/>
+
         </nav>
     );
 };
