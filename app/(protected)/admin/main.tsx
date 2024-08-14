@@ -15,11 +15,11 @@ import Sidebar from "@/app/(protected)/Sidebar";
 import TableList from "@/components/admin/table-list";
 import {getTablesByRestaurant} from "@/actions/admin/restaurant";
 
-interface  MainProps{
+interface MainProps {
     restaurants: Restaurant[]
 }
 
-const Main = ({restaurants} :MainProps) => {
+const Main = ({restaurants}: MainProps) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState<string>('');
     const [tables, setTables] = useState<Table[]>([]);
 
@@ -53,7 +53,7 @@ const Main = ({restaurants} :MainProps) => {
                     <Input type="text" placeholder="Search" className="pl-10 rounded-full"/>
                 </div>
 
-                <div className="justify-end">
+                <div className="flex justify-end gap-x-2">
                     <DialogWrapper
                         triggerLabel="New Restaurant"
                         triggerIcon={<IoAddOutline className="w-4 h-4"/>}
@@ -81,14 +81,17 @@ const Main = ({restaurants} :MainProps) => {
                 </div>
             </div>
 
-            <div className="flex gap-x-6">
-                <Sidebar/>
-                <div className="w-4/5 bg-gray-100 p-4 rounded-3xl">
+            <div className="flex gap-x-6 overflow-hidden">
+                <div className="w-1/5 bg-neutral-800 text-white rounded-3xl overflow-y-auto">
+                    <Sidebar/>
+                </div>
+                <div className="w-4/5 bg-gray-100 p-4 rounded-3xl overflow-y-auto">
                     <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
                 </div>
             </div>
         </main>
     );
 };
+
 
 export default Main;

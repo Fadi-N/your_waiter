@@ -1,36 +1,50 @@
 'use client'
 
 import React from 'react';
-import {Table} from "@prisma/client";
+import {Table as TableFromPrisma} from "@prisma/client";
+import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import Image from "next/image";
 
 
 interface TableListProps {
     selectedRestaurant: string;
-    tables: Table[];
+    tables: TableFromPrisma[];
 }
-const TableList = ({selectedRestaurant, tables} : TableListProps) => {
+
+const TableList = ({selectedRestaurant, tables}: TableListProps) => {
     return (
         <>
             {selectedRestaurant ? (
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">Tables for Restaurant</h2>
+                <>
                     {tables.length > 0 ? (
-                        <ul>
-                            {tables.map((table) => (
-                                <>
-                                    <li key={table.id} className="mb-2">
-                                        Table {table.tableNumber}
-                                    </li>
-                                    <img src={table.qrCode} alt=""/>
-                                </>
-
-
-                            ))}
-                        </ul>
+                        <Table>
+                            <TableCaption>Tables for Restaurant</TableCaption>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[100px]">Table</TableHead>
+                                    <TableHead>QR code</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {tables.map((table) => (
+                                    <TableRow key={table.id}>
+                                        <TableCell className="font-medium">{table.tableNumber}</TableCell>
+                                        <TableCell>
+                                            <Image
+                                                src={table.qrCode}
+                                                alt={`Table ${table.tableNumber}`}
+                                                width={148}
+                                                height={148}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     ) : (
                         <p>No tables found for this restaurant.</p>
                     )}
-                </div>
+                </>
             ) : (
                 <p>Please select a restaurant to view its tables.</p>
             )}
