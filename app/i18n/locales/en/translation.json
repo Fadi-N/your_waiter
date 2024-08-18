@@ -1,0 +1,15 @@
+{
+  "title": "Your Waiter",
+  "restaurantSelect": "Select a restaurant",
+  "search": "Search",
+  "newRestaurant": "New Restaurant",
+  "editRestaurant": "Edit Restaurant",
+  "downloadQRCodes": "Download QR Cdoes",
+  "categoryName": "Category Name",
+  "add": "Add",
+  "itemName": "Item name",
+  "categorySelect": "Select a category",
+  "description": "Description",
+  "price": "Price",
+  "create": "Create"
+}
