@@ -36,7 +36,7 @@ export const RegisterSchema = z.object({
     })
 })
 
-export const CreateRestaurantWithQRCodeSchema  = z.object({
+export const CreateRestaurantWithQRCodeSchema = z.object({
     restaurantName: z.string()
         .min(1, {message: "Restaurant name is required"}),
     numberOfTables: z.string()
@@ -45,4 +45,27 @@ export const CreateRestaurantWithQRCodeSchema  = z.object({
             const num = parseInt(val, 10);
             return !isNaN(num) && num > 0;
         }, {message: "Number of tables must be a number greater than 0"})
+});
+
+export const CategorySchema = z.object({
+    categoryName: z.string()
+        .min(1, {message: "Category name is required"})
+        .max(50, {message: "Category name must be less than 50 characters"})
+});
+export const MenuItemSchema = z.object({
+    itemName: z.string()
+        .min(1, { message: "Item name is required" })
+        .max(50, { message: "Item name must be less than 50 characters" }),
+    menuCategory: z.string()
+        .min(1, { message: "Menu category is required" }),
+    description: z.string().optional(),
+    price: z.preprocess((val) => {
+        // Check if value is a string and convert to float
+        if (typeof val === 'string') {
+            const parsed = parseFloat(val);
+            return isNaN(parsed) ? undefined : parsed;
+        }
+        // Return value as is if it's already a number
+        return val;
+    }, z.number().min(0.01, { message: "Price must be greater than zero" }))
 });

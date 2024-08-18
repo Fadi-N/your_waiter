@@ -75,24 +75,58 @@ model PasswordResetToken {
 }
 
 model Restaurant {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  tables Table[]
-  userId String  @db.ObjectId
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  tables       Table[]
+  MenuItem     MenuItem[]
+  MenuCategory MenuCategory[]
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
 }
 
 model Table {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  tableNumber  Int
-  qrCode       String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  tableNumber Int
+  qrCode      String
+
   restaurantId String     @db.ObjectId
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MenuItem {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float
+
+  restaurantId String     @db.ObjectId
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  menuCategoryId String       @db.ObjectId
+  MenuCategory   MenuCategory @relation(fields: [menuCategoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MenuCategory {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  MenuItem MenuItem[]
+
+  restaurantId String     @db.ObjectId
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, restaurantId])
 }

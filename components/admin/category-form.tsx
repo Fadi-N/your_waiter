@@ -5,36 +5,32 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useForm} from "react-hook-form";
-import {CreateRestaurantWithQRCodeSchema} from "@/schemas";
+import {CategorySchema} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
 import {useCurrentUser} from "@/hooks/use-current-user";
+import {categoryMenu} from "@/actions/admin/menu-category";
 
-const GenerateQrcodeForm = () => {
-    const user = useCurrentUser();
-
-
+const CategoryForm = ({selectedRestaurant}) => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
 
-    const form = useForm<z.infer<typeof CreateRestaurantWithQRCodeSchema>>({
-        resolver: zodResolver(CreateRestaurantWithQRCodeSchema),
+    const form = useForm<z.infer<typeof CategorySchema>>({
+        resolver: zodResolver(CategorySchema),
         defaultValues: {
-            restaurantName: "",
-            numberOfTables: "",
+            categoryName: "",
         }
     });
 
-    const onSubmit = (values: z.infer<typeof CreateRestaurantWithQRCodeSchema>) => {
+    const onSubmit = (values: z.infer<typeof CategorySchema>) => {
         setError("");
         setSuccess("");
 
         startTransition(() => {
-            createRestaurantWithQRCode(values, user?.id || "")
+            categoryMenu(values, selectedRestaurant || "")
                 .then((data) => {
                     setError(data?.error);
                     setSuccess(data?.success);
@@ -51,32 +47,14 @@ const GenerateQrcodeForm = () => {
                 <div className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="restaurantName"
+                        name="categoryName"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Restaurant Name</FormLabel>
+                                <FormLabel>Category Name</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
-                                        placeholder="Your waiter"
-                                        type="text"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="numberOfTables"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Number of tables</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="10"
+                                        placeholder="Pizza"
                                         type="text"
                                         disabled={isPending}
                                     />
@@ -93,11 +71,11 @@ const GenerateQrcodeForm = () => {
                     className="w-full"
                     disabled={isPending}
                 >
-                    Create
+                    Add
                 </Button>
             </form>
         </Form>
     );
 };
 
-export default GenerateQrcodeForm;
+export default CategoryForm;

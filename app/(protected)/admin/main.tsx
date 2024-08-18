@@ -7,19 +7,22 @@ import {Input} from "@/components/ui/input";
 import DialogWrapper from "@/components/dialog-wrapper";
 import {IoAddOutline} from "react-icons/io5";
 import RoleGate from "@/components/auth/role-gate";
-import {Restaurant, Table, UserRole} from "@prisma/client";
+import {MenuCategory, Restaurant, Table, UserRole} from "@prisma/client";
 import GenerateQrcodeForm from "@/components/admin/generate-qrcode-form";
 import {Button} from "@/components/ui/button";
 import {IoMdDownload} from "react-icons/io";
 import Sidebar from "@/app/(protected)/Sidebar";
 import TableList from "@/components/admin/table-list";
 import {getTablesByRestaurant} from "@/actions/admin/restaurant";
+import CategoryForm from "@/components/admin/category-form";
+import MenuItemForm from "@/components/admin/menu-item-form";
 
 interface MainProps {
     restaurants: Restaurant[]
+    menuCategories: MenuCategory[]
 }
 
-const Main = ({restaurants}: MainProps) => {
+const Main = ({restaurants, menuCategories}: MainProps) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState<string>('');
     const [tables, setTables] = useState<Table[]>([]);
 
@@ -86,7 +89,9 @@ const Main = ({restaurants}: MainProps) => {
                     <Sidebar/>
                 </div>
                 <div className="w-4/5 bg-gray-100 p-4 rounded-3xl overflow-y-auto">
-                    <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
+                    {/*<TableList selectedRestaurant={selectedRestaurant} tables={tables}/>*/}
+                    <CategoryForm selectedRestaurant={selectedRestaurant}/>
+                    <MenuItemForm selectedRestaurant={selectedRestaurant} menuCategories={menuCategories}/>
                 </div>
             </div>
         </main>
