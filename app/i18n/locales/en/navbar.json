@@ -1,4 +1,6 @@
 {
   "title": "Your Waiter",
-  "to-second-page": "To second page"
+  "client": "Client",
+  "admin": "Admin",
+  "settings": "Settings"
 }

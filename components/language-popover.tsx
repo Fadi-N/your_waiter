@@ -2,11 +2,13 @@ import React from 'react';
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
 import {languages} from "@/app/i18n/settings";
-import {useParams} from "next/navigation";
+import {useParams, usePathname} from "next/navigation";
 import Link from "next/link";
 
 const LanguagePopover = () => {
     const {lng} = useParams();
+    const pathname = usePathname();
+    const trimmedPath = pathname.replace(`/${lng}/`, '');
 
     const uppercaseLng = typeof lng === "string" && lng?.toUpperCase();
 
@@ -26,7 +28,7 @@ const LanguagePopover = () => {
                         .filter((language) => lng !== language)
                         .map((language, index) => (
                             <span key={language}>
-                                <Link href={`/${language}/admin`}>
+                                <Link href={`/${language}/${trimmedPath}`}>
                                     {language}
                                 </Link>
                             </span>

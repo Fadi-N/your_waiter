@@ -26,7 +26,7 @@ interface MainProps {
 
 const Main = ({restaurants, menuCategories}: MainProps) => {
     const {lng} = useParams();
-    const { t } = useTranslation(lng)
+    const { t } = useTranslation(lng, "navbar")
 
     const [selectedRestaurant, setSelectedRestaurant] = useState<string>('');
     const [tables, setTables] = useState<Table[]>([]);

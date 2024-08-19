@@ -12,8 +12,13 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {useCurrentUser} from "@/hooks/use-current-user";
 import {categoryMenu} from "@/actions/admin/menu-category";
+import {useParams} from "next/navigation";
+import {useTranslation} from "@/app/i18n/client";
 
 const CategoryForm = ({selectedRestaurant}) => {
+    const {lng} = useParams();
+    const { t } = useTranslation(lng, "category-form")
+
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -50,7 +55,7 @@ const CategoryForm = ({selectedRestaurant}) => {
                         name="categoryName"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Category Name</FormLabel>
+                                <FormLabel>{`${t('categoryName')}`}</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -71,7 +76,7 @@ const CategoryForm = ({selectedRestaurant}) => {
                     className="w-full"
                     disabled={isPending}
                 >
-                    Add
+                    {`${t('add')}`}
                 </Button>
             </form>
         </Form>

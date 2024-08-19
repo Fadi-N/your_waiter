@@ -10,7 +10,7 @@ import {useTranslation} from "@/app/i18n/client";
 
 const Navbar = () => {
     const {lng} = useParams();
-    const { t } = useTranslation(lng)
+    const { t } = useTranslation(lng, "navbar")
     const pathname = usePathname();
 
     return (
@@ -25,7 +25,7 @@ const Navbar = () => {
                     asChild
                 >
                     <Link href="/client">
-                        Client
+                        {t('client')}
                     </Link>
                 </Button>
                 <Button
@@ -34,7 +34,7 @@ const Navbar = () => {
                     asChild
                 >
                     <Link href="/admin">
-                        Admin
+                        {t('admin')}
                     </Link>
                 </Button>
                 <Button
@@ -43,7 +43,7 @@ const Navbar = () => {
                     asChild
                 >
                     <Link href="/settings">
-                        Settings
+                        {t('settings')}
                     </Link>
                 </Button>
             </div>

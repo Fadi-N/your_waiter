@@ -14,8 +14,12 @@ import SelectWrapper from "@/components/select-wrapper";
 import {MenuCategory, Table} from "@prisma/client";
 import {getCategoriesByRestaurant} from "@/actions/admin/menu-category";
 import {MenuItem} from "@/actions/admin/menu-item";
+import {useParams} from "next/navigation";
+import {useTranslation} from "@/app/i18n/client";
 
 const MenuItemForm = ({selectedRestaurant}) => {
+    const {lng} = useParams();
+    const { t } = useTranslation(lng, "menu-item-form")
 
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
@@ -71,7 +75,7 @@ const MenuItemForm = ({selectedRestaurant}) => {
                         name="itemName"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Item name</FormLabel>
+                                <FormLabel>{`${t('itemName')}`}</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -96,7 +100,7 @@ const MenuItemForm = ({selectedRestaurant}) => {
                                             id: category.id,
                                             label: category.name
                                         }))}
-                                        placeholder="Select a category"
+                                        placeholder={`${t('categorySelect')}`}
                                         selectLabel="Categories"
                                         onChange={(value) => field.onChange(value)}
                                     />
@@ -111,7 +115,7 @@ const MenuItemForm = ({selectedRestaurant}) => {
                         name="description"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Description</FormLabel>
+                                <FormLabel>{`${t('description')}`}</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -129,7 +133,7 @@ const MenuItemForm = ({selectedRestaurant}) => {
                         name="price"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Price</FormLabel>
+                                <FormLabel>{`${t('price')}`}</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -150,7 +154,7 @@ const MenuItemForm = ({selectedRestaurant}) => {
                     className="w-full"
                     disabled={isPending}
                 >
-                    Create
+                    {`${t('create')}`}
                 </Button>
             </form>
         </Form>
