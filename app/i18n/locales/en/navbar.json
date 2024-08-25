@@ -2,5 +2,7 @@
   "title": "Your Waiter",
   "client": "Client",
   "admin": "Admin",
-  "settings": "Settings"
+  "settings": "Settings",
+  "menu": "Menu",
+  "bookATable": "Book a Table"
 }

@@ -14,13 +14,31 @@ const Navbar = () => {
     const pathname = usePathname();
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-between items-center p-4 md:relative md:bottom-auto md:left-auto md:right-auto">
-            <p>
+        <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-between items-center bg-white border-t md:border-transparent md:p-4 md:relative md:bottom-auto md:left-auto md:right-auto">
+            <p className="hidden md:block">
                 {t('title')}
             </p>
-            <div className="flex gap-x-2 p-2 shadow rounded-full">
+            <div className="flex w-full gap-x-2 p-2 shadow justify-between md:rounded-full md:w-auto">
                 <Button
-                    className="rounded-full"
+                    className="w-full rounded-full"
+                    variant={pathname === `/${lng}/menu` ? "default" : "ghost"}
+                    asChild
+                >
+                    <Link href="/menu">
+                        {t('menu')}
+                    </Link>
+                </Button>
+                <Button
+                    className="w-full rounded-full"
+                    variant={pathname === `/${lng}/menu` ? "default" : "ghost"}
+                    asChild
+                >
+                    <Link href="/book-a-table">
+                        {t('bookATable')}
+                    </Link>
+                </Button>
+                <Button
+                    className="w-full rounded-full"
                     variant={pathname === `/${lng}/client` ? "default" : "ghost"}
                     asChild
                 >
@@ -29,7 +47,7 @@ const Navbar = () => {
                     </Link>
                 </Button>
                 <Button
-                    className="rounded-full"
+                    className="w-full rounded-full"
                     variant={pathname === `/${lng}/admin` ? "default" : "ghost"}
                     asChild
                 >
@@ -37,18 +55,9 @@ const Navbar = () => {
                         {t('admin')}
                     </Link>
                 </Button>
-                <Button
-                    className="rounded-full"
-                    variant={pathname === `/${lng}/settings` ? "default" : "ghost"}
-                    asChild
-                >
-                    <Link href="/settings">
-                        {t('settings')}
-                    </Link>
-                </Button>
             </div>
 
-            <div className="flex gap-x-2">
+            <div className="hidden md:flex gap-x-2">
                 <LanguagePopover/>
 
                 <UserButton/>

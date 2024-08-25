@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+/*import { NextResponse } from 'next/server'
 import authConfig from "./auth.config"
 import NextAuth from "next-auth"
 import acceptLanguage from 'accept-language'
@@ -68,4 +68,61 @@ export function middleware(req) {
     }
 
     return NextResponse.next()
+}*/
+
+
+import { NextResponse } from 'next/server';
+import acceptLanguage from 'accept-language';
+import { fallbackLng, languages, cookieName } from './app/i18n/settings';
+
+acceptLanguage.languages(languages);
+
+export function middleware(req) {
+    const { nextUrl } = req;
+    let lng;
+
+    // Pobieranie języka z ciasteczek lub nagłówków
+    if (req.cookies.has(cookieName)) {
+        lng = acceptLanguage.get(req.cookies.get(cookieName).value);
+    }
+    if (!lng) {
+        lng = acceptLanguage.get(req.headers.get('Accept-Language'));
+    }
+    if (!lng) {
+        lng = fallbackLng;
+    }
+
+    // Pomijanie dodawania prefiksu języka do ścieżek API
+    if (nextUrl.pathname.startsWith('/api/')) {
+        return NextResponse.next();
+    }
+
+    // Sprawdzenie, czy ścieżka już zawiera prefiks języka
+    const hasLanguagePrefix = languages.some(loc => nextUrl.pathname.startsWith(`/${loc}`));
+
+    if (!hasLanguagePrefix && !nextUrl.pathname.startsWith('/_next')) {
+        // Przekierowanie na ścieżkę z dodanym prefiksem języka
+        return NextResponse.redirect(new URL(`/${lng}${nextUrl.pathname}`, req.url));
+    }
+
+    // Ustawienie ciasteczka z językiem, jeśli jest w refererze
+    if (req.headers.has('referer')) {
+        const refererUrl = new URL(req.headers.get('referer'));
+        const lngInReferer = languages.find(l => refererUrl.pathname.startsWith(`/${l}`));
+        const response = NextResponse.next();
+        if (lngInReferer) {
+            response.cookies.set(cookieName, lngInReferer);
+        }
+        return response;
+    }
+
+    return NextResponse.next();
 }
+
+export const config = {
+    matcher: [
+        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+        '/(api|trpc)(.*)', // Upewnij się, że ścieżki API są objęte matcherem
+    ],
+}
+

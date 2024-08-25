@@ -3,12 +3,7 @@
   "search": "Rechercher",
   "newRestaurant": "Nouveau restaurant",
   "editRestaurant": "Modifier le restaurant",
-  "downloadQRCodes": "Télécharger les codes QR",
-  "categoryName": "Nom de la catégorie",
-  "add": "Ajouter",
-  "itemName": "Nom de l'article",
-  "categorySelect": "Sélectionnez une catégorie",
-  "description": "Description",
-  "price": "Prix",
-  "create": "Créer"
+  "QRCodes": "Codes QR",
+  "category": "Catégorie",
+  "menuItem": "Élément de menu"
 }

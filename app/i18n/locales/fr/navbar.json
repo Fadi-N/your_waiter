@@ -2,5 +2,7 @@
   "title": "Votre Serveur",
   "client": "Client",
   "admin": "Administrateur",
-  "settings": "Paramètres"
+  "settings": "Paramètres",
+  "menu": "Menu",
+  "bookATable": "Réserver une table"
 }

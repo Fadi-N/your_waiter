@@ -3,5 +3,9 @@
   "search": "Search",
   "newRestaurant": "New Restaurant",
   "editRestaurant": "Edit Restaurant",
-  "downloadQRCodes": "Download QR Cdoes"
+  "QRCodes": "QR Codes",
+  "category": "Category",
+  "addCategory": "Add category",
+  "menuItem": "Menu item",
+  "addMenuItem": "Add menu item"
 }

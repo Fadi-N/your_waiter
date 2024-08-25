@@ -17,15 +17,15 @@ import {IoMdAdd} from "react-icons/io";
 const Main = () => {
     return (
         <main>
-            <div className="flex mb-6">
-                <div className="relative">
+            <div className="flex my-6 md:mt-0">
+                <div className="relative flex-1">
                     <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
                     <Input type="text" placeholder="Search" className="pl-10 rounded-full"/>
                 </div>
             </div>
             <div className="flex mb-6">
-                <Carousel>
-                    <CarouselContent className="-ml-2 md:-ml-4 w-[480px]">
+                <Carousel className="flex-1">
+                    <CarouselContent className="-ml-2 md:-ml-4 w-[347.5px]">
                         <CarouselItem className="basis-1/3 pl-2 md:basis-1/4 md:pl-4">
                             <Button
                                 className="rounded-full"
@@ -75,13 +75,13 @@ const Main = () => {
             </div>
             <div className="flex flex-col">
                 <p className="text-2xl pb-4">Choose Pizza</p>
-                <div className="flex items-center justify-between">
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="grid grid-cols-2 p-6 gap-x-6">
-                            <div className="bg-gray-100 flex items-center justify-center rounded-md">
+                <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(347.5px,1fr))]">
+                    <Card className="w-full shadow-md">
+                        <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
                                 IMAGE
                             </div>
-                            <div>
+                            <div className="mx-6 mt-6 md:mx-0 md:mt-0">
                                 <p className="font-bold text-xl">Title</p>
                                 <p className="text text-sm">Subtitle</p>
                                 <p>Description</p>
@@ -108,12 +108,12 @@ const Main = () => {
                             </div>
                         </CardFooter>
                     </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="grid grid-cols-2 pt-6 gap-x-6">
-                            <div className="bg-gray-100 flex items-center justify-center rounded-md">
+                    <Card className="w-full shadow-md">
+                        <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
                                 IMAGE
                             </div>
-                            <div>
+                            <div className="mx-6 mt-6 md:mx-0 md:mt-0">
                                 <p className="font-bold text-xl">Title</p>
                                 <p className="text text-sm">Subtitle</p>
                                 <p>Description</p>
@@ -140,13 +140,12 @@ const Main = () => {
                             </div>
                         </CardFooter>
                     </Card>
-
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="grid grid-cols-2 pt-6 gap-x-6">
-                            <div className="bg-gray-100 flex items-center justify-center rounded-md">
+                    <Card className="w-full shadow-md">
+                        <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
                                 IMAGE
                             </div>
-                            <div>
+                            <div className="mx-6 mt-6 md:mx-0 md:mt-0">
                                 <p className="font-bold text-xl">Title</p>
                                 <p className="text text-sm">Subtitle</p>
                                 <p>Description</p>
@@ -173,13 +172,12 @@ const Main = () => {
                             </div>
                         </CardFooter>
                     </Card>
-
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="grid grid-cols-2 pt-6 gap-x-6">
-                            <div className="bg-gray-100 flex items-center justify-center rounded-md">
+                    <Card className="w-full shadow-md">
+                        <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
                                 IMAGE
                             </div>
-                            <div>
+                            <div className="mx-6 mt-6 md:mx-0 md:mt-0">
                                 <p className="font-bold text-xl">Title</p>
                                 <p className="text text-sm">Subtitle</p>
                                 <p>Description</p>
@@ -206,12 +204,12 @@ const Main = () => {
                             </div>
                         </CardFooter>
                     </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="grid grid-cols-2 pt-6 gap-x-6">
-                            <div className="bg-gray-100 flex items-center justify-center rounded-md">
+                    <Card className="w-full shadow-md">
+                        <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
                                 IMAGE
                             </div>
-                            <div>
+                            <div className="mx-6 mt-6 md:mx-0 md:mt-0">
                                 <p className="font-bold text-xl">Title</p>
                                 <p className="text text-sm">Subtitle</p>
                                 <p>Description</p>
@@ -238,208 +236,12 @@ const Main = () => {
                             </div>
                         </CardFooter>
                     </Card>
-
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="grid grid-cols-2 pt-6 gap-x-6">
-                            <div className="bg-gray-100 flex items-center justify-center rounded-md">
+                    <Card className="w-full shadow-md">
+                        <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
                                 IMAGE
                             </div>
-                            <div>
-                                <p className="font-bold text-xl">Title</p>
-                                <p className="text text-sm">Subtitle</p>
-                                <p>Description</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="grid grid-cols-2 gap-x-6">
-                            <p className="text-xl font-bold">19.99 $</p>
-                            <div className="counter flex border rounded-full p-2">
-                                <Button
-                                    className="rounded-full border-transparent"
-                                    variant="outline"
-                                    size="sm"
-                                >
-                                    <AiOutlineMinus className="w-4 h-4"/>
-                                </Button>
-                                <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto" size="sm"/>
-                                <Button
-                                    className="rounded-full"
-                                    variant="default"
-                                    size="sm"
-                                >
-                                    <AiOutlinePlus className="w-4 h-4"/>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
-
-                </div>
-                <div className="flex items-center justify-between mt-6">
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="px-0">
-                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md">
-                                IMAGE
-                            </div>
-                            <div className="mx-6 mt-6">
-                                <p className="font-bold text-xl">Title</p>
-                                <p className="text text-sm">Subtitle</p>
-                                <p>Description</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="grid grid-cols-2 gap-x-6">
-                            <p className="text-xl font-bold">19.99 $</p>
-                            <div className="counter flex border rounded-full p-2">
-                                <Button
-                                    className="rounded-full border-transparent"
-                                    variant="outline"
-                                    size="sm"
-                                >
-                                    <AiOutlineMinus className="w-4 h-4"/>
-                                </Button>
-                                <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto" size="sm"/>
-                                <Button
-                                    className="rounded-full"
-                                    variant="default"
-                                    size="sm"
-                                >
-                                    <AiOutlinePlus className="w-4 h-4"/>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="px-0">
-                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md">
-                                IMAGE
-                            </div>
-                            <div className="mx-6 mt-6">
-                                <p className="font-bold text-xl">Title</p>
-                                <p className="text text-sm">Subtitle</p>
-                                <p>Description</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="grid grid-cols-2 gap-x-6">
-                            <p className="text-xl font-bold">19.99 $</p>
-                            <div className="counter flex border rounded-full p-2">
-                                <Button
-                                    className="rounded-full border-transparent"
-                                    variant="outline"
-                                    size="sm"
-                                >
-                                    <AiOutlineMinus className="w-4 h-4"/>
-                                </Button>
-                                <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto" size="sm"/>
-                                <Button
-                                    className="rounded-full"
-                                    variant="default"
-                                    size="sm"
-                                >
-                                    <AiOutlinePlus className="w-4 h-4"/>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="px-0">
-                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md">
-                                IMAGE
-                            </div>
-                            <div className="mx-6 mt-6">
-                                <p className="font-bold text-xl">Title</p>
-                                <p className="text text-sm">Subtitle</p>
-                                <p>Description</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="grid grid-cols-2 gap-x-6">
-                            <p className="text-xl font-bold">19.99 $</p>
-                            <div className="counter flex border rounded-full p-2">
-                                <Button
-                                    className="rounded-full border-transparent"
-                                    variant="outline"
-                                    size="sm"
-                                >
-                                    <AiOutlineMinus className="w-4 h-4"/>
-                                </Button>
-                                <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto" size="sm"/>
-                                <Button
-                                    className="rounded-full"
-                                    variant="default"
-                                    size="sm"
-                                >
-                                    <AiOutlinePlus className="w-4 h-4"/>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="px-0">
-                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md">
-                                IMAGE
-                            </div>
-                            <div className="mx-6 mt-6">
-                                <p className="font-bold text-xl">Title</p>
-                                <p className="text text-sm">Subtitle</p>
-                                <p>Description</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="grid grid-cols-2 gap-x-6">
-                            <p className="text-xl font-bold">19.99 $</p>
-                            <div className="counter flex border rounded-full p-2">
-                                <Button
-                                    className="rounded-full border-transparent"
-                                    variant="outline"
-                                    size="sm"
-                                >
-                                    <AiOutlineMinus className="w-4 h-4"/>
-                                </Button>
-                                <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto" size="sm"/>
-                                <Button
-                                    className="rounded-full"
-                                    variant="default"
-                                    size="sm"
-                                >
-                                    <AiOutlinePlus className="w-4 h-4"/>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="px-0">
-                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md">
-                                IMAGE
-                            </div>
-                            <div className="mx-6 mt-6">
-                                <p className="font-bold text-xl">Title</p>
-                                <p className="text text-sm">Subtitle</p>
-                                <p>Description</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="grid grid-cols-2 gap-x-6">
-                            <p className="text-xl font-bold">19.99 $</p>
-                            <div className="counter flex border rounded-full p-2">
-                                <Button
-                                    className="rounded-full border-transparent"
-                                    variant="outline"
-                                    size="sm"
-                                >
-                                    <AiOutlineMinus className="w-4 h-4"/>
-                                </Button>
-                                <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto" size="sm"/>
-                                <Button
-                                    className="rounded-full"
-                                    variant="default"
-                                    size="sm"
-                                >
-                                    <AiOutlinePlus className="w-4 h-4"/>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="w-[400px] shadow-md">
-                        <CardContent className="px-0">
-                            <div className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md">
-                                IMAGE
-                            </div>
-                            <div className="mx-6 mt-6">
+                            <div className="mx-6 mt-6 md:mx-0 md:mt-0">
                                 <p className="font-bold text-xl">Title</p>
                                 <p className="text text-sm">Subtitle</p>
                                 <p>Description</p>

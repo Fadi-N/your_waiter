@@ -6,8 +6,6 @@ const Sidebar = () => {
     return (
         <>
 
-            Sidebar
-
         </>
     );
 };

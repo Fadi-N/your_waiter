@@ -4,6 +4,9 @@ import {Button} from "@/components/ui/button";
 import {languages} from "@/app/i18n/settings";
 import {useParams, usePathname} from "next/navigation";
 import Link from "next/link";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import Image from "next/image";
 
 const LanguagePopover = () => {
     const {lng} = useParams();
@@ -13,29 +16,38 @@ const LanguagePopover = () => {
     const uppercaseLng = typeof lng === "string" && lng?.toUpperCase();
 
     return (
-        <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                    variant="outline"
-                    className="rounded-full"
-                >
-                    {uppercaseLng}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto">
-                <div className="grid gap-2">
-                    {languages
-                        .filter((language) => lng !== language)
-                        .map((language, index) => (
-                            <span key={language}>
-                                <Link href={`/${language}/${trimmedPath}`}>
-                                    {language}
-                                </Link>
-                            </span>
-                    ))}
-                </div>
-            </PopoverContent>
-        </Popover>
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                <Avatar>
+                    <AvatarImage src={`/assets/${lng}.png` || ""}/>
+                    <AvatarFallback className="bg-white border text-sm">
+                        {uppercaseLng}
+                    </AvatarFallback>
+                </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="flex flex-col items-center">
+                {languages
+                    .filter((language) => lng !== language)
+                    .map((language, index) => (
+                        <DropdownMenuItem key={language}>
+                            <Link
+                                href={`/${language}/${trimmedPath}`}
+                                className="flex"
+                            >
+                                <Image
+                                    className="me-2"
+                                    src={`/assets/${language}.png`}
+                                    alt={`${lng}`}
+                                    width={20}
+                                    height={20}
+                                />
+                                {language.toUpperCase()}
+                            </Link>
+                        </DropdownMenuItem>
+                    ))
+                }
+            </DropdownMenuContent>
+        </DropdownMenu>
     );
 };
 

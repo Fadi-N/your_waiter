@@ -2,5 +2,7 @@
   "title": "Twój Kelner",
   "client": "Klient",
   "admin": "Administrator",
-  "settings": "Ustawienia"
+  "settings": "Ustawienia",
+  "menu": "Menu",
+  "bookATable": "Zarezerwuj stolik"
 }

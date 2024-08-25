@@ -15,16 +15,17 @@ interface SelectWrapperProps {
     items: { id: string, label: string }[];
     placeholder: string;
     selectLabel: string;
+    defaultValue?: string;
     onChange: (value: string) => void;
     triggerClassName?: string;
 }
 
 const SelectWrapper = (
-    {items, placeholder, selectLabel, onChange, triggerClassName = "w-auto bg-transparent border-0"}
+    {items, placeholder, selectLabel, onChange, defaultValue, triggerClassName = "w-auto bg-transparent border-0"}
         : SelectWrapperProps
 ) => {
     return (
-        <Select onValueChange={onChange}>
+        <Select onValueChange={onChange} defaultValue={defaultValue}>
             <SelectTrigger className={triggerClassName}>
                 <SelectValue placeholder={placeholder}/>
             </SelectTrigger>
