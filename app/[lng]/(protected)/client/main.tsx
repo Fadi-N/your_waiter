@@ -25,7 +25,7 @@ const Main = () => {
             </div>
             <div className="flex mb-6">
                 <Carousel className="flex-1">
-                    <CarouselContent className="-ml-2 md:-ml-4 w-[347.5px]">
+                    <CarouselContent className="-ml-2 md:-ml-4 w-[347.5px] md:w-[500px]">
                         <CarouselItem className="basis-1/3 pl-2 md:basis-1/4 md:pl-4">
                             <Button
                                 className="rounded-full"

@@ -127,9 +127,9 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             headerLabel="Download QR codes"
                             description="Click to download the QR codes generated for your restaurant"
                         >
-                            <RoleGate allowedRole={UserRole.ADMIN}>
+
                                 <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
-                            </RoleGate>
+                            
                         </DrawerWrapper>
                     )}
                 </div>
