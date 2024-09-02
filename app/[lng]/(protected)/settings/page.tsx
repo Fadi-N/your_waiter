@@ -1,7 +1,7 @@
 'use client'
 
 import {useSession} from "next-auth/react";
-import {logout} from "@/actions/logout";
+import {logout} from "@/actions/auth/logout";
 import {useCurrentUser} from "@/hooks/use-current-user";
 
 const SettingsPage = () => {

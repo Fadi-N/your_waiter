@@ -10,10 +10,10 @@ import {
 import {Button} from "@/components/ui/button";
 
 interface DrawerWrapperProps {
-    triggerLabel: string;
+    triggerLabel?: string;
     triggerIcon?: React.ReactNode;
-    headerLabel: string;
-    description: string;
+    headerLabel?: string;
+    description?: string;
     children: React.ReactNode;
     className?: string;
 }

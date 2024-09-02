@@ -11,15 +11,17 @@ import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel"
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
 import {useParams, useSearchParams} from "next/navigation";
+import {useCart} from "@/hooks/use-cart";
 
 const Main = ({menuItems}) => {
     const {lng, restaurant} = useParams();
     const searchParams = useSearchParams();
-    const  table = searchParams.get("table");
-    console.log(lng, restaurant, table)
+    const table = searchParams.get("table");
+    /*console.log(lng, restaurant, table)*/
+    const {cart, increment, decrement} = useCart();
 
     return (
-        <main>
+        <main className="container">
             <div className="flex my-6 md:mt-0">
                 <div className="relative flex-1">
                     <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
@@ -80,40 +82,50 @@ const Main = ({menuItems}) => {
                 <p className="text-2xl pb-4">Choose Pizza</p>
                 <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(347.5px,1fr))]">
                     {menuItems.map((item) => (
-                        <Card className="w-full shadow-md">
-                            <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
-                                <div
-                                    className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
-                                    IMAGE
-                                </div>
-                                <div className="mx-6 mt-6 md:mx-0 md:mt-0">
-                                    <p className="font-bold text-xl">{item.name}</p>
-                                    <p className="text text-sm">{item.MenuCategory.name}</p>
-                                    <p>{item.description}</p>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="grid grid-cols-2 gap-x-6">
-                                <p className="text-xl font-bold">{item.price} $</p>
-                                <div className="counter flex border rounded-full p-2">
-                                    <Button
-                                        className="rounded-full border-transparent"
-                                        variant="outline"
-                                        size="sm"
-                                    >
-                                        <AiOutlineMinus className="w-4 h-4"/>
-                                    </Button>
-                                    <Input type="text" placeholder="0" className="border-transparent text-center p-0 h-auto"
-                                           size="sm"/>
-                                    <Button
-                                        className="rounded-full"
-                                        variant="default"
-                                        size="sm"
-                                    >
-                                        <AiOutlinePlus className="w-4 h-4"/>
-                                    </Button>
-                                </div>
-                            </CardFooter>
-                        </Card>
+                        <>
+                            <Card className="w-full shadow-md">
+                                <CardContent className="px-0 md:grid md:grid-cols-2 md:p-6 md:gap-x-6 md:px-6">
+                                    <div
+                                        className="bg-gray-100 h-[200px] flex items-center justify-center rounded-md md:h-auto">
+                                        IMAGE
+                                    </div>
+                                    <div className="mx-6 mt-6 md:mx-0 md:mt-0">
+                                        <p className="font-bold text-xl">{item.name}</p>
+                                        <p className="text text-sm">{item.MenuCategory.name}</p>
+                                        <p>{item.description}</p>
+                                    </div>
+                                </CardContent>
+                                <CardFooter className="grid grid-cols-2 gap-x-6">
+                                    <p className="text-xl font-bold">{item.price} $</p>
+                                    <div className="counter flex items-center justify-between border rounded-full p-2 w-full max-w-xs h-auto">
+                                        <Button
+                                            className="rounded-full border-transparent"
+                                            variant="outline"
+                                            size="icon"
+                                            onClick={() => decrement(item)}
+                                        >
+                                            <AiOutlineMinus className="w-4 h-4"/>
+                                        </Button>
+                                        <Input
+                                            type="text"
+                                            value={cart.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
+                                            className="border-transparent text-center p-0 h-auto w-12"
+                                            size="sm"
+                                            readOnly
+                                        />
+                                        <Button
+                                            className="rounded-full"
+                                            variant="default"
+                                            size="icon"
+                                            onClick={() => increment(item)}
+                                        >
+                                            <AiOutlinePlus className="w-4 h-4"/>
+                                        </Button>
+                                    </div>
+                                </CardFooter>
+
+                            </Card>
+                        </>
                     ))}
                 </div>
             </div>

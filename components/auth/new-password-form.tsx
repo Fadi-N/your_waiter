@@ -12,7 +12,7 @@ import {Button} from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {useSearchParams} from "next/navigation";
-import {newPassword} from "@/actions/new-password";
+import {newPassword} from "@/actions/auth/new-password";
 
 const NewPasswordForm = () => {
     const searchParams = useSearchParams();
