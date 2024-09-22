@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 
 import {useCart} from "@/hooks/use-cart";
@@ -17,16 +17,39 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import {Elements} from "@stripe/react-stripe-js";
+import CheckoutForm from "@/components/stripe/checkout-form";
+import {createPaymentIntent} from "@/actions/stripe/payment";
+import {useSession} from "next-auth/react";
+import {loadStripe} from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 const CartPage = () => {
+    const session = useSession();
+
     const {cart, increment, decrement} = useCart();
+
+    const [clientSecret, setClientSecret] = useState<string | null>("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const amount = 49;
+    const initiatePayment = async () => {
+        setIsLoading(true);
+
+        const paymentIntent = await  createPaymentIntent(amount * 100, `Payment of the user ${session.data?.user?.name}`)
+
+        setClientSecret(paymentIntent.client_secret);
+
+        setIsLoading(false);
+    };
 
     return (
         <div className="container">
             <Table>
                 <TableCaption>Cart</TableCaption>
                 <TableBody>
-                    {cart.map((item) => (
+                    {cart.items.map((item) => (
                         <TableRow key={item.name}>
                             <TableCell>
                                 <div
@@ -51,7 +74,7 @@ const CartPage = () => {
                                     </Button>
                                     <Input
                                         type="text"
-                                        value={cart.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
+                                        value={cart.items.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
                                         className="border-transparent text-center p-0 h-auto w-12"
                                         size="sm"
                                         readOnly
@@ -73,10 +96,24 @@ const CartPage = () => {
                 <TableFooter>
                     <TableRow>
                         <TableCell colSpan={3}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
+                        <TableCell className="text-right">$ {cart.total}</TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>
+            <Button onClick={initiatePayment}>Dupa</Button>
+
+            {clientSecret!! && (
+                <Elements
+                    stripe={stripePromise}
+                    options={{
+                        clientSecret: clientSecret,
+                    }}
+                >
+                    <CheckoutForm
+                        isLoading={isLoading}
+                    />
+                </Elements>
+            )}
         </div>
     );
 };

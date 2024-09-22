@@ -30,7 +30,7 @@ const Navbar = () => {
     const {t} = useTranslation(lng, "navbar")
     const {cart} = useCart();
 
-    console.log('Cart in Navbar:', cart, cart.length);
+    console.log('Cart in Navbar:', cart, cart.items.length);
     useEffect(() => {
         console.log('Cart in Navbar:', cart);
     }, [cart]);
@@ -86,7 +86,7 @@ const Navbar = () => {
 
                         <Table className="mb-40">
                             <TableBody>
-                                {cart.map((item) => (
+                                {cart.items.map((item) => (
                                     <TableRow key={item.name} className="w-full">
                                         <TableCell>
                                             <div
@@ -110,7 +110,7 @@ const Navbar = () => {
                                                 </Button>
                                                 <Input
                                                     type="text"
-                                                    value={cart.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
+                                                    value={cart.items.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
                                                     className="border-transparent text-center p-0 h-auto w-12"
                                                     size="sm"
                                                     readOnly
@@ -164,7 +164,7 @@ const Navbar = () => {
                             <span
                                 className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full px-1"
                             >
-                                {cart.length}
+                                {cart.items.length}
                             </span>
                         </div>
                     </Link>

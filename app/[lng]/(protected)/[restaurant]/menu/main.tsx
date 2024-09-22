@@ -108,7 +108,7 @@ const Main = ({menuItems}) => {
                                         </Button>
                                         <Input
                                             type="text"
-                                            value={cart.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
+                                            value={cart.items.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
                                             className="border-transparent text-center p-0 h-auto w-12"
                                             size="sm"
                                             readOnly
