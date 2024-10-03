@@ -55,11 +55,26 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
 
     }, [selectedRestaurant]);
 
+    useEffect(() => {
+        const navbarElement = document.querySelector(".navbar-container")?.getBoundingClientRect();
+        const restaurantOptionsElement = document.querySelector(".main-restaurant-options-container")?.getBoundingClientRect();
+        const tabsElement = document.querySelector(".main-tabs-container");
+
+        const navbarElementViewportHeight = navbarElement?.height/10;
+        const restaurantOptionsElementViewportHeight = restaurantOptionsElement?.height/10;
+        const tabsElementViewportHeight = 100 - (navbarElementViewportHeight + restaurantOptionsElementViewportHeight);
+
+        if (tabsElement){
+            tabsElement["style"].height = `${tabsElementViewportHeight}vh`;
+        }
+
+    }, []);
+
 
     return (
         <main>
             <div
-                className="flex flex-wrap justify-between items-center bg-gray-100 p-2 rounded-2xl my-6 md:mt-0 md:flex-nowrap">
+                className="flex flex-wrap justify-between items-center bg-gray-100 p-2 rounded-2xl my-6 md:mt-0 md:flex-nowrap main-restaurant-options-container">
                 <SelectWrapper
                     defaultValue={selectedRestaurant}
                     items={restaurants.map(restaurant => ({
@@ -158,7 +173,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                 </div>
             </div>
 
-            <Tabs defaultValue="category" className="flex flex-col gap-x-6 overflow-hidden md:flex-row">
+            <Tabs defaultValue="category" className="flex flex-col gap-x-6 overflow-hidden md:flex-row main-tabs-container">
                 <TabsList
                     className="flex gap-2 p-2 h-full bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-1/5 md:flex-col"
                 >

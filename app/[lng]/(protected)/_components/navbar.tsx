@@ -37,7 +37,7 @@ const Navbar = () => {
 
     return (
         <nav
-            className="fixed bottom-0 left-0 right-0 z-50 flex justify-between items-center bg-white border-t md:border-transparent md:p-4 md:relative md:bottom-auto md:left-auto md:right-auto">
+            className="fixed bottom-0 left-0 right-0 z-50 flex justify-between items-center bg-white border-t md:border-transparent md:p-4 md:relative md:bottom-auto md:left-auto md:right-auto navbar-container">
             <p className="hidden md:block">
                 {t('title')}
             </p>
