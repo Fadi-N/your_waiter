@@ -8,7 +8,7 @@ import DialogWrapper from "@/components/dialog-wrapper";
 import {IoAddOutline} from "react-icons/io5";
 import RoleGate from "@/components/auth/role-gate";
 import {MenuCategory, Restaurant, Table, UserRole} from "@prisma/client";
-import GenerateQrcodeForm from "@/components/admin/generate-qrcode-form";
+import NewRestaurantForm from "@/components/admin/new-restaurant-form";
 import {Button} from "@/components/ui/button";
 import {IoMdDownload} from "react-icons/io";
 import Sidebar from "@/app/[lng]/(protected)/Sidebar";
@@ -29,6 +29,7 @@ import DrawerWrapper from "@/components/drawer-wrapper";
 import {LiaQrcodeSolid} from "react-icons/lia";
 import {TbCategoryPlus} from "react-icons/tb";
 import {RxCardStackPlus} from "react-icons/rx";
+import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
 
 interface MainProps {
     restaurants: Restaurant[]
@@ -40,26 +41,27 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
     const {t} = useTranslation(lng)
 
     const isDesktop = useMediaQuery("(min-width: 768px)")
-    const [selectedRestaurant, setSelectedRestaurant] = useState<string>('');
+    const [selectedRestaurant, setSelectedRestaurant] = useState<string>(restaurants[0].id);
     const [tables, setTables] = useState<Table[]>([]);
 
     useEffect(() => {
-        if (selectedRestaurant) {
-            // Fetch tables for the selected restaurant
-            const fetchTables = async () => {
-                const data = await getTablesByRestaurant(selectedRestaurant);
-                setTables(data);
-            };
+        // Fetch tables for the selected restaurant
+        const fetchTables = async () => {
+            const data = await getTablesByRestaurant(selectedRestaurant);
+            setTables(data);
+        };
 
-            fetchTables();
-        }
+        fetchTables();
+
     }, [selectedRestaurant]);
+
 
     return (
         <main>
-            <div className="flex flex-wrap justify-between items-center bg-gray-100 p-2 rounded-2xl my-6 md:mt-0 md:flex-nowrap">
+            <div
+                className="flex flex-wrap justify-between items-center bg-gray-100 p-2 rounded-2xl my-6 md:mt-0 md:flex-nowrap">
                 <SelectWrapper
-                    defaultValue={restaurants[0].id}
+                    defaultValue={selectedRestaurant}
                     items={restaurants.map(restaurant => ({
                         id: restaurant.id,
                         label: restaurant.name
@@ -68,10 +70,11 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                     selectLabel="Restaurants"
                     onChange={setSelectedRestaurant}
                 />
-
-                <div className="relative flex-1">
-                    <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
-                    <Input type="text" placeholder={`${t('search')}`} className="pl-10 rounded-full"/>
+                <div className="flex-1">
+                    <div className="relative float-end me-2">
+                        <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
+                        <Input type="text" placeholder={`${t('search')}`} className="pl-10 rounded-full"/>
+                    </div>
                 </div>
 
                 <div className="flex w-full justify-between gap-x-2 mt-2 md:justify-end md:mt-0 md:w-auto">
@@ -80,11 +83,11 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             <DialogWrapper
                                 triggerLabel={`${t('newRestaurant')}`}
                                 triggerIcon={<IoAddOutline className="w-4 h-4"/>}
-                                headerLabel="Create Restaurant QR Code"
-                                description="Set up your restaurant profile and generate QR codes for table orders. Click create when you're done."
+                                headerLabel="Create Restaurant"
+                                description="Set up your restaurant profile and generate QR codes for table orders. Click 'Create' when you're done."
                             >
                                 <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <GenerateQrcodeForm/>
+                                    <NewRestaurantForm/>
                                 </RoleGate>
                             </DialogWrapper>
                         </>
@@ -92,26 +95,46 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         <DrawerWrapper
                             triggerLabel={`${t('newRestaurant')}`}
                             triggerIcon={<IoAddOutline className="w-4 h-4"/>}
-                            headerLabel="Create Restaurant QR Code"
-                            description="Set up your restaurant profile and generate QR codes for table orders. Click create when you're done."
+                            headerLabel="Create Restaurant"
+                            description="Set up your restaurant profile and generate QR codes for table orders. Click 'Create' when you're done."
                         >
                             <RoleGate allowedRole={UserRole.ADMIN}>
-                                <GenerateQrcodeForm/>
+                                <NewRestaurantForm/>
                             </RoleGate>
                         </DrawerWrapper>
                     )}
-                    <Button
-                        className="rounded-full"
-                        variant="ghost"
-                    >
-                        <CiEdit className="w-4 h-4 me-2"/>
-                        {`${t('editRestaurant')}`}
-                    </Button>
+
+                    {isDesktop ? (
+                        <>
+                            <DialogWrapper
+                                triggerLabel={`${t('editRestaurant')}`}
+                                triggerIcon={<CiEdit className="w-4 h-4"/>}
+                                headerLabel="Edit Restaurant"
+                                description="Manage your restaurant profile. You can add or remove tables, generate new QR codes for new tables, or delete the restaurant. Click 'Save' when you're done."
+                            >
+                                <RoleGate allowedRole={UserRole.ADMIN}>
+                                    <EditRestaurantForm/>
+                                </RoleGate>
+                            </DialogWrapper>
+                        </>
+                    ) : (
+                        <DrawerWrapper
+                            triggerLabel={`${t('editRestaurant')}`}
+                            triggerIcon={<CiEdit className="w-4 h-4"/>}
+                            headerLabel="Edit Restaurant"
+                            description="Manage your restaurant profile. You can add or remove tables, generate new QR codes for new tables, or delete the restaurant. Click 'Save' when you're done."
+                        >
+                            <RoleGate allowedRole={UserRole.ADMIN}>
+                                <EditRestaurantForm/>
+                            </RoleGate>
+                        </DrawerWrapper>
+                    )}
+
                     {isDesktop ? (
                         <>
                             <DialogWrapper
                                 triggerLabel={`${t('QRCodes')}`}
-                                triggerIcon={<LiaQrcodeSolid className="w-4 h-4 me-2"/>}
+                                triggerIcon={<LiaQrcodeSolid className="w-4 h-4"/>}
                                 headerLabel="Download QR codes"
                                 description="Click to download the QR codes generated for your restaurant"
                             >
@@ -128,8 +151,8 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             description="Click to download the QR codes generated for your restaurant"
                         >
 
-                                <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
-                            
+                            <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
+
                         </DrawerWrapper>
                     )}
                 </div>
@@ -189,7 +212,8 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                 description="Enter the details of the new menu item, including name, description, and price."
                             >
                                 <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <MenuItemForm selectedRestaurant={selectedRestaurant} menuCategories={menuCategories}/>
+                                    <MenuItemForm selectedRestaurant={selectedRestaurant}
+                                                  menuCategories={menuCategories}/>
                                 </RoleGate>
                             </DialogWrapper>
                         </>

@@ -150,8 +150,6 @@ const Navbar = () => {
             </div>
 
             <div className="hidden md:flex gap-x-2">
-                <LanguagePopover/>
-
                 <Button
                     variant="outline"
                     size="icon"

@@ -13,7 +13,7 @@ import FormSuccess from "@/components/form-success";
 import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
 import {useCurrentUser} from "@/hooks/use-current-user";
 
-const GenerateQrcodeForm = () => {
+const EditRestaurantForm = () => {
     const user = useCurrentUser();
 
 
@@ -67,37 +67,32 @@ const GenerateQrcodeForm = () => {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="numberOfTables"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Number of tables</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="10"
-                                        type="text"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
+                    <p>
+                        LIST ALL AVAILABLE TABLES WITH DELETE OR DEACTIVATE OPTION
+                    </p>
                 </div>
                 <FormError message={error}/>
                 <FormSuccess message={success}/>
-                <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={isPending}
-                >
-                    Create
-                </Button>
+                <div className="flex gap-x-2">
+                    <Button
+                        type="submit"
+                        variant="destructive"
+                        className="flex-1"
+                        disabled={isPending}
+                    >
+                        Delete Restaurant
+                    </Button>
+                    <Button
+                        type="submit"
+                        className="flex-1"
+                        disabled={isPending}
+                    >
+                        Save Changes
+                    </Button>
+                </div>
             </form>
         </Form>
     );
 };
 
-export default GenerateQrcodeForm;
+export default EditRestaurantForm;

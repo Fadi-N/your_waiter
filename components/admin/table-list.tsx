@@ -12,6 +12,9 @@ interface TableListProps {
 }
 
 const TableList = ({selectedRestaurant, tables}: TableListProps) => {
+    console.log("selectedRestaurant")
+    console.log(selectedRestaurant)
+
     return (
         <>
             {selectedRestaurant ? (
