@@ -5,7 +5,7 @@ import SelectWrapper from "../../../../components/select-wrapper";
 import {CiEdit, CiSearch} from "react-icons/ci";
 import {Input} from "@/components/ui/input";
 import DialogWrapper from "@/components/dialog-wrapper";
-import {IoAddOutline} from "react-icons/io5";
+import {IoAddOutline, IoFastFoodOutline, IoRestaurantOutline} from "react-icons/io5";
 import RoleGate from "@/components/auth/role-gate";
 import {MenuCategory, Restaurant, Table, UserRole} from "@prisma/client";
 import NewRestaurantForm from "@/components/admin/new-restaurant-form";
@@ -30,6 +30,8 @@ import {LiaQrcodeSolid} from "react-icons/lia";
 import {TbCategoryPlus} from "react-icons/tb";
 import {RxCardStackPlus} from "react-icons/rx";
 import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
+import {GiWoodenChair} from "react-icons/gi";
+import {MdAttachMoney} from "react-icons/md";
 
 interface MainProps {
     restaurants: Restaurant[]
@@ -60,11 +62,11 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
         const restaurantOptionsElement = document.querySelector(".main-restaurant-options-container")?.getBoundingClientRect();
         const tabsElement = document.querySelector(".main-tabs-container");
 
-        const navbarElementViewportHeight = navbarElement?.height/10;
-        const restaurantOptionsElementViewportHeight = restaurantOptionsElement?.height/10;
+        const navbarElementViewportHeight = navbarElement?.height / 10;
+        const restaurantOptionsElementViewportHeight = restaurantOptionsElement?.height / 10;
         const tabsElementViewportHeight = 100 - (navbarElementViewportHeight + restaurantOptionsElementViewportHeight);
 
-        if (tabsElement){
+        if (tabsElement) {
             tabsElement["style"].height = `${tabsElementViewportHeight}vh`;
         }
 
@@ -173,29 +175,65 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                 </div>
             </div>
 
-            <Tabs defaultValue="category" className="flex flex-col gap-x-6 overflow-hidden md:flex-row main-tabs-container">
+            <Tabs defaultValue="category"
+                  className="flex flex-col gap-x-6 overflow-hidden md:flex-row main-tabs-container">
                 <TabsList
-                    className="flex gap-2 p-2 h-full bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-1/5 md:flex-col"
+                    className="flex gap-2 p-4 h-full bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-2/12 md:flex-col md:justify-start"
                 >
                     <TabsTrigger
-                        className="rounded-full"
+                        className="rounded-xl w-full flex items-center justify-start"
                         value="category"
                     >
-                        {`${t('category')}`}
+                        <div className="p-3 bg-red-500 text-white rounded-full">
+                            <IoFastFoodOutline width={20} height={20}/>
+                        </div>
+                        <span className="ms-2">
+                        Food Categories
+                        </span>
                     </TabsTrigger>
                     <TabsTrigger
-                        className="rounded-full"
+                        className="rounded-xl w-full flex items-center justify-start"
                         value="menu-item"
                     >
-                        {`${t('menuItem')}`}
+                        <div className="p-3 bg-orange-400 text-white rounded-full">
+                            <IoRestaurantOutline width={20} height={20}/>
+                        </div>
+                        <span className="ms-2">
+                        Menu Management
+                        </span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="rounded-xl w-full flex items-center justify-start"
+                        value="reservation-system"
+                    >
+                        <div className="p-3 bg-green-500 text-white rounded-full">
+                            <GiWoodenChair width={20} height={20}/>
+                        </div>
+                        <span className="ms-2">
+                        Reservation System
+                        </span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                        className="rounded-xl w-full flex items-center justify-start"
+                        value="book-a-table"
+                    >
+                        <div className="p-3 bg-yellow-500 text-white rounded-full">
+                            <MdAttachMoney width={20} height={20}/>
+                        </div>
+                        <span className="ms-2">
+                        Transaction History
+                        </span>
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="category" className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-4/5 md:mt-0">
+                <TabsContent
+                    value="category"
+                    className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0"
+                >
                     {isDesktop ? (
-                        <>
+                        <div className="float-end">
                             <DialogWrapper
                                 triggerLabel={`${t('addCategory')}`}
-                                triggerIcon={<IoAddOutline className="w-4 h-4 me-2"/>}
+                                triggerIcon={<IoAddOutline className="w-4 h-4"/>}
                                 headerLabel="Add a New Menu Category"
                                 description="Provide the necessary details"
                             >
@@ -203,7 +241,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                     <CategoryForm selectedRestaurant={selectedRestaurant}/>
                                 </RoleGate>
                             </DialogWrapper>
-                        </>
+                        </div>
                     ) : (
                         <DrawerWrapper
                             triggerLabel={`${t('addCategory')}`}
@@ -217,12 +255,12 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         </DrawerWrapper>
                     )}
                 </TabsContent>
-                <TabsContent value="menu-item" className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-4/5 md:mt-0">
+                <TabsContent value="menu-item" className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0">
                     {isDesktop ? (
-                        <>
+                        <div className="float-end">
                             <DialogWrapper
                                 triggerLabel={`${t('addMenuItem')}`}
-                                triggerIcon={<IoAddOutline className="w-4 h-4 me-2"/>}
+                                triggerIcon={<IoAddOutline className="w-4 h-4"/>}
                                 headerLabel="Add a New Menu Item"
                                 description="Enter the details of the new menu item, including name, description, and price."
                             >
@@ -231,7 +269,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                                   menuCategories={menuCategories}/>
                                 </RoleGate>
                             </DialogWrapper>
-                        </>
+                        </div>
                     ) : (
                         <DrawerWrapper
                             triggerLabel={`${t('addMenuItem')}`}
