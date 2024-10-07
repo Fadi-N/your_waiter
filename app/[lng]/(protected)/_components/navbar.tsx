@@ -1,24 +1,22 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Button} from "@/components/ui/button";
 import {useParams, usePathname} from "next/navigation";
 import Link from "next/link";
 import UserButton from "@/components/auth/user-button";
-import LanguagePopover from "@/components/language-popover";
 import {useTranslation} from "@/app/i18n/client";
 import {SlBasket} from "react-icons/sl";
 import {useSession} from "next-auth/react";
 import {useCart} from "@/hooks/use-cart";
 import {useMediaQuery} from "@/hooks/use-media-query";
-import {LiaQrcodeSolid} from "react-icons/lia";
-import TableList from "@/components/admin/table-list";
 import DrawerWrapper from "@/components/drawer-wrapper";
-import {Table, TableBody, TableCaption, TableCell, TableFooter, TableRow} from "@/components/ui/table";
+import {Table, TableBody, TableCell, TableFooter, TableRow} from "@/components/ui/table";
 import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
 import {Input} from "@/components/ui/input";
 
 const Navbar = () => {
+    console.log("ZAQ")
     const pathname = usePathname();
     const session = useSession();
 
@@ -29,11 +27,6 @@ const Navbar = () => {
     const {lng} = useParams();
     const {t} = useTranslation(lng, "navbar")
     const {cart} = useCart();
-
-    console.log('Cart in Navbar:', cart, cart.items.length);
-    useEffect(() => {
-        console.log('Cart in Navbar:', cart);
-    }, [cart]);
 
     return (
         <nav

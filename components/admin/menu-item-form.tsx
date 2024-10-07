@@ -16,6 +16,7 @@ import {getCategoriesByRestaurant} from "@/actions/admin/menu-category";
 import {MenuItem} from "@/actions/admin/menu-item";
 import {useParams} from "next/navigation";
 import {useTranslation} from "@/app/i18n/client";
+import ImageUpload from "@/components/image-upload";
 
 const MenuItemForm = ({selectedRestaurant}) => {
     const {lng} = useParams();
@@ -70,6 +71,19 @@ const MenuItemForm = ({selectedRestaurant}) => {
                 onSubmit={form.handleSubmit(onSubmit)}
             >
                 <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="itemName"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormControl>
+                                    <ImageUpload/>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
                     <FormField
                         control={form.control}
                         name="itemName"

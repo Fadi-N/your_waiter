@@ -178,7 +178,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
             <Tabs defaultValue="category"
                   className="flex flex-col gap-x-6 overflow-hidden md:flex-row main-tabs-container">
                 <TabsList
-                    className="flex gap-2 p-4 h-full bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-2/12 md:flex-col md:justify-start"
+                    className="flex-col h-auto gap-2 p-4 bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-2/12 md:flex-col md:justify-start md:h-full"
                 >
                     <TabsTrigger
                         className="rounded-xl w-full flex items-center justify-start"
@@ -255,7 +255,8 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         </DrawerWrapper>
                     )}
                 </TabsContent>
-                <TabsContent value="menu-item" className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0">
+                <TabsContent value="menu-item"
+                             className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0">
                     {isDesktop ? (
                         <div className="float-end">
                             <DialogWrapper
@@ -265,8 +266,10 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                 description="Enter the details of the new menu item, including name, description, and price."
                             >
                                 <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <MenuItemForm selectedRestaurant={selectedRestaurant}
-                                                  menuCategories={menuCategories}/>
+                                    <MenuItemForm
+                                        selectedRestaurant={selectedRestaurant}
+                                        menuCategories={menuCategories}
+                                    />
                                 </RoleGate>
                             </DialogWrapper>
                         </div>
@@ -278,7 +281,10 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             description="Enter the details of the new menu item, including name, description, and price."
                         >
                             <RoleGate allowedRole={UserRole.ADMIN}>
-                                <MenuItemForm selectedRestaurant={selectedRestaurant} menuCategories={menuCategories}/>
+                                <MenuItemForm
+                                    selectedRestaurant={selectedRestaurant}
+                                    menuCategories={menuCategories}
+                                />
                             </RoleGate>
                         </DrawerWrapper>
                     )}

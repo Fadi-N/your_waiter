@@ -19,6 +19,7 @@ const Main = ({menuItems}) => {
     const table = searchParams.get("table");
     /*console.log(lng, restaurant, table)*/
     const {cart, increment, decrement} = useCart();
+    console.log("CART: " , cart)
 
     return (
         <main className="container">

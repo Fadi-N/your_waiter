@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 interface MenuItem {
     id: string;
@@ -18,11 +18,7 @@ export const useCart = () => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    useEffect(() => {
-        // Update localStorage whenever cart state changes
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        console.log('Cart updated:', cartItems);
-    }, [cartItems]);
+    const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
 
     const updateCart = (item: MenuItem, newQuantity: number) => {
         setCartItems((prevCart) => {
@@ -60,18 +56,16 @@ export const useCart = () => {
         })
     }
 
-    const cartTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-
-    const increment = (item: MenuItem) => {
+    const increment = useCallback((item: MenuItem) => {
         const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
         updateCart(item, (existingItem?.quantity || 0) + 1);
-    }
-    const decrement = (item: MenuItem) => {
-        // Find the item in the cart by its id
+    }, [cartItems, updateCart]);
+
+    const decrement = useCallback((item: MenuItem) => {
         const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
-        // Subtract 1 from the quantity or start at 0 if the item doesn't exist
         updateCart(item, Math.max((existingItem?.quantity || 0) - 1, 0));
-    };
+    }, [cartItems, updateCart]);
+
 
     return {
         cart:{
