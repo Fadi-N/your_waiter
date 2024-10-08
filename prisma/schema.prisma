@@ -106,6 +106,7 @@ model MenuItem {
   name        String
   description String?
   price       Float
+  imageUrl    String?
 
   restaurantId String     @db.ObjectId
   Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])

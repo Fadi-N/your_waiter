@@ -53,6 +53,7 @@ export const CategorySchema = z.object({
         .max(50, {message: "Category name must be less than 50 characters"})
 });
 export const MenuItemSchema = z.object({
+    imageUrl: z.string().url({ message: "A valid image URL is required" }).optional(),
     itemName: z.string()
         .min(1, { message: "Item name is required" })
         .max(50, { message: "Item name must be less than 50 characters" }),

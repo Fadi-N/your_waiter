@@ -11,9 +11,9 @@ export const MenuItem = async (values: z.infer<typeof MenuItemSchema>, restauran
         return {error: "Invalid fields!"};
     }
 
-    const {itemName, menuCategory, description, price} = validateFields.data;
-
-    console.log(itemName, menuCategory, description, price, restaurantId);
+    const {itemName, menuCategory, description, price, imageUrl} = validateFields.data;
+    console.log("====================")
+    console.log(imageUrl)
 
     try {
         // Check if a menu item with the same name already exists in the specified restaurant and category
@@ -35,6 +35,7 @@ export const MenuItem = async (values: z.infer<typeof MenuItemSchema>, restauran
                 name: itemName,
                 description: description,
                 price: price,
+                imageUrl: imageUrl,
                 menuCategoryId: menuCategory,
                 restaurantId: restaurantId,
             },
@@ -42,7 +43,6 @@ export const MenuItem = async (values: z.infer<typeof MenuItemSchema>, restauran
 
         return {success: "Menu item created successfully!"};
     } catch (error) {
-        console.error('Error creating menu item:', error);
         return {error: "Failed to create menu item."}
     }
 };

@@ -36,6 +36,7 @@ const MenuItemForm = ({selectedRestaurant}) => {
             menuCategory: "",
             description: "",
             price: "",
+            imageUrl: "",
         }
     });
 
@@ -73,11 +74,15 @@ const MenuItemForm = ({selectedRestaurant}) => {
                 <div className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="itemName"
+                        name="imageUrl"
                         render={({field}) => (
                             <FormItem>
                                 <FormControl>
-                                    <ImageUpload/>
+                                    <ImageUpload
+                                        value={field.value}
+                                        onChange={(url) => field.onChange(url)}
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
