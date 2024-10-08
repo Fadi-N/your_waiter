@@ -32,6 +32,8 @@ import {RxCardStackPlus} from "react-icons/rx";
 import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
 import {GiWoodenChair} from "react-icons/gi";
 import {MdAttachMoney} from "react-icons/md";
+import PdfDocument from "@/components/pdf-document";
+import {PDFDownloadLink} from "@react-pdf/renderer";
 
 interface MainProps {
     restaurants: Restaurant[]
@@ -130,7 +132,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                 description="Manage your restaurant profile. You can add or remove tables, generate new QR codes for new tables, or delete the restaurant. Click 'Save' when you're done."
                             >
                                 <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <EditRestaurantForm/>
+                                    <EditRestaurantForm selectedRestaurant={selectedRestaurant} tables={tables}/>
                                 </RoleGate>
                             </DialogWrapper>
                         </>
@@ -142,7 +144,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             description="Manage your restaurant profile. You can add or remove tables, generate new QR codes for new tables, or delete the restaurant. Click 'Save' when you're done."
                         >
                             <RoleGate allowedRole={UserRole.ADMIN}>
-                                <EditRestaurantForm/>
+                                <EditRestaurantForm selectedRestaurant={selectedRestaurant} tables={tables}/>
                             </RoleGate>
                         </DrawerWrapper>
                     )}
@@ -157,6 +159,19 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             >
                                 <RoleGate allowedRole={UserRole.ADMIN}>
                                     <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
+                                    <div className="mt-4">
+                                        <PDFDownloadLink
+                                            document={<PdfDocument tables={tables} />}
+                                            fileName="QRCodes.pdf"
+                                        >
+                                            <Button
+                                                type="submit"
+                                                className="flex-1 w-full"
+                                            >
+                                                Download
+                                            </Button>
+                                        </PDFDownloadLink>
+                                    </div>
                                 </RoleGate>
                             </DialogWrapper>
                         </>

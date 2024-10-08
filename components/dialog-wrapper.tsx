@@ -4,8 +4,8 @@ import React from 'react';
 import {
     Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
-import {IoAddOutline} from "react-icons/io5";
+import { Button } from "@/components/ui/button";
+import { IoAddOutline } from "react-icons/io5";
 
 interface DialogWrapperProps {
     triggerLabel: string;
@@ -17,7 +17,7 @@ interface DialogWrapperProps {
 }
 
 const DialogWrapper = (
-    {triggerLabel, triggerIcon, headerLabel, description, children, dialogClassName = "sm:max-w-[425px]"}
+    { triggerLabel, triggerIcon, headerLabel, description, children, dialogClassName = "sm:max-w-[425px] max-h-[90vh] overflow-y-auto" }
         : DialogWrapperProps
 ) => {
     return (
@@ -36,8 +36,10 @@ const DialogWrapper = (
                     <DialogTitle>{headerLabel}</DialogTitle>
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
-                <hr/>
-                {children}
+                <hr />
+                <div className="overflow-y-auto max-h-[70vh]">
+                    {children}
+                </div>
             </DialogContent>
         </Dialog>
     );

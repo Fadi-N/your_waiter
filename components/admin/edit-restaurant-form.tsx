@@ -12,10 +12,16 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
 import {useCurrentUser} from "@/hooks/use-current-user";
+import {Table as TableFromPrisma} from "@prisma/client";
+import TableList from "@/components/admin/table-list";
 
-const EditRestaurantForm = () => {
+interface EditRestaurantFormProps {
+    selectedRestaurant: string;
+    tables: TableFromPrisma[];
+}
+
+const EditRestaurantForm = ({selectedRestaurant, tables}: EditRestaurantFormProps) => {
     const user = useCurrentUser();
-
 
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
@@ -43,55 +49,60 @@ const EditRestaurantForm = () => {
     };
 
     return (
-        <Form {...form}>
-            <form
-                className="space-y-6"
-                onSubmit={form.handleSubmit(onSubmit)}
-            >
-                <div className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="restaurantName"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Restaurant Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Your waiter"
-                                        type="text"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    <p>
-                        LIST ALL AVAILABLE TABLES WITH DELETE OR DEACTIVATE OPTION
-                    </p>
-                </div>
-                <FormError message={error}/>
-                <FormSuccess message={success}/>
-                <div className="flex gap-x-2">
-                    <Button
-                        type="submit"
-                        variant="destructive"
-                        className="flex-1"
-                        disabled={isPending}
+        <>
+            {selectedRestaurant ? (
+                <Form {...form}>
+                    <form
+                        className="space-y-6"
+                        onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        Delete Restaurant
-                    </Button>
-                    <Button
-                        type="submit"
-                        className="flex-1"
-                        disabled={isPending}
-                    >
-                        Save Changes
-                    </Button>
-                </div>
-            </form>
-        </Form>
+                        <div className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="restaurantName"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Restaurant Name</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                placeholder="Your waiter"
+                                                type="text"
+                                                disabled={isPending}
+                                            />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                            <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
+                        </div>
+                        <FormError message={error}/>
+                        <FormSuccess message={success}/>
+                        <div className="flex gap-x-2">
+                            <Button
+                                type="submit"
+                                variant="destructive"
+                                className="flex-1"
+                                disabled={isPending}
+                            >
+                                Delete Restaurant
+                            </Button>
+                            <Button
+                                type="submit"
+                                className="flex-1"
+                                disabled={isPending}
+                            >
+                                Save Changes
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
+            ) : (
+                <p>Please select a restaurant to Edit.</p>
+            )}
+        </>
+
     );
 };
 
