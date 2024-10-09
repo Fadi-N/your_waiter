@@ -7,7 +7,7 @@ import {Input} from "@/components/ui/input";
 import DialogWrapper from "@/components/dialog-wrapper";
 import {IoAddOutline, IoFastFoodOutline, IoRestaurantOutline} from "react-icons/io5";
 import RoleGate from "@/components/auth/role-gate";
-import {MenuCategory, Restaurant, Table, UserRole} from "@prisma/client";
+import {MenuCategory, MenuItem, Restaurant, Table, UserRole} from "@prisma/client";
 import NewRestaurantForm from "@/components/admin/new-restaurant-form";
 import {Button} from "@/components/ui/button";
 import {IoMdDownload} from "react-icons/io";
@@ -34,10 +34,15 @@ import {GiWoodenChair} from "react-icons/gi";
 import {MdAttachMoney} from "react-icons/md";
 import PdfDocument from "@/components/pdf-document";
 import {PDFDownloadLink} from "@react-pdf/renderer";
+import {GrRestaurant} from "react-icons/gr";
+import MenuItemCard from "@/components/menu-item-card";
+import {getMenuItems, getMenuItemsByRestaurantId} from "@/actions/admin/menu";
+import {Skeleton} from "@/components/ui/skeleton";
 
 interface MainProps {
     restaurants: Restaurant[]
     menuCategories: MenuCategory[]
+    menuItems: { error?: string } | MenuItem[]
 }
 
 const Main = ({restaurants, menuCategories}: MainProps) => {
@@ -47,6 +52,8 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
     const isDesktop = useMediaQuery("(min-width: 768px)")
     const [selectedRestaurant, setSelectedRestaurant] = useState<string>(restaurants[0].id);
     const [tables, setTables] = useState<Table[]>([]);
+    const [menuItems, setMenuItems] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
         // Fetch tables for the selected restaurant
@@ -55,7 +62,15 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
             setTables(data);
         };
 
-        fetchTables();
+        const fetchMenuItems = async () => {
+            const data = await getMenuItemsByRestaurantId(selectedRestaurant);
+            setMenuItems(data);
+            setLoading(false);
+        }
+
+        setLoading(true);
+        //fetchTables();
+        //fetchMenuItems();
 
     }, [selectedRestaurant]);
 
@@ -148,45 +163,6 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             </RoleGate>
                         </DrawerWrapper>
                     )}
-
-                    {isDesktop ? (
-                        <>
-                            <DialogWrapper
-                                triggerLabel={`${t('QRCodes')}`}
-                                triggerIcon={<LiaQrcodeSolid className="w-4 h-4"/>}
-                                headerLabel="Download QR codes"
-                                description="Click to download the QR codes generated for your restaurant"
-                            >
-                                <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
-                                    <div className="mt-4">
-                                        <PDFDownloadLink
-                                            document={<PdfDocument tables={tables} />}
-                                            fileName="QRCodes.pdf"
-                                        >
-                                            <Button
-                                                type="submit"
-                                                className="flex-1 w-full"
-                                            >
-                                                Download
-                                            </Button>
-                                        </PDFDownloadLink>
-                                    </div>
-                                </RoleGate>
-                            </DialogWrapper>
-                        </>
-                    ) : (
-                        <DrawerWrapper
-                            triggerLabel={`${t('QRCodes')}`}
-                            triggerIcon={<LiaQrcodeSolid className="w-4 h-4 me-2"/>}
-                            headerLabel="Download QR codes"
-                            description="Click to download the QR codes generated for your restaurant"
-                        >
-
-                            <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
-
-                        </DrawerWrapper>
-                    )}
                 </div>
             </div>
 
@@ -195,6 +171,17 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                 <TabsList
                     className="flex-col h-auto gap-2 p-4 bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-2/12 md:flex-col md:justify-start md:h-full"
                 >
+                    <TabsTrigger
+                        className="rounded-xl w-full flex items-center justify-start"
+                        value="restaurant"
+                    >
+                        <div className="p-3 bg-pink-500 text-white rounded-full">
+                            <GrRestaurant width={20} height={20}/>
+                        </div>
+                        <span className="ms-2">
+                        Restaruant
+                        </span>
+                    </TabsTrigger>
                     <TabsTrigger
                         className="rounded-xl w-full flex items-center justify-start"
                         value="category"
@@ -240,23 +227,63 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         </span>
                     </TabsTrigger>
                 </TabsList>
+
+                <TabsContent
+                    value="restaurant"
+                    className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0"
+                >
+                    <div className="float-end">
+                        <PDFDownloadLink
+                            document={<PdfDocument tables={tables}/>}
+                            fileName="QRCodes.pdf"
+                        >
+                            <Button
+                                className="rounded-full"
+                                variant="ghost"
+                            >
+                                <span className="me-2"><IoMdDownload/></span>
+                                QR codes
+                            </Button>
+                        </PDFDownloadLink>
+                    </div>
+                </TabsContent>
+
                 <TabsContent
                     value="category"
                     className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0"
                 >
                     {isDesktop ? (
-                        <div className="float-end">
-                            <DialogWrapper
-                                triggerLabel={`${t('addCategory')}`}
-                                triggerIcon={<IoAddOutline className="w-4 h-4"/>}
-                                headerLabel="Add a New Menu Category"
-                                description="Provide the necessary details"
-                            >
-                                <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <CategoryForm selectedRestaurant={selectedRestaurant}/>
-                                </RoleGate>
-                            </DialogWrapper>
-                        </div>
+                        <>
+                            <div className="flex justify-end">
+                                <DialogWrapper
+                                    triggerLabel={`${t('addCategory')}`}
+                                    triggerIcon={<IoAddOutline className="w-4 h-4"/>}
+                                    headerLabel="Add a New Menu Category"
+                                    description="Provide the necessary details"
+                                >
+                                    <RoleGate allowedRole={UserRole.ADMIN}>
+                                        <CategoryForm selectedRestaurant={selectedRestaurant}/>
+                                    </RoleGate>
+                                </DialogWrapper>
+                            </div>
+                            <hr className="mb-4"/>
+                            {loading ? (
+                                <div className="flex flex-col space-y-3">
+                                    <Skeleton className="h-[125px] w-[250px] rounded-xl bg-gray-300"/>
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-4 w-[250px] bg-gray-300"/>
+                                        <Skeleton className="h-4 w-[200px] bg-gray-300"/>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(347.5px,1fr))]">
+                                    {menuItems?.map((item: MenuItem) => (
+                                        <MenuItemCard key={item.id} item={item}/>
+                                    ))}
+                                </div>
+                            )}
+                        </>
+
                     ) : (
                         <DrawerWrapper
                             triggerLabel={`${t('addCategory')}`}
@@ -273,21 +300,37 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                 <TabsContent value="menu-item"
                              className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0">
                     {isDesktop ? (
-                        <div className="float-end">
-                            <DialogWrapper
-                                triggerLabel={`${t('addMenuItem')}`}
-                                triggerIcon={<IoAddOutline className="w-4 h-4"/>}
-                                headerLabel="Add a New Menu Item"
-                                description="Enter the details of the new menu item, including name, description, and price."
-                            >
-                                <RoleGate allowedRole={UserRole.ADMIN}>
-                                    <MenuItemForm
-                                        selectedRestaurant={selectedRestaurant}
-                                        menuCategories={menuCategories}
-                                    />
-                                </RoleGate>
-                            </DialogWrapper>
-                        </div>
+                        <>
+                            <div className="flex justify-end">
+                                <DialogWrapper
+                                    triggerLabel={`${t('addMenuItem')}`}
+                                    triggerIcon={<IoAddOutline className="w-4 h-4"/>}
+                                    headerLabel="Add a New Menu Item"
+                                    description="Enter the details of the new menu item, including name, description, and price."
+                                >
+                                    <RoleGate allowedRole={UserRole.ADMIN}>
+                                        <MenuItemForm
+                                            selectedRestaurant={selectedRestaurant}
+                                            menuCategories={menuCategories}
+                                        />
+                                    </RoleGate>
+                                </DialogWrapper>
+                            </div>
+                            <hr/>
+                            {loading ? (
+                                <div className="flex flex-col space-y-3">
+                                    <Skeleton className="h-[125px] w-[250px] rounded-xl"/>
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-4 w-[250px]"/>
+                                        <Skeleton className="h-4 w-[200px]"/>
+                                    </div>
+                                </div>
+                            ) : (
+                                menuItems?.map((item: MenuItem) => (
+                                    <MenuItemCard key={item.id} item={item}/>
+                                ))
+                            )}
+                        </>
                     ) : (
                         <DrawerWrapper
                             triggerLabel={`${t('addMenuItem')}`}

@@ -16,7 +16,6 @@ import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
 import {Input} from "@/components/ui/input";
 
 const Navbar = () => {
-    console.log("ZAQ")
     const pathname = usePathname();
     const session = useSession();
 

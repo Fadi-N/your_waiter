@@ -17,7 +17,26 @@ export const getMenuItems = async (restaurantName) => {
             },
         },
         include: {
-            MenuCategory: true, // Dołączenie danych kategorii menu
+            MenuCategory: true,
+        },
+    })
+
+    if (!restaurant){
+        return {error: "Restaurant not found. Please check the restaurant name and try again."};
+    }
+
+    return restaurant;
+}
+
+export const getMenuItemsByRestaurantId = async (restaurantId) => {
+    const restaurant = await db.menuItem.findMany({
+        where: {
+            Restaurant: {
+                id: restaurantId,
+            },
+        },
+        include: {
+            MenuCategory: true,
         },
     })
 
