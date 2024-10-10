@@ -38,6 +38,9 @@ import {GrRestaurant} from "react-icons/gr";
 import MenuItemCard from "@/components/menu-item-card";
 import {getMenuItems, getMenuItemsByRestaurantId} from "@/actions/admin/menu";
 import {Skeleton} from "@/components/ui/skeleton";
+import {Card, CardContent, CardFooter} from "@/components/ui/card";
+import Image from "next/image";
+import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
 
 interface MainProps {
     restaurants: Restaurant[]
@@ -250,7 +253,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
 
                 <TabsContent
                     value="category"
-                    className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0"
+                    className="bg-gray-100 p-4 rounded-2xl md:w-10/12 md:mt-0"
                 >
                     {isDesktop ? (
                         <>
@@ -268,13 +271,50 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             </div>
                             <hr className="mb-4"/>
                             {loading ? (
-                                <div className="flex flex-col space-y-3">
-                                    <Skeleton className="h-[125px] w-[250px] rounded-xl bg-gray-300"/>
-                                    <div className="space-y-2">
-                                        <Skeleton className="h-4 w-[250px] bg-gray-300"/>
-                                        <Skeleton className="h-4 w-[200px] bg-gray-300"/>
+                                <>
+                                    <div className="flex flex-col overflow-y-auto pb-3 h-[79vh]">
+                                        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                            {[...Array(6)].map((_, index) => (
+                                                <Card key={index}
+                                                      className="flex flex-col justify-between w-full shadow-md rounded-xl">
+                                                    <CardContent
+                                                        className="h-full md:grid md:grid-cols-2 md:gap-6 md:p-6">
+                                                        <Skeleton className="h-[178px] w-full rounded-lg"/>
+                                                        <div className="mx-6 mt-6 md:mx-0 md:mt-0">
+                                                            <div className="space-y-2">
+                                                                <Skeleton
+                                                                    className="h-4 w-[80px] md:w-[100px] lg:max-w-[120px]"/>
+                                                                <Skeleton
+                                                                    className="h-4 w-[40px] md:w-[50px] lg:max-w-[60px]"/>
+                                                            </div>
+                                                            <div className="mt-6">
+                                                                <div className="space-y-2">
+                                                                    <Skeleton
+                                                                        className="h-4 w-[125px] md:w-[150px] lg:max-w-[175px]"/>
+                                                                    <Skeleton
+                                                                        className="h-4 w-[100px] md:w-[125px] lg:max-w-[150px]"/>
+                                                                    <Skeleton
+                                                                        className="h-4 w-[75px] md:w-[100px] lg:max-w-[125px]"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </CardContent>
+                                                    <CardFooter className="grid grid-cols-2 gap-6">
+                                                        <Skeleton className="h-4 w-full"/>
+                                                        <div
+                                                            className="counter flex items-center justify-between border rounded-full p-2 w-full max-w-xs h-auto">
+                                                            <Skeleton className="h-[40px] w-[40px] rounded-full"/>
+                                                            <Skeleton
+                                                                className=" h-[40px] w-[30px] md:w-[40px] lg:w-[50px]"/>
+                                                            <Skeleton
+                                                                className="h-[40px] w-[40px] bg-gray-300 rounded-full"/>
+                                                        </div>
+                                                    </CardFooter>
+                                                </Card>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                </>
                             ) : (
                                 <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(347.5px,1fr))]">
                                     {menuItems?.map((item: MenuItem) => (
