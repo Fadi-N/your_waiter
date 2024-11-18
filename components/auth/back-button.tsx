@@ -14,7 +14,7 @@ const BackButton = ({href}: BackButtonProps) => {
             {href.includes('register') ? (
                 <div className="flex items-center justify-center text-sm w-full">
                     <p>
-                        Need to create an account?
+                        Need to create an account?{' '}
                         <Link href={href} className="underline">
                             Sign Up
                         </Link>
@@ -23,7 +23,7 @@ const BackButton = ({href}: BackButtonProps) => {
             ) : (
                 <div className="flex items-center justify-center text-sm w-full">
                     <p>
-                        Already have an account?
+                        Already have an account?{' '}
                         <Link href={href} className="underline">
                             Log In
                         </Link>
