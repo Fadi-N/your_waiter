@@ -16,12 +16,13 @@ const Social = () => {
     return (
         <div className="flex items-center w-full gap-x-2">
             <Button
-                size="lg"
+                size="sm"
                 className="w-full"
                 variant="outline"
                 onClick={onClick}
             >
-                <FaGoogle className="h-5 w-5"/>
+                <FaGoogle className="h-5 w-5 pe-2"/>
+                Continue with Google
             </Button>
         </div>
     );

@@ -48,50 +48,51 @@ const LoginForm = () => {
 
     return (
         <CardWrapper
-            headerLabel="Welcome back"
-            backButtonLabel="Don't have an account?"
+            headerLabel="Log In"
             backButtonHref="/auth/register"
             showSocial
         >
             <Form {...form}>
-                <form
-                    className="space-y-6"
-                    onSubmit={form.handleSubmit(onSubmit)}
-                >
-                    <div className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="your.waiter@example.com"
-                                            type="email"
-                                            disabled={isPending}
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
+                <form onSubmit={form.handleSubmit(onSubmit)}>
 
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="******"
-                                            type="password"
-                                            disabled={isPending}
-                                        />
-                                    </FormControl>
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="your.waiter@example.com"
+                                        type="email"
+                                        disabled={isPending}
+                                    />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="******"
+                                        type="password"
+                                        disabled={isPending}
+                                    />
+                                </FormControl>
+
+                                <div className="flex items-center justify-between w-full py-2">
+                                    <p>
+                                        Remember me
+                                    </p>
                                     <Button
                                         variant="link"
                                         className="px-0 font-normal"
@@ -102,16 +103,17 @@ const LoginForm = () => {
                                             Forgot password?
                                         </Link>
                                     </Button>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                                </div>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                     <FormError message={error || urlError}/>
                     <FormSuccess message={success}/>
                     <Button
                         type="submit"
                         className="w-full"
+                        size="sm"
                         disabled={isPending}
                     >
                         Login
