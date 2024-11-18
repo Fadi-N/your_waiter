@@ -12,6 +12,7 @@ import {Button} from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {register} from "@/actions/auth/register";
+import FloatingInput from "@/components/ui/floating-input";
 
 const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -55,15 +56,13 @@ const RegisterForm = () => {
                         name="email"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="your.waiter@example.com"
-                                        type="email"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
+                                <FloatingInput
+                                    id="email"
+                                    label="Email"
+                                    type="email"
+                                    disabled={isPending}
+                                    field={field}
+                                />
                                 <FormMessage/>
                             </FormItem>
                         )}
@@ -74,15 +73,13 @@ const RegisterForm = () => {
                         name="password"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="******"
-                                        type="password"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
+                                <FloatingInput
+                                    id="password"
+                                    label="Password"
+                                    type="password"
+                                    disabled={isPending}
+                                    field={field}
+                                />
                                 <FormMessage/>
                             </FormItem>
                         )}
@@ -93,14 +90,13 @@ const RegisterForm = () => {
                         name="name"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Name"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
+                                <FloatingInput
+                                    id="name"
+                                    label="Name"
+                                    type="text"
+                                    disabled={isPending}
+                                    field={field}
+                                />
                                 <FormMessage/>
                             </FormItem>
                         )}
@@ -111,14 +107,14 @@ const RegisterForm = () => {
                         name="surname"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Username</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Surname"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
+                                <FloatingInput
+                                    id="surname"
+                                    label="Surname"
+                                    type="text"
+                                    disabled={isPending}
+                                    field={field}
+                                />
+
                                 <FormMessage/>
                             </FormItem>
                         )}

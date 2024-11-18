@@ -6,9 +6,9 @@ const RegisterPage = () => {
     return (
         <div className="flex items-center justify-center">
             <div className="flex w-screen h-screen">
-                <div className="hidden lg:flex w-1/2">
+                <div className="hidden lg:flex w-1/2 p-2">
                     <Image
-                        className="rounded-tr-xl rounded-br-xl"
+                        className="rounded-xl"
                         width={900}
                         height={300}
                         src={`/assets/register-bg.jpg`}

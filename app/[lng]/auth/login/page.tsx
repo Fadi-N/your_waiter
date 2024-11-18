@@ -7,9 +7,9 @@ const LoginPage = () => {
     return (
         <div className="flex items-center justify-center">
             <div className="flex w-screen h-screen">
-                <div className="hidden lg:flex w-1/2">
+                <div className="hidden lg:flex w-1/2 p-2">
                     <Image
-                        className="rounded-tr-xl rounded-br-xl"
+                        className="rounded-xl"
                         width={1920}
                         height={300}
                         src={`/assets/login-bg.jpg`}

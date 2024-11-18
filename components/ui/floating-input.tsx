@@ -1,48 +1,43 @@
-import * as React from 'react';
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import React from "react";
 
-import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+interface FloatingInputProps {
+    id: string;
+    label: string;
+    type?: string;
+    disabled?: boolean;
+    field?: {
+        value?: string;
+        onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    };
+    className?: string;
+    inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+    labelProps?: React.LabelHTMLAttributes<HTMLLabelElement>;
+}
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const FloatingInput = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ className, ...props }, ref) => {
-        return <Input placeholder=" " className={cn('peer', className)} ref={ref} {...props} />;
-    },
-);
-FloatingInput.displayName = 'FloatingInput';
+const FloatingInput = ({ id, label, type = "text", disabled, field = {} } : FloatingInputProps) => {
+    console.log("FIELD: ", field)
 
-const FloatingLabel = React.forwardRef<
-    React.ElementRef<typeof Label>,
-    React.ComponentPropsWithoutRef<typeof Label>
->(({ className, ...props }, ref) => {
     return (
-        <Label
-            className={cn(
-                'peer-focus:secondary peer-focus:dark:secondary absolute start-2 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform bg-background px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 dark:bg-background rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 cursor-text',
-                className,
-            )}
-            ref={ref}
-            {...props}
-        />
-    );
-});
-FloatingLabel.displayName = 'FloatingLabel';
-
-type FloatingLabelInputProps = InputProps & { label?: string };
-
-const FloatingLabelInput = React.forwardRef<
-    React.ElementRef<typeof FloatingInput>,
-    React.PropsWithoutRef<FloatingLabelInputProps>
->(({ id, label, ...props }, ref) => {
-    return (
-        <div className="relative">
-            <FloatingInput ref={ref} id={id} {...props} />
-            <FloatingLabel htmlFor={id}>{label}</FloatingLabel>
+        <div className="relative group mb-2" data-filled={!!field.value}>
+            <Input
+                {...field}
+                id={id}
+                type={type}
+                placeholder=" "
+                className="peer focus-visible:ring-0 focus-visible:ring-offset-0 placeholder-transparent px-2.5 pt-7 pb-4 border border-gray-300 rounded-xl w-full text-sm"
+                disabled={disabled}
+            />
+            <Label
+                htmlFor={id}
+                className="absolute left-2.5 top-2.5 text-sm text-gray-500 duration-300 transform origin-left peer-placeholder-shown:translate-y-1 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:-translate-y-2 peer-focus:scale-75 group-data-[filled=true]:-translate-y-2 group-data-[filled=true]:scale-75"
+            >
+                {label}
+            </Label>
         </div>
     );
-});
-FloatingLabelInput.displayName = 'FloatingLabelInput';
+};
 
-export { FloatingInput, FloatingLabel, FloatingLabelInput };
+export default FloatingInput;

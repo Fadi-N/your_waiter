@@ -14,6 +14,7 @@ import FormSuccess from "@/components/form-success";
 import {login} from "@/actions/auth/login";
 import {useSearchParams} from "next/navigation";
 import Link from "next/link";
+import FloatingInput from "@/components/ui/floating-input";
 
 const LoginForm = () => {
     const searchParams = useSearchParams();
@@ -60,15 +61,13 @@ const LoginForm = () => {
                         name="email"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="your.waiter@example.com"
-                                        type="email"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
+                                <FloatingInput
+                                    id="email"
+                                    label="Email"
+                                    type="email"
+                                    disabled={isPending}
+                                    field={field}
+                                />
                                 <FormMessage/>
                             </FormItem>
                         )}
@@ -79,15 +78,13 @@ const LoginForm = () => {
                         name="password"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="******"
-                                        type="password"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
+                                <FloatingInput
+                                    id="password"
+                                    label="Password"
+                                    type="password"
+                                    disabled={isPending}
+                                    field={field}
+                                />
 
                                 <div className="flex items-center justify-between w-full py-2">
                                     <p>
