@@ -54,7 +54,10 @@ const LoginForm = () => {
             showSocial
         >
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form
+                    className="flex flex-col space-y-2"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                >
 
                     <FormField
                         control={form.control}
@@ -85,6 +88,7 @@ const LoginForm = () => {
                                     disabled={isPending}
                                     field={field}
                                 />
+                                <FormMessage/>
 
                                 <div className="flex items-center justify-between w-full py-2">
                                     <p>
@@ -101,7 +105,6 @@ const LoginForm = () => {
                                         </Link>
                                     </Button>
                                 </div>
-                                <FormMessage/>
                             </FormItem>
                         )}
                     />

@@ -22,8 +22,7 @@ const NewVerificationPage = () => {
             </div>
         </div>
 
-)
-    ;
+);
 };
 
 export default NewVerificationPage;

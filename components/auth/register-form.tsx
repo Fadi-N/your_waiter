@@ -49,7 +49,10 @@ const RegisterForm = () => {
             showSocial
         >
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
+                <form
+                    className="flex flex-col space-y-2"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                >
 
                     <FormField
                         control={form.control}

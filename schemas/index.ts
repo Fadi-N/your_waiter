@@ -32,7 +32,7 @@ export const RegisterSchema = z.object({
         message: "Name is required"
     }),
     surname: z.string().min(1, {
-        message: "Name is required"
+        message: "Surname is required"
     })
 })
 

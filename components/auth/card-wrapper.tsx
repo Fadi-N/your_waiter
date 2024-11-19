@@ -17,7 +17,7 @@ interface CardWrapperProps{
 
 const CardWrapper = ({children, backButtonHref, headerLabel, showSocial} : CardWrapperProps) => {
     return (
-        <Card className="flex justify-center items-center w-full max-w-sm flex-col gap-4 rounded-lg border-0 shadow-none">
+        <Card className="flex w-full max-w-sm flex-col gap-4 rounded-lg border-0 shadow-none">
             <CardHeader className="pb-0">
                 {/*<Header
                     label={headerLabel}

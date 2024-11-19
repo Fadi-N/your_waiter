@@ -18,10 +18,8 @@ interface FloatingInputProps {
 
 
 const FloatingInput = ({ id, label, type = "text", disabled, field = {} } : FloatingInputProps) => {
-    console.log("FIELD: ", field)
-
     return (
-        <div className="relative group mb-2" data-filled={!!field.value}>
+        <div className="relative group" data-filled={!!field.value}>
             <Input
                 {...field}
                 id={id}

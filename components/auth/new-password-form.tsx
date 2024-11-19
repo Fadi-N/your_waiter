@@ -13,6 +13,7 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {useSearchParams} from "next/navigation";
 import {newPassword} from "@/actions/auth/new-password";
+import FloatingInput from "@/components/ui/floating-input";
 
 const NewPasswordForm = () => {
     const searchParams = useSearchParams();
@@ -45,42 +46,33 @@ const NewPasswordForm = () => {
     return (
         <CardWrapper
             headerLabel="Enter a new password"
-            backButtonLabel="Back to login"
             backButtonHref="/auth/login"
         >
             <Form {...form}>
-                <form
-                    className="space-y-6"
-                    onSubmit={form.handleSubmit(onSubmit)}
-                >
-                    <div className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="******"
-                                            type="password"
-                                            disabled={isPending}
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-
-
-                    </div>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({field}) => (
+                            <FormItem>
+                                <FloatingInput
+                                    id="password"
+                                    label="Password"
+                                    type="password"
+                                    disabled={isPending}
+                                    field={field}
+                                />
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
                     <Button
                         type="submit"
-                        className="w-full"
+                        className="w-full mt-4"
                         disabled={isPending}
+                        size="sm"
                     >
                         Reset password
                     </Button>

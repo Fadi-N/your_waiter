@@ -36,18 +36,20 @@ const NewVerificationForm = () => {
         onSubmit();
     }, [onSubmit]);
     return (
-        <CardWrapper
-            headerLabel="Confirming your verification"
-            backButtonHref="/auth/login"
-        >
-            <div className="flex items-center justify-center w-full">
-                {!success && !error && (
-                    <BeatLoader/>
-                )}
-                <FormSuccess message={success}/>
-                <FormError message={error}/>
-            </div>
-        </CardWrapper>
+        <div className="flex items-center justify-center">
+            <CardWrapper
+                headerLabel="Confirming your verification"
+                backButtonHref="/auth/login"
+            >
+                <div className="flex items-center justify-center w-full">
+                    {!success && !error && (
+                        <BeatLoader/>
+                    )}
+                    <FormSuccess message={success}/>
+                    <FormError message={error}/>
+                </div>
+            </CardWrapper>
+        </div>
     );
 };
 
