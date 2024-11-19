@@ -12,6 +12,7 @@ import {Button} from "@/components/ui/button";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {reset} from "@/actions/auth/reset";
+import FloatingInput from "@/components/ui/floating-input";
 
 const ResetForm = () => {
 
@@ -23,7 +24,6 @@ const ResetForm = () => {
         resolver: zodResolver(ResetSchema),
         defaultValues: {
             email: "",
-            password: ""
         }
     });
 
@@ -43,41 +43,31 @@ const ResetForm = () => {
     return (
         <CardWrapper
             headerLabel="Forgot your password?"
-            backButtonLabel="Back to login"
             backButtonHref="/auth/login"
         >
             <Form {...form}>
-                <form
-                    className="space-y-6"
-                    onSubmit={form.handleSubmit(onSubmit)}
-                >
-                    <div className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="your.waiter@example.com"
-                                            type="email"
-                                            disabled={isPending}
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-
-
-                    </div>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({field}) => (
+                            <FormItem>
+                                <FloatingInput
+                                    id="email"
+                                    label="Email"
+                                    type="email"
+                                    disabled={isPending}
+                                    field={field}
+                                />
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
                     <Button
                         type="submit"
-                        className="w-full"
+                        className="w-full mt-4"
                         disabled={isPending}
                     >
                         Send reset email
