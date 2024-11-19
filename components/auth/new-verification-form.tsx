@@ -37,8 +37,7 @@ const NewVerificationForm = () => {
     }, [onSubmit]);
     return (
         <CardWrapper
-            headerLabel="Confirming yor verification"
-            backButtonLabel="Back to login"
+            headerLabel="Confirming your verification"
             backButtonHref="/auth/login"
         >
             <div className="flex items-center justify-center w-full">
