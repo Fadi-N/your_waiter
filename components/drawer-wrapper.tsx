@@ -26,7 +26,11 @@ const DrawerWrapper = (
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <Button variant="ghost" onClick={() => setOpen(true)}>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setOpen(true)}
+                >
                     {triggerIcon}
                     {triggerLabel}
                 </Button>

@@ -24,8 +24,9 @@ const DialogWrapper = (
         <Dialog>
             <DialogTrigger asChild>
                 <Button
-                    className="rounded-full"
-                    variant="ghost"
+                    className="justify-start w-full"
+                    variant="default"
+                    size="sm"
                 >
                     {triggerIcon && <span className="me-2">{triggerIcon}</span>}
                     {triggerLabel}

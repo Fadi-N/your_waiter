@@ -21,7 +21,7 @@ interface SelectWrapperProps {
 }
 
 const SelectWrapper = (
-    {items, placeholder, selectLabel, onChange, defaultValue, triggerClassName = "w-auto bg-transparent border-0"}
+    {items, placeholder, selectLabel, onChange, defaultValue, triggerClassName = "w-auto bg-transparent rounded-xl focus:ring-offset-0 focus:ring-0 font-light text-gray-500 hover:text-gray-900"}
         : SelectWrapperProps
 ) => {
     return (

@@ -82,12 +82,16 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
         const restaurantOptionsElement = document.querySelector(".main-restaurant-options-container")?.getBoundingClientRect();
         const tabsElement = document.querySelector(".main-tabs-container");
 
+        if (!navbarElement || !restaurantOptionsElement || !tabsElement) {
+            return;
+        }
+
         const navbarElementViewportHeight = navbarElement?.height / 10;
         const restaurantOptionsElementViewportHeight = restaurantOptionsElement?.height / 10;
-        const tabsElementViewportHeight = 100 - (navbarElementViewportHeight + restaurantOptionsElementViewportHeight);
+        const tabsElementViewportHeight = 100 - (navbarElementViewportHeight + restaurantOptionsElementViewportHeight) - 3;
 
         if (tabsElement) {
-            tabsElement["style"].height = `${tabsElementViewportHeight}vh`;
+            tabsElement.style.height = `${tabsElementViewportHeight}vh`;
         }
 
     }, []);
@@ -95,8 +99,8 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
 
     return (
         <main>
-            <div
-                className="flex flex-wrap justify-between items-center bg-gray-100 p-2 rounded-2xl my-6 md:mt-0 md:flex-nowrap main-restaurant-options-container">
+            {/*<div
+                className="flex flex-wrap justify-between items-center border h-[60px] mb-2 px-2 rounded-xl md:flex-nowrap main-restaurant-options-container">
                 <SelectWrapper
                     defaultValue={selectedRestaurant}
                     items={restaurants.map(restaurant => ({
@@ -110,7 +114,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                 <div className="flex-1">
                     <div className="relative float-end me-2">
                         <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
-                        <Input type="text" placeholder={`${t('search')}`} className="pl-10 rounded-full"/>
+                        <Input type="text" placeholder={`${t('search')}`} className="pl-10 rounded-full focus-visible:ring-offset-0 focus-visible:ring-0"/>
                     </div>
                 </div>
 
@@ -167,12 +171,12 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         </DrawerWrapper>
                     )}
                 </div>
-            </div>
+            </div>*/}
 
             <Tabs defaultValue="category"
                   className="flex flex-col gap-x-6 overflow-hidden md:flex-row main-tabs-container">
-                <TabsList
-                    className="flex-col h-auto gap-2 p-4 bg-neutral-800 text-white rounded-2xl overflow-y-auto md:w-2/12 md:flex-col md:justify-start md:h-full"
+                {/*<TabsList
+                    className="flex-col h-auto gap-2 p-4 border bg-white rounded-xl overflow-y-auto md:w-2/12 md:flex-col md:justify-start md:h-full"
                 >
                     <TabsTrigger
                         className="rounded-xl w-full flex items-center justify-start"
@@ -229,11 +233,11 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         Transaction History
                         </span>
                     </TabsTrigger>
-                </TabsList>
+                </TabsList>*/}
 
                 <TabsContent
                     value="restaurant"
-                    className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0"
+                    className="bg-gray-100 p-4 rounded-xl overflow-y-auto md:w-10/12 md:mt-0"
                 >
                     <div className="float-end">
                         <PDFDownloadLink
@@ -253,7 +257,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
 
                 <TabsContent
                     value="category"
-                    className="bg-gray-100 p-4 rounded-2xl md:w-10/12 md:mt-0"
+                    className="p-4 border rounded-xl md:w-10/12 md:mt-0"
                 >
                     {isDesktop ? (
                         <>
@@ -338,7 +342,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                     )}
                 </TabsContent>
                 <TabsContent value="menu-item"
-                             className="bg-gray-100 p-4 rounded-2xl overflow-y-auto md:w-10/12 md:mt-0">
+                             className="bg-gray-100 p-4 rounded-xl overflow-y-auto md:w-10/12 md:mt-0">
                     {isDesktop ? (
                         <>
                             <div className="flex justify-end">
