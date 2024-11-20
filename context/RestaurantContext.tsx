@@ -36,8 +36,8 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         };
 
         setLoading(true);
-        //fetchTables();
-        //fetchMenuItems();
+        fetchTables();
+        fetchMenuItems();
     }, [selectedRestaurant]);
 
     return (
