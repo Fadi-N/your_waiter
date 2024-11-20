@@ -4,7 +4,7 @@ import Main from "@/app/[lng]/(protected)/admin/main";
 import {getMenuCategory} from "@/actions/admin/menu-category";
 import {getMenuItems} from "@/actions/admin/menu";
 
-const AdminPage = async () => {
+const AdminPage: React.FC<{ children: React.ReactNode }> = async () => {
     const restaurants = await getRestaurants();
     const menuCategories = await getMenuCategory();
     return (

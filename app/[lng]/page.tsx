@@ -2,7 +2,7 @@
 
 import Navbar from "@/app/[lng]/(protected)/_components/navbar";
 
-export default function Home({params: {lng}}) {
+export default function Home() {
 
     return (
         <>

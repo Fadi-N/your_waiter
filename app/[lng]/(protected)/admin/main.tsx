@@ -77,7 +77,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
 
     }, [selectedRestaurant]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const navbarElement = document.querySelector(".navbar-container")?.getBoundingClientRect();
         const restaurantOptionsElement = document.querySelector(".main-restaurant-options-container")?.getBoundingClientRect();
         const tabsElement = document.querySelector(".main-tabs-container");
@@ -94,7 +94,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
             tabsElement.style.height = `${tabsElementViewportHeight}vh`;
         }
 
-    }, []);
+    }, []);*/
 
 
     return (

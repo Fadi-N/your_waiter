@@ -28,6 +28,7 @@ import RoleGate from "@/components/auth/role-gate";
 import NewRestaurantForm from "@/components/admin/new-restaurant-form";
 import DrawerWrapper from "@/components/drawer-wrapper";
 import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
+import {useRestaurantContext} from "@/context/RestaurantContext";
 
 interface SidebarProps {
     restaurants: Restaurant[]
@@ -36,10 +37,12 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
     const {lng} = useParams();
     const {t} = useTranslation(lng);
-    const user = useCurrentUser();
 
+    const user = useCurrentUser();
+    const { selectedRestaurant, setSelectedRestaurant, tables, loading } = useRestaurantContext();
     const router = useRouter();
 
+    const isDesktop = useMediaQuery("(min-width: 768px)");
     const [selectedId, setSelectedId] = useState<string>("");
 
     const items = [
@@ -48,31 +51,6 @@ const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
         {id: "reservation-system", label: "Reservation System"},
         {id: "transaction-history", label: "Transaction History"},
     ];
-
-    const isDesktop = useMediaQuery("(min-width: 768px)");
-    const [selectedRestaurant, setSelectedRestaurant] = useState<string>(restaurants[0].id);
-    const [tables, setTables] = useState<Table[]>([]);
-    const [menuItems, setMenuItems] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true)
-
-    useEffect(() => {
-        // Fetch tables for the selected restaurant
-        const fetchTables = async () => {
-            const data = await getTablesByRestaurant(selectedRestaurant);
-            setTables(data);
-        };
-
-        const fetchMenuItems = async () => {
-            const data = await getMenuItemsByRestaurantId(selectedRestaurant);
-            setMenuItems(data);
-            setLoading(false);
-        }
-
-        setLoading(true);
-        //fetchTables();
-        //fetchMenuItems();
-
-    }, [selectedRestaurant]);
 
     const handleNavigation = (id: string) => {
         setSelectedId(id);
