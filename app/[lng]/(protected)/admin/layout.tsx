@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "@/app/[lng]/(protected)/_components/sidebar";
 import {getRestaurants} from "@/actions/admin/restaurant";
-import {RestaurantProvider} from "@/context/RestaurantContext";
+import {RestaurantProvider} from "@/context/restaurant-context";
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = async ({children}) => {
     const restaurants = await getRestaurants();

@@ -4,7 +4,7 @@ import React from 'react';
 
 import {MenuItem} from "@prisma/client";
 import MenuItemCard from "@/components/menu-item-card";
-import {useRestaurantContext} from "@/context/RestaurantContext";
+import {useRestaurantContext} from "@/context/restaurant-context";
 
 const MenuPage = () => {
     const { menuItems } = useRestaurantContext();

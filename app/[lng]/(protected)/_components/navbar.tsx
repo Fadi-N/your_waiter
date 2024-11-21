@@ -8,12 +8,12 @@ import UserButton from "@/components/auth/user-button";
 import {useTranslation} from "@/app/i18n/client";
 import {SlBasket} from "react-icons/sl";
 import {useSession} from "next-auth/react";
-import {useCart} from "@/hooks/use-cart";
 import {useMediaQuery} from "@/hooks/use-media-query";
 import DrawerWrapper from "@/components/drawer-wrapper";
 import {Table, TableBody, TableCell, TableFooter, TableRow} from "@/components/ui/table";
 import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
 import {Input} from "@/components/ui/input";
+import {useCartContext} from "@/context/cart-context";
 
 const Navbar = () => {
     const pathname = usePathname();
@@ -25,12 +25,14 @@ const Navbar = () => {
 
     const {lng} = useParams();
     const {t} = useTranslation(lng, "navbar")
-    const {cart} = useCart();
+    const { cart, increment, decrement } = useCartContext();
+
+
 
     return (
         <nav
-            className="z-50 flex justify-center items-center w-full h-auto bg-white border-transparent navbar-container">
-            <div className="flex flex-row flex-nowrap items-center justify-center w-full gap-4 h-[60px]">
+            className="z-50 flex justify-center items-center w-full h-auto bg-white border-transparent navbar-container shadow mb-6">
+            <div className="flex flex-row flex-nowrap items-center justify-center w-full gap-4 h-[60px] mx-2">
                 <div className="flex flex-grow justify-start items-center basis-0">
                     <p className="hidden md:block">
                         {t('title')}
@@ -156,7 +158,7 @@ const Navbar = () => {
                                 <span
                                     className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full px-1"
                                 >
-                                {cart.items.length}
+                                {cart.totalQuantity}
                             </span>
                             </div>
                         </Link>

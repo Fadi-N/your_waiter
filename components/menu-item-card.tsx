@@ -1,16 +1,11 @@
-import React, {useState} from 'react';
-import {Card, CardContent, CardFooter} from "@/components/ui/card";
-import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
+import React, { useState } from 'react';
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 
-// Reusable Card component for menu items
-const MenuItemCard = ({
-                          item, onIncrement = () => {
-    }, onDecrement = () => {
-    }, quantity = 0
-                      }) => {
+const MenuItemCard = ({ item, onIncrement = () => {}, onDecrement = () => {}, quantity = 0 }) => {
     const [whole, decimal] = item.price.toFixed(2).split(".");
     const [isExpanded, setIsExpanded] = useState(false);
     const maxLength = 40;
@@ -23,13 +18,15 @@ const MenuItemCard = ({
         ? item.description.slice(0, maxLength) + "..."
         : item.description;
 
+    const displayedDescription = isExpanded ? item.description : trimmedDescription;
+
     return (
         <Card className="flex flex-col justify-between shadow-md rounded-xl">
             <CardContent className="px-0 h-full md:grid md:grid-cols-2 md:p-6 md:gap-x-4 md:px-6">
                 {item.imageUrl ? (
                     <Image
                         className="object-cover rounded-lg"
-                        src={item?.imageUrl}
+                        src={item?.imageUrl || "/default-placeholder.png"}
                         width={500}
                         height={500}
                         alt="menu-item-img"
@@ -42,12 +39,10 @@ const MenuItemCard = ({
                 <div className="flex flex-col space-y-4">
                     <div>
                         <p className="font-bold text-2xl">{item.name}</p>
-                        <p className="font-medium text-xl ">{item.MenuCategory.name}</p>
+                        <p className="font-medium text-xl">{item.MenuCategory.name}</p>
                     </div>
                     <p className="text-gray-400">
-                        {isExpanded
-                            ? <span className="me-2">{item.description}</span>
-                            : <span className="me-2">{trimmedDescription}</span>}
+                        <span className="me-2">{displayedDescription}</span>
                         {item.description.length > maxLength && (
                             <button
                                 className="text-black hover:underline"
@@ -65,15 +60,15 @@ const MenuItemCard = ({
                     <span className="text-2xl font-bold">{whole}</span>
                     <span className="text-sm align-top">{decimal}</span>
                 </div>
-                <div
-                    className="counter flex items-center justify-between border rounded-full p-1 w-full max-w-xs h-auto">
+                <div className="counter flex items-center justify-between border rounded-full p-1 w-full max-w-xs h-auto">
                     <Button
                         className="rounded-full border-transparent w-8 h-8"
                         variant="outline"
                         size="icon"
                         onClick={onDecrement}
+                        disabled={quantity === 0}
                     >
-                        <AiOutlineMinus className="w-4 h-4"/>
+                        <AiOutlineMinus className="w-4 h-4" />
                     </Button>
                     <Input
                         type="text"
@@ -87,7 +82,7 @@ const MenuItemCard = ({
                         size="icon"
                         onClick={onIncrement}
                     >
-                        <AiOutlinePlus className="w-4 h-4"/>
+                        <AiOutlinePlus className="w-4 h-4" />
                     </Button>
                 </div>
             </CardFooter>

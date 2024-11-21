@@ -1,12 +1,21 @@
+'use client'
+
 import React from 'react';
 import Navbar from "@/app/[lng]/(protected)/_components/navbar";
+import {useParams, usePathname} from "next/navigation";
+import {CartProvider} from "@/context/cart-context";
 
-const ProtectedLayout = ({children}) => {
+const ProtectedLayout:React.FC<{ children: React.ReactNode }> = ({children}) => {
+    const {lng} = useParams();
+    const pathname = usePathname();
+
+    const showNavbar = pathname !== `/${lng}/admin`;
+
     return (
-        <div className="">
-            {/*<Navbar/>*/}
+        <CartProvider>
+            {showNavbar && <Navbar />}
             {children}
-        </div>
+        </CartProvider>
     );
 };
 

@@ -28,7 +28,7 @@ import RoleGate from "@/components/auth/role-gate";
 import NewRestaurantForm from "@/components/admin/new-restaurant-form";
 import DrawerWrapper from "@/components/drawer-wrapper";
 import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
-import {useRestaurantContext} from "@/context/RestaurantContext";
+import {useRestaurantContext} from "@/context/restaurant-context";
 
 interface SidebarProps {
     restaurants: Restaurant[]
