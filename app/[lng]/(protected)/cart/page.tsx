@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useCart} from "@/hooks/use-cart";
 import {Button} from "@/components/ui/button";
 import {Elements} from "@stripe/react-stripe-js";
@@ -13,13 +13,14 @@ import {FaArrowLeftLong, FaXmark} from "react-icons/fa6";
 import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
 import {MdOutlineCategory} from "react-icons/md";
+import {MenuItem} from "@prisma/client";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 const CartPage = () => {
     const session = useSession();
 
-    const {cart, increment, decrement} = useCart();
+    const {cart, increment, decrement, updateCart} = useCart();
 
     const [clientSecret, setClientSecret] = useState<string | null>("");
     const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +39,16 @@ const CartPage = () => {
 
         setIsLoading(false);
     };
+
+    const handleDecrement = useCallback(
+        (item: MenuItem) => {
+            const existingItem = cart.items.find((cartItem) => cartItem.id === item.id);
+            if (existingItem) {
+                const newQuantity = Math.max(existingItem.quantity - 1, 0);
+                updateCart(item, newQuantity);
+            }
+        }, [cart.items]
+    );
 
     return (
         <div className="container flex flex-col space-y-6">
@@ -85,6 +96,7 @@ const CartPage = () => {
                                     className="rounded-full border-transparent w-8 h-8"
                                     variant="default"
                                     size="icon"
+                                    onClick={() => handleDecrement(item)}
                                 >
                                     <FaXmark className="w-4 h-4"/>
                                 </Button>
