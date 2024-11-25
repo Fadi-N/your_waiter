@@ -9,7 +9,7 @@ const ProtectedLayout:React.FC<{ children: React.ReactNode }> = ({children}) => 
     const {lng} = useParams();
     const pathname = usePathname();
 
-    const showNavbar = pathname !== `/${lng}/admin`;
+    const showNavbar = pathname !== `/${lng}/admin` && !pathname.startsWith(`/${lng}/cart`);
 
     return (
         <CartProvider>

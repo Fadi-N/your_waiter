@@ -11,7 +11,11 @@ export const createPaymentIntent = async (amount: number, description: string) =
     const paymentIntent = await stripe.paymentIntents.create({
         amount,
         description,
-        currency: "USD"
+        currency: "PLN",
+        payment_method_types: ["blik", "card"],
+        payment_method_options: {
+            blik: {},
+        }
     })
 
     console.log(amount, description, stripe, paymentIntent);

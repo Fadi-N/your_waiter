@@ -8,74 +8,64 @@ interface CheckoutFormProps {
     isLoading: boolean;
 }
 
-const CheckoutForm = ({ isLoading } : CheckoutFormProps) => {
+const CheckoutForm = ({isLoading}: CheckoutFormProps) => {
     const stripe = useStripe();
     const elements = useElements();
 
-    const handleSubmitForm = async(e: FormEvent) => {
+    const handleSubmitForm = async (e: FormEvent) => {
         e.preventDefault();
 
-        try{
-            if (!elements || !stripe){
+        try {
+            if (!elements || !stripe) {
                 return;
             }
 
             const result = await stripe?.confirmPayment({
                 elements,
-                confirmParams:{
+                confirmParams: {
                     return_url: "http://localhost:3000/"
                 },
                 redirect: "if_required"
             })
 
-            if (result.error){
+            if (result.error) {
                 console.log(result.error.message)
-            }else{
+            } else {
                 console.log("PAYMENT SUCCESSFULL!!!")
             }
 
-        }catch (error){
+        } catch (error) {
             console.log(error)
         }
     }
 
     return (
-        <DialogWrapper
-            triggerLabel="Purchase"
-            triggerIcon={<IoAddOutline />}
-            headerLabel="Complete your subscription purchase"
-            description="Please complete your payment details below."
-        >
-            <form onSubmit={handleSubmitForm}>
-                <PaymentElement />
+        <>
+
+            <div className="font-medium text-2xl">How would you like to pay?</div>
+            <form onSubmit={handleSubmitForm} className="flex flex-col space-y-6">
+                <PaymentElement
+                    options={{
+                        fields: {
+                            billingDetails: 'never',
+                        }
+                    }}
+                />
                 <AddressElement options={{
                     mode: "billing",
                     allowedCountries: ["PL"]
                 }}/>
-                {/* <AddressElement
-          options={{
-            mode: "shipping",
-            allowedCountries: ["US"],
-          }}
-        /> */}
-                <div className="flex justify-center gap-4 mt-4">
-                    <Button
-                        isDisabled={isLoading}
-                        variant="ghost"
-                        color="danger"
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        isLoading={isLoading}
-                        color="primary"
-                        type="submit"
-                    >
-                        Pay
-                    </Button>
-                </div>
+
+                <Button
+                    className="w-full"
+                    isLoading={isLoading}
+                    color="primary"
+                    type="submit"
+                >
+                    Place order
+                </Button>
             </form>
-        </DialogWrapper>
+        </>
     );
 };
 
