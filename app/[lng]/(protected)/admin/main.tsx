@@ -56,7 +56,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState<string>(restaurants[0].id);
     const [tables, setTables] = useState<Table[]>([]);
     const [menuItems, setMenuItems] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         // Fetch tables for the selected restaurant
@@ -279,41 +279,34 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                     <div className="flex flex-col overflow-y-auto pb-3 h-[79vh]">
                                         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                                             {[...Array(6)].map((_, index) => (
-                                                <Card key={index}
-                                                      className="flex flex-col justify-between w-full shadow-md rounded-xl">
-                                                    <CardContent
-                                                        className="h-full md:grid md:grid-cols-2 md:gap-6 md:p-6">
-                                                        <Skeleton className="h-[178px] w-full rounded-lg"/>
-                                                        <div className="mx-6 mt-6 md:mx-0 md:mt-0">
-                                                            <div className="space-y-2">
-                                                                <Skeleton
-                                                                    className="h-4 w-[80px] md:w-[100px] lg:max-w-[120px]"/>
-                                                                <Skeleton
-                                                                    className="h-4 w-[40px] md:w-[50px] lg:max-w-[60px]"/>
+                                                <Card
+                                                    key={index}
+                                                    className="flex flex-col justify-between shadow-md rounded-xl"
+                                                >
+                                                    <CardContent className="flex items-center p-4 space-x-4">
+                                                        <Skeleton className="h-[125px] w-[125px] rounded-lg"/>
+                                                        <div className="flex flex-1 flex-col space-y-4">
+                                                            <div className="flex flex-col justify-between">
+                                                                <div className="flex items-center justify-between">
+                                                                    <Skeleton className="h-4 w-28"/>
+                                                                    <Skeleton className="h-[24px] w-[24px] rounded-full"/>
+                                                                </div>
+                                                                <Skeleton className="h-4 w-16 "/>
                                                             </div>
-                                                            <div className="mt-6">
-                                                                <div className="space-y-2">
-                                                                    <Skeleton
-                                                                        className="h-4 w-[125px] md:w-[150px] lg:max-w-[175px]"/>
-                                                                    <Skeleton
-                                                                        className="h-4 w-[100px] md:w-[125px] lg:max-w-[150px]"/>
-                                                                    <Skeleton
-                                                                        className="h-4 w-[75px] md:w-[100px] lg:max-w-[125px]"/>
+                                                            <Skeleton className="h-4 w-full"/>
+                                                            <div
+                                                                className="flex items-center justify-between space-x-4">
+                                                                <Skeleton className="h-4 w-12 bg-gray-300"/>
+                                                                <div
+                                                                    className="counter flex items-center justify-between border rounded-full p-1 h-auto space-x-1">
+                                                                    <Skeleton className="h-[32px] w-[32px] rounded-full"/>
+                                                                    <Skeleton className=" h-[32px] w-[32px]"/>
+                                                                    <Skeleton className="h-[32px] w-[32px] bg-gray-300 rounded-full"/>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </CardContent>
-                                                    <CardFooter className="grid grid-cols-2 gap-6">
-                                                        <Skeleton className="h-4 w-full"/>
-                                                        <div
-                                                            className="counter flex items-center justify-between border rounded-full p-2 w-full max-w-xs h-auto">
-                                                            <Skeleton className="h-[40px] w-[40px] rounded-full"/>
-                                                            <Skeleton
-                                                                className=" h-[40px] w-[30px] md:w-[40px] lg:w-[50px]"/>
-                                                            <Skeleton
-                                                                className="h-[40px] w-[40px] bg-gray-300 rounded-full"/>
-                                                        </div>
-                                                    </CardFooter>
                                                 </Card>
                                             ))}
                                         </div>
