@@ -3,9 +3,11 @@
 import Main from "@/app/[lng]/(protected)/[restaurant]/menu/main";
 import {getMenuItems} from "@/actions/admin/menu";
 import {useEffect, useState} from "react";
+import {getMenuCategory} from "@/actions/admin/menu-category";
 
 export default function MenuPage({params: {lng, restaurant}}) {
     const [menuItems, setMenuItems] = useState([]);
+    const [MenuCategories, setMenuCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -14,8 +16,11 @@ export default function MenuPage({params: {lng, restaurant}}) {
             try {
                 const items = await getMenuItems(restaurant);
                 setMenuItems(items);
+
+                const categories = await getMenuCategory(restaurant);
+                setMenuCategories(categories);
             } catch (error) {
-                console.error("Error fetching menu items:", error);
+                console.error("Error fetching menu data:", error);
             } finally {
                 setLoading(false);
             }
@@ -25,6 +30,6 @@ export default function MenuPage({params: {lng, restaurant}}) {
     }, [restaurant]);
 
     return (
-        <Main menuItems={menuItems} loading={loading}/>
+        <Main menuItems={menuItems} MenuCategories={MenuCategories} loading={loading}/>
     )
 }

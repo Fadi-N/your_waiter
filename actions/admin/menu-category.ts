@@ -4,9 +4,28 @@ import * as z from "zod";
 import {CategorySchema} from "@/schemas";
 import {db} from "@/lib/db";
 
-export const getMenuCategory = async () => {
-    return await db.menuCategory.findMany();
+const capitalizeFirstLetter = (string) => {
+    if (!string) return '';
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
+
+export const getMenuCategory = async (restaurantName) => {
+    const formattedName = capitalizeFirstLetter(restaurantName);
+
+    const categories = await db.menuCategory.findMany({
+        where: {
+            Restaurant: {
+                name: formattedName,
+            },
+        },
+    });
+
+    if (!categories || categories.length === 0) {
+        return { error: "Categories not found for the specified restaurant." };
+    }
+
+    return categories;
+};
 
 export const getCategoriesByRestaurant = async (restaurantId: string) => {
     return await db.menuCategory.findMany({

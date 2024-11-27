@@ -4,29 +4,33 @@ import React, {useState, useCallback} from 'react';
 import {CiSearch} from "react-icons/ci";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {IoPizzaOutline, IoSunny} from "react-icons/io5";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import MenuItemCard from "@/components/menu-item-card";
-import {ImSpoonKnife} from "react-icons/im";
-import {MenuItem} from "@prisma/client";
+import {MenuCategory, MenuItem} from "@prisma/client";
 import {useCartContext} from "@/context/cart-context";
 import {Card, CardContent} from "@/components/ui/card";
 import {Skeleton} from "@/components/ui/skeleton";
 
 interface SidebarProps {
     menuItems: MenuItem[];
+    MenuCategories: MenuCategory[];
     loading: boolean;
 }
 
-const Main: React.FC<SidebarProps> = ({menuItems, loading}) => {
+const Main: React.FC<SidebarProps> = ({menuItems, MenuCategories, loading}) => {
     const {cart, increment, decrement} = useCartContext();
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-    // Filtrowanie elementów menu po kategorii
-    const filteredMenuItems = selectedCategory
-        ? menuItems.filter(item => item.MenuCategory.name === selectedCategory)
-        : menuItems;
+    // Filtrowanie elementów menu
+    const filteredMenuItems = menuItems.filter(item => {
+        // Jeśli kategoria jest wybrana (nie "all"), filtrujemy po kategorii
+        const matchesCategory = selectedCategory === "all" || item.MenuCategory.name === selectedCategory;
+        // Wyszukiwanie po nazwie
+        const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return matchesCategory && matchesSearch;
+    });
 
     // Wyszukiwanie elementów menu
     const searchedMenuItems = filteredMenuItems.filter(item =>
@@ -56,32 +60,47 @@ const Main: React.FC<SidebarProps> = ({menuItems, loading}) => {
                 {/* Kategoria */}
                 <Carousel>
                     <CarouselContent className="m-0 gap-x-3">
-                        <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
-                            <Button
-                                className="w-full rounded-full"
-                                variant={selectedCategory === null ? "default" : "secondary"}
-                                size="sm"
-                                onClick={() => setSelectedCategory(null)}
-                            >
-                                <ImSpoonKnife className="w-4 h-4 me-2"/>
-                                All Menu
-                            </Button>
-                        </CarouselItem>
-                        <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
-                            <Button
-                                className="w-full rounded-full"
-                                variant={selectedCategory === "Pizza" ? "default" : "secondary"}
-                                size="sm"
-                                onClick={() => setSelectedCategory(selectedCategory === "Pizza" ? null : "Pizza")}
-                            >
-                                <IoPizzaOutline className="w-4 h-4 me-2"/>
-                                Pizza
-                            </Button>
-                        </CarouselItem>
-                        {/* Dodaj inne kategorie analogicznie */}
+                        {loading ? (
+                            [...Array(12)].map(_ => (
+                                <>
+                                    <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                        <Button
+                                            className="w-full rounded-full bg-gray-300"
+                                            size="sm"
+                                        >
+                                        </Button>
+                                    </CarouselItem>
+                                </>
+                            ))
+                        ) : (
+                            <>
+                                <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                    <Button
+                                        className="w-full rounded-full"
+                                        variant={selectedCategory === "all" ? "default" : "secondary"}
+                                        size="sm"
+                                        onClick={() => setSelectedCategory("all")}
+                                    >
+                                        All
+                                    </Button>
+                                </CarouselItem>
+                                {MenuCategories.map((category, key) => (
+                                    <CarouselItem key={key} className="basis-1/3 p-0 md:basis-1/12">
+                                        <Button
+                                            className="w-full rounded-full"
+                                            variant={selectedCategory === category.name ? "default" : "secondary"}
+                                            size="sm"
+                                            onClick={() => setSelectedCategory(category.name)}
+                                        >
+                                            {category.name}
+                                        </Button>
+                                    </CarouselItem>
+                                ))}
+                            </>
+                        )}
+
                     </CarouselContent>
                 </Carousel>
-
 
                 {/* Lista elementów menu */}
                 <div className="flex flex-col">
