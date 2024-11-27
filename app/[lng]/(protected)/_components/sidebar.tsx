@@ -48,8 +48,9 @@ const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
     const items = [
         {id: "category", label: "Food Categories"},
         {id: "menu-item", label: "Menu Management"},
-        {id: "reservation-system", label: "Reservation System"},
-        {id: "transaction-history", label: "Transaction History"},
+        {id: "reservation", label: "Reservation System"},
+        {id: "transaction", label: "Transaction History"},
+        {id: "coupon", label: "Coupon"},
     ];
 
     const handleNavigation = (id: string) => {
