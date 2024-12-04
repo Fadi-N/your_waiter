@@ -59,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
     };
 
     return (
-        <aside className="flex flex-col gap-2 h-full w-72 p-4 rounded-xl border justify-between">
+        <aside id="sidebar-component" className="flex flex-col gap-2 h-full w-72 p-4 rounded-xl border justify-between">
             <div className="flex flex-col space-y-4">
                 <p className="text-xl">LOGO</p>
                 <div className="flex flex-col space-y-2">

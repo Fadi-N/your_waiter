@@ -28,7 +28,7 @@ const Navbar = () => {
     const isActive = (href: string) => pathname === `/${lng}${href}` ? "text-gray-900 font-medium" : "text-gray-500";
 
     return (
-        <nav className="z-50 flex justify-center items-center w-full h-auto bg-white shadow mb-6">
+        <nav className="z-50 flex justify-center items-center w-full h-auto bg-white shadow">
             <div className="flex flex-row flex-nowrap items-center justify-center w-full gap-4 h-[60px] mx-2">
                 <div className="flex flex-grow justify-start items-center">
                     <p className="hidden md:block">{t('title')}</p>

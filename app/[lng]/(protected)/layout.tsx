@@ -13,7 +13,7 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({children}) =>
 
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
-    const showNavbar = pathname !== `/${lng}/admin` && !pathname.startsWith(`/${lng}/cart`);
+    const showNavbar = !pathname.startsWith(`/${lng}/admin`) && !pathname.startsWith(`/${lng}/cart`);
 
     return (
         <CartProvider>
