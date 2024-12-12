@@ -23,10 +23,32 @@ const ReservationPage = () => {
         config?: { src?: string; width?: number; height?: number };
     } | null>(null);
     const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
+    const [stageMeasurement, setStageMeasurement] = useState({
+        width: 0,
+        height: 0,
+    })
 
     const stageRef = useRef<any>(null);
     const toolbarRef = useRef<any>(null);
+    const workShopRef = useRef<any>(null);
     const transformerRef = useRef<any>(null);
+
+    useEffect(() => {
+        const sidebarElement = document.getElementById("sidebar-component");
+
+        if (!sidebarElement) return;
+
+        const sidebarElementRect = sidebarElement.getBoundingClientRect();
+        const toolbarRect = toolbarRef.current.getBoundingClientRect();
+
+        setStageMeasurement({
+            width: window.innerWidth - sidebarElementRect.width - 64,
+            height: window.innerHeight - toolbarRect.height - 64
+        })
+
+        //workShopRef.current.style.width = `${window.innerWidth - sidebarElementRect.width - 64}px`;
+        //workShopRef.current.style.height = `${window.innerHeight - toolbarRect.height - 64}px`;
+    }, []);
 
     useEffect(() => {
         if (selectedId) {
@@ -74,7 +96,7 @@ const ReservationPage = () => {
                 type: draggedTile.type,
                 width: draggedTile.config?.width || 100,
                 height: draggedTile.config?.height || 100,
-                fill: draggedTile.type === 'table' ? 'SlateGrey' : 'red',
+                fill: draggedTile.type === 'table' ? '#121625' : 'red',
                 src: draggedTile.config?.src,
             },
         ]);
@@ -111,7 +133,7 @@ const ReservationPage = () => {
                     className="w-[100px] h-[100px]"
                     draggable="true"
                     onDragStart={() => handleDragStart('table')}
-                    style={{ backgroundColor: 'SlateGrey' }}
+                    style={{ backgroundColor: '#121625' }}
                 ></div>
                 {['two-chairs', 'four-chairs', 'six-chairs'].map((image, idx) => (
                     <Image
@@ -130,13 +152,14 @@ const ReservationPage = () => {
                 ))}
             </div>
             <div
+                ref={workShopRef}
                 onDrop={(e) => handleDrop(e)}
                 onDragOver={(e) => e.preventDefault()}
-                className="w-full h-full bg-gray-100 rounded-lg"
+                className="mt-4 grid-background"
             >
                 <Stage
-                    width={window.innerWidth}
-                    height={window.innerHeight}
+                    width={stageMeasurement.width}
+                    height={stageMeasurement.height}
                     ref={stageRef}
                     onMouseDown={(e) => {
                         if (e.target === e.target.getStage()) {
