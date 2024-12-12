@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { Layer, Rect, Stage, Text, Image as KonvaImage, Transformer } from "react-konva";
+import { Group, Layer, Rect, Stage, Text, Image as KonvaImage, Transformer } from "react-konva";
 import Image from "next/image";
 
 type Tile = {
@@ -130,7 +130,7 @@ const ReservationPage = () => {
         <div className="border rounded-xl w-full h-full p-4">
             <div className="flex gap-2" ref={toolbarRef}>
                 <div
-                    className="w-[100px] h-[100px]"
+                    className="w-[100px] h-[100px] rounded-lg"
                     draggable="true"
                     onDragStart={() => handleDragStart('table')}
                     style={{ backgroundColor: '#121625' }}
@@ -170,37 +170,45 @@ const ReservationPage = () => {
                     <Layer>
                         {tiles.map((tile, index) =>
                             tile.type === 'image' && tile.src && loadedImages[tile.src] ? (
-                                <>
+                                <Group
+                                    key={tile.id}
+                                    id={tile.id}
+                                    draggable
+                                    x={tile.x}
+                                    y={tile.y}
+                                    onClick={() => tile.type !== 'image' && setSelectedId(tile.id)}
+                                    onDragEnd={(e) =>
+                                        handleDragMove(tile.id, e.target.x(), e.target.y())
+                                    }
+                                    onTransformEnd={(e) => {
+                                        const node = e.target;
+                                        handleTransform(tile.id, node.attrs);
+                                    }}
+                                >
                                     <KonvaImage
-                                        key={tile.id}
-                                        id={tile.id}
                                         image={loadedImages[tile.src]}
-                                        x={tile.x}
-                                        y={tile.y}
                                         width={tile.width}
                                         height={tile.height}
-                                        draggable
-                                        onClick={() => setSelectedId(tile.id)}
-                                        onDragEnd={(e) =>
-                                            handleDragMove(tile.id, e.target.x(), e.target.y())
-                                        }
-                                        onTransformEnd={(e) => {
-                                            const node = e.target;
-                                            handleTransform(tile.id, node.attrs);
-                                        }}
+                                    />
+                                    <Rect
+                                        x={tile.width / 2 - 30}
+                                        y={tile.height / 2 - 16}
+                                        width={60}
+                                        height={32}
+                                        fill="#7feca5"
+                                        cornerRadius={4}
                                     />
                                     <Text
-                                        key={`text-${tile.id}`}
                                         text={`A${index + 1}`}
                                         fontSize={16}
-                                        fill="black"
-                                        x={tile.x + tile.width / 2 - 50}
-                                        y={tile.y + tile.height / 2 - 8}
+                                        fill="#109841"
+                                        x={tile.width / 2 - 50} // W środku obrazu
+                                        y={tile.height / 2 - 8} // W środku obrazu
                                         width={100}
                                         align="center"
                                         verticalAlign="middle"
                                     />
-                                </>
+                                </Group>
                             ) : (
                                 <Rect
                                     key={tile.id}
@@ -222,9 +230,7 @@ const ReservationPage = () => {
                                 />
                             )
                         )}
-                        {selectedId && (
-                            <Transformer ref={transformerRef} />
-                        )}
+                        {selectedId && <Transformer ref={transformerRef} />}
                     </Layer>
                 </Stage>
             </div>
