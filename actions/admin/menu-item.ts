@@ -12,8 +12,6 @@ export const MenuItem = async (values: z.infer<typeof MenuItemSchema>, restauran
     }
 
     const {itemName, menuCategory, description, price, imageUrl} = validateFields.data;
-    console.log("====================")
-    console.log(imageUrl)
 
     try {
         // Check if a menu item with the same name already exists in the specified restaurant and category

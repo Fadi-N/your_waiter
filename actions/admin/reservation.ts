@@ -15,8 +15,6 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
 
     const { name, description, tiles, restaurantId } = validateFields.data;
 
-    console.log("=======")
-    console.log(name, description, tiles, restaurantId);
 
     try {
         const existingWorksheet = await db.worksheet.findFirst({

@@ -1,13 +1,16 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
-import { Group, Layer, Rect, Stage, Text, Image as KonvaImage, Transformer } from "react-konva";
+import React, {useRef, useState, useEffect} from 'react';
+import {Group, Layer, Rect, Stage, Text, Image as KonvaImage, Transformer} from "react-konva";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {FaPlus} from "react-icons/fa6";
 import {Separator} from "@/components/ui/separator";
 import {saveWorksheet} from "@/actions/admin/reservation";
 import {useRestaurantContext} from "@/context/restaurant-context";
+import {BsPencil} from "react-icons/bs";
+import {FaSave} from "react-icons/fa";
+import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 
 type Tile = {
     id: string;
@@ -21,7 +24,7 @@ type Tile = {
 };
 
 const ReservationPage = () => {
-    const { selectedRestaurant} = useRestaurantContext();
+    const {selectedRestaurant} = useRestaurantContext();
 
     const [tiles, setTiles] = useState<Tile[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -76,10 +79,10 @@ const ReservationPage = () => {
             const img = new window.Image();
             img.src = config.src;
             img.onload = () => {
-                setLoadedImages((prev) => ({ ...prev, [config.src]: img }));
+                setLoadedImages((prev) => ({...prev, [config.src]: img}));
             };
         }
-        setDraggedTile({ type: tileType, config });
+        setDraggedTile({type: tileType, config});
     };
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -112,7 +115,7 @@ const ReservationPage = () => {
     const handleDragMove = (id: string, x: number, y: number) => {
         setTiles((prev) =>
             prev.map((tile) =>
-                tile.id === id ? { ...tile, x, y } : tile
+                tile.id === id ? {...tile, x, y} : tile
             )
         );
     };
@@ -150,18 +153,47 @@ const ReservationPage = () => {
 
     return (
         <div className="border rounded-xl w-full h-full p-4">
-            <div className="flex justify-end">
-                <Button onClick={handleSaveWorksheet} variant="secondary" size="sm">
-                    Save Worksheet
-                </Button>
-                <Button
-                    className="rounded-full"
-                    variant="secondary"
-                    size="sm"
-                >
-                    <FaPlus className="w-4 h-4 me-2" />
-                    Worksheet
-                </Button>
+            <div className="flex flex-row items-center  space-x-4">
+                <Carousel className="flex-1">
+                    <CarouselContent className="m-0 gap-x-3">
+                        {[...Array(6)].map((_, index) => (
+                            <>
+                                <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                    <Button
+                                        className="w-full rounded-full bg-gray-300"
+                                        size="sm"
+                                    >
+                                        Floor {index}
+                                    </Button>
+                                </CarouselItem>
+                            </>
+                        ))}
+                    </CarouselContent>
+                </Carousel>
+                <div className="flex space-x-2 crud-container">
+                    <Button
+                        className="rounded-full bg-blue-500"
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleSaveWorksheet}
+                    >
+                        <FaSave className="w-2 h-2"/>
+                    </Button>
+                    <Button
+                        className="rounded-full bg-[#fbb627]"
+                        variant="secondary"
+                        size="sm"
+                    >
+                        <BsPencil className="w-2 h-2"/>
+                    </Button>
+                    <Button
+                        className="rounded-full bg-[#1cc038]"
+                        variant="secondary"
+                        size="sm"
+                    >
+                        <FaPlus className="w-2 h-2"/>
+                    </Button>
+                </div>
             </div>
             <Separator className="my-4"/>
             <div className="flex gap-2" ref={toolbarRef}>
@@ -169,7 +201,7 @@ const ReservationPage = () => {
                     className="w-[100px] h-[100px] rounded-lg"
                     draggable="true"
                     onDragStart={() => handleDragStart('table')}
-                    style={{ backgroundColor: '#121625' }}
+                    style={{backgroundColor: '#121625'}}
                 ></div>
                 {['two-chairs', 'four-chairs', 'six-chairs'].map((image, idx) => (
                     <Image
@@ -266,7 +298,7 @@ const ReservationPage = () => {
                                 />
                             )
                         )}
-                        {selectedId && <Transformer ref={transformerRef} />}
+                        {selectedId && <Transformer ref={transformerRef}/>}
                     </Layer>
                 </Stage>
             </div>
