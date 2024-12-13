@@ -3,6 +3,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Group, Layer, Rect, Stage, Text, Image as KonvaImage, Transformer } from "react-konva";
 import Image from "next/image";
+import {Button} from "@/components/ui/button";
+import {FaPlus} from "react-icons/fa6";
+import {Separator} from "@/components/ui/separator";
+import {saveWorksheet} from "@/actions/admin/reservation";
+import {useRestaurantContext} from "@/context/restaurant-context";
 
 type Tile = {
     id: string;
@@ -16,6 +21,8 @@ type Tile = {
 };
 
 const ReservationPage = () => {
+    const { selectedRestaurant} = useRestaurantContext();
+
     const [tiles, setTiles] = useState<Tile[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [draggedTile, setDraggedTile] = useState<{
@@ -30,7 +37,7 @@ const ReservationPage = () => {
 
     const stageRef = useRef<any>(null);
     const toolbarRef = useRef<any>(null);
-    const workShopRef = useRef<any>(null);
+    const worksheetRef = useRef<any>(null);
     const transformerRef = useRef<any>(null);
 
     useEffect(() => {
@@ -46,8 +53,8 @@ const ReservationPage = () => {
             height: window.innerHeight - toolbarRect.height - 64
         })
 
-        //workShopRef.current.style.width = `${window.innerWidth - sidebarElementRect.width - 64}px`;
-        //workShopRef.current.style.height = `${window.innerHeight - toolbarRect.height - 64}px`;
+        //worksheetRef.current.style.width = `${window.innerWidth - sidebarElementRect.width - 64}px`;
+        //worksheetRef.current.style.height = `${window.innerHeight - toolbarRect.height - 64}px`;
     }, []);
 
     useEffect(() => {
@@ -126,8 +133,37 @@ const ReservationPage = () => {
         );
     };
 
+    const handleSaveWorksheet = async () => {
+        const response = await saveWorksheet({
+            name: "My Worksheet",
+            description: "Example layout of the restaurant",
+            restaurantId: selectedRestaurant,
+            tiles,
+        });
+
+        if (response.error) {
+            console.error(response.error);
+        } else {
+            console.log(response.success);
+        }
+    };
+
     return (
         <div className="border rounded-xl w-full h-full p-4">
+            <div className="flex justify-end">
+                <Button onClick={handleSaveWorksheet} variant="secondary" size="sm">
+                    Save Worksheet
+                </Button>
+                <Button
+                    className="rounded-full"
+                    variant="secondary"
+                    size="sm"
+                >
+                    <FaPlus className="w-4 h-4 me-2" />
+                    Worksheet
+                </Button>
+            </div>
+            <Separator className="my-4"/>
             <div className="flex gap-2" ref={toolbarRef}>
                 <div
                     className="w-[100px] h-[100px] rounded-lg"
@@ -152,7 +188,7 @@ const ReservationPage = () => {
                 ))}
             </div>
             <div
-                ref={workShopRef}
+                ref={worksheetRef}
                 onDrop={(e) => handleDrop(e)}
                 onDragOver={(e) => e.preventDefault()}
                 className="mt-4 grid-background"

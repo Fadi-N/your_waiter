@@ -70,3 +70,20 @@ export const MenuItemSchema = z.object({
         return val;
     }, z.number().min(0.01, { message: "Price must be greater than zero" }))
 });
+
+export const TileSchema = z.object({
+    type: z.enum(['table', 'bar', 'image']),
+    x: z.number(),
+    y: z.number(),
+    width: z.number(),
+    height: z.number(),
+    fill: z.string(),
+    src: z.string().optional(),
+});
+
+export const SaveWorksheetSchema = z.object({
+    name: z.string().min(1),
+    description: z.string().optional(),
+    tiles: z.array(TileSchema),
+    restaurantId: z.string().min(1),
+});
