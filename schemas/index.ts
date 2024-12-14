@@ -87,3 +87,8 @@ export const SaveWorksheetSchema = z.object({
     tiles: z.array(TileSchema),
     restaurantId: z.string().min(1),
 });
+
+export const CreateNewWorksheetSchema = z.object({
+    worksheetName: z.string()
+        .min(1, {message: "Worksheet name is required"}),
+});

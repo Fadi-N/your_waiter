@@ -12,6 +12,19 @@ import {BsPencil} from "react-icons/bs";
 import {FaSave} from "react-icons/fa";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {IoAddOutline} from "react-icons/io5";
+import RoleGate from "@/components/auth/role-gate";
+import {UserRole} from "@prisma/client";
+import NewRestaurantForm from "@/components/admin/new-restaurant-form";
+import DialogWrapper from "@/components/dialog-wrapper";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
 
 type Tile = {
     id: string;
@@ -220,22 +233,38 @@ const ReservationPage = () => {
                                 <p>Edit current worksheet</p>
                             </TooltipContent>
                         </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    className="rounded-full bg-[#1cc038] hover:bg-[#1cc038]"
-                                    variant="secondary"
-                                    size="sm"
-                                    onMouseEnter={()=>handleCrudIcons("add")}
-                                    onMouseLeave={()=>handleCrudIcons("add")}
-                                >
-                                    {crudIcons.add && <FaPlus className="w-3 h-3"/>}
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent className="me-2 bg-[#1cc038]"  side="left">
-                                <p>Create new worksheet</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        <Dialog>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            className="rounded-full bg-[#1cc038] hover:bg-[#1cc038]"
+                                            variant="secondary"
+                                            size="sm"
+                                            onMouseEnter={() => handleCrudIcons("add")}
+                                            onMouseLeave={() => handleCrudIcons("add")}
+                                        >
+                                            {crudIcons.add && <FaPlus className="w-3 h-3" />}
+                                        </Button>
+                                    </DialogTrigger>
+                                </TooltipTrigger>
+                                <TooltipContent className="me-2 bg-[#1cc038]" side="left">
+                                    <p>Create new worksheet</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                            <DialogContent>
+                                <DialogTitle>Create New Worksheet</DialogTitle>
+                                <DialogDescription>
+                                    Enter the worksheet name below and confirm to add a new worksheet layout.
+                                </DialogDescription>
+                                <hr />
+                                <div className="overflow-y-auto max-h-[70vh]">
+
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+
                     </TooltipProvider>
                 </div>
             </div>
