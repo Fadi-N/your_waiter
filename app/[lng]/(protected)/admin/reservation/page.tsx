@@ -11,6 +11,7 @@ import {useRestaurantContext} from "@/context/restaurant-context";
 import {BsPencil} from "react-icons/bs";
 import {FaSave} from "react-icons/fa";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 type Tile = {
     id: string;
@@ -37,8 +38,14 @@ const ReservationPage = () => {
         width: 0,
         height: 0,
     })
+    const [crudIcons, setCrudIcons] = useState<Record<string, boolean>>({
+        save: false,
+        edit: false,
+        add: false,
+    });
 
     const stageRef = useRef<any>(null);
+    const crudRef = useRef<any>(null);
     const toolbarRef = useRef<any>(null);
     const worksheetRef = useRef<any>(null);
     const transformerRef = useRef<any>(null);
@@ -50,10 +57,11 @@ const ReservationPage = () => {
 
         const sidebarElementRect = sidebarElement.getBoundingClientRect();
         const toolbarRect = toolbarRef.current.getBoundingClientRect();
+        const crudRect = crudRef.current.getBoundingClientRect();
 
         setStageMeasurement({
-            width: window.innerWidth - sidebarElementRect.width - 64,
-            height: window.innerHeight - toolbarRect.height - 64
+            width: window.innerWidth - sidebarElementRect.width - 96,
+            height: window.innerHeight - toolbarRect.height - crudRect.height - 96
         })
 
         //worksheetRef.current.style.width = `${window.innerWidth - sidebarElementRect.width - 64}px`;
@@ -151,9 +159,16 @@ const ReservationPage = () => {
         }
     };
 
+    const handleCrudIcons = (value:string) =>{
+        setCrudIcons((prev) => ({
+            ...prev,
+            [value]: !prev[value],
+        }))
+    }
+
     return (
         <div className="border rounded-xl w-full h-full p-4">
-            <div className="flex flex-row items-center  space-x-4">
+            <div className="flex flex-row items-center space-x-4" ref={crudRef}>
                 <Carousel className="flex-1">
                     <CarouselContent className="m-0 gap-x-3">
                         {[...Array(6)].map((_, index) => (
@@ -171,28 +186,57 @@ const ReservationPage = () => {
                     </CarouselContent>
                 </Carousel>
                 <div className="flex space-x-2 crud-container">
-                    <Button
-                        className="rounded-full bg-blue-500"
-                        variant="secondary"
-                        size="sm"
-                        onClick={handleSaveWorksheet}
-                    >
-                        <FaSave className="w-2 h-2"/>
-                    </Button>
-                    <Button
-                        className="rounded-full bg-[#fbb627]"
-                        variant="secondary"
-                        size="sm"
-                    >
-                        <BsPencil className="w-2 h-2"/>
-                    </Button>
-                    <Button
-                        className="rounded-full bg-[#1cc038]"
-                        variant="secondary"
-                        size="sm"
-                    >
-                        <FaPlus className="w-2 h-2"/>
-                    </Button>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    className="rounded-full bg-blue-500 hover:bg-blue-500"
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={handleSaveWorksheet}
+                                    onMouseEnter={()=>handleCrudIcons("save")}
+                                    onMouseLeave={()=>handleCrudIcons("save")}
+                                >
+                                    {crudIcons.save && <FaSave className="w-3 h-3"/>}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="me-2 bg-blue-500" side="left">
+                                <p>Save current worksheet</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    className="rounded-full bg-[#fbb627] hover:bg-[#fbb627]"
+                                    variant="secondary"
+                                    size="sm"
+                                    onMouseEnter={()=>handleCrudIcons("edit")}
+                                    onMouseLeave={()=>handleCrudIcons("edit")}
+                                >
+                                    {crudIcons.edit && <BsPencil className="w-3 h-3"/>}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="me-2 bg-[#fbb627]"  side="left">
+                                <p>Edit current worksheet</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    className="rounded-full bg-[#1cc038] hover:bg-[#1cc038]"
+                                    variant="secondary"
+                                    size="sm"
+                                    onMouseEnter={()=>handleCrudIcons("add")}
+                                    onMouseLeave={()=>handleCrudIcons("add")}
+                                >
+                                    {crudIcons.add && <FaPlus className="w-3 h-3"/>}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="me-2 bg-[#1cc038]"  side="left">
+                                <p>Create new worksheet</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
             </div>
             <Separator className="my-4"/>
