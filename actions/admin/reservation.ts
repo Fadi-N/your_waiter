@@ -5,6 +5,20 @@ import {SaveWorksheetSchema} from "@/schemas";
 import {db} from "@/lib/db";
 
 
+export const getWorksheets = async (restaurantId: string) => {
+
+    const categories = await db.worksheet.findMany({
+        where: {
+            restaurantId: restaurantId,
+        },
+    });
+
+    if (!categories || categories.length === 0) {
+        return { error: "Worksheets not found for the specified restaurant." };
+    }
+
+    return categories;
+};
 
 export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>) => {
     const validateFields = SaveWorksheetSchema.safeParse(values);
@@ -23,8 +37,6 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
                 restaurantId: restaurantId,
             },
         });
-
-        console.log("Query result:", existingWorksheet);
 
         if (existingWorksheet) {
             return { error: "Worksheet with this name already exists for this restaurant." };

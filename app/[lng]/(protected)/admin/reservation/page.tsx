@@ -6,20 +6,13 @@ import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {FaPlus} from "react-icons/fa6";
 import {Separator} from "@/components/ui/separator";
-import {saveWorksheet} from "@/actions/admin/reservation";
+import {getWorksheets, saveWorksheet} from "@/actions/admin/reservation";
 import {useRestaurantContext} from "@/context/restaurant-context";
 import {BsPencil} from "react-icons/bs";
 import {FaSave} from "react-icons/fa";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import NewWorksheetForm from "@/components/admin/new-worksheet-form";
 
 type Tile = {
@@ -31,6 +24,13 @@ type Tile = {
     height: number;
     fill: string;
     src?: string;
+};
+
+type Worksheet = {
+    id: string;
+    name: string;
+    description?: string; // Adjust based on your data
+    restaurantId: string;
 };
 
 const ReservationPage = () => {
@@ -52,12 +52,30 @@ const ReservationPage = () => {
         edit: false,
         add: false,
     });
+    const [loading, setLoading] = useState(true);
+    const [worksheets, setWorksheets] = useState<Worksheet[]>([]);
 
     const stageRef = useRef<any>(null);
     const crudRef = useRef<any>(null);
     const toolbarRef = useRef<any>(null);
     const worksheetRef = useRef<any>(null);
     const transformerRef = useRef<any>(null);
+
+    useEffect(() => {
+        const fetchWorksheets = async () => {
+            setLoading(true);
+            try {
+                const worksheets = await getWorksheets(selectedRestaurant);
+                setWorksheets(worksheets);
+            } catch (error) {
+                console.error("Error fetching worksheets:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchWorksheets();
+    }, [selectedRestaurant]);
 
     useEffect(() => {
         const sidebarElement = document.getElementById("sidebar-component");
@@ -168,7 +186,7 @@ const ReservationPage = () => {
         }
     };
 
-    const handleCrudIcons = (value:string) =>{
+    const handleCrudIcons = (value: string) => {
         setCrudIcons((prev) => ({
             ...prev,
             [value]: !prev[value],
@@ -180,18 +198,37 @@ const ReservationPage = () => {
             <div className="flex flex-row items-center space-x-4" ref={crudRef}>
                 <Carousel className="flex-1">
                     <CarouselContent className="m-0 gap-x-3">
-                        {[...Array(6)].map((_, index) => (
+                        {loading ?(
                             <>
-                                <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
-                                    <Button
-                                        className="w-full rounded-full bg-gray-300"
-                                        size="sm"
-                                    >
-                                        Floor {index}
-                                    </Button>
-                                </CarouselItem>
+                                {[...Array(6)].map(_ => (
+                                    <>
+                                        <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                            <Button
+                                                className="w-full rounded-full bg-gray-300"
+                                                size="sm"
+                                            >
+                                            </Button>
+                                        </CarouselItem>
+                                    </>
+                                ))}
                             </>
-                        ))}
+                        ) : (
+                            <>
+                                {worksheets.map((worksheet, index) => (
+                                    <>
+                                        <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                            <Button
+                                                className="w-full rounded-full bg-gray-300"
+                                                size="sm"
+                                            >
+                                                {worksheet?.name}
+                                            </Button>
+                                        </CarouselItem>
+                                    </>
+                                ))}
+                            </>
+                        )}
+
                     </CarouselContent>
                 </Carousel>
                 <div className="flex space-x-2 crud-container">
@@ -203,8 +240,8 @@ const ReservationPage = () => {
                                     variant="secondary"
                                     size="sm"
                                     onClick={handleSaveWorksheet}
-                                    onMouseEnter={()=>handleCrudIcons("save")}
-                                    onMouseLeave={()=>handleCrudIcons("save")}
+                                    onMouseEnter={() => handleCrudIcons("save")}
+                                    onMouseLeave={() => handleCrudIcons("save")}
                                 >
                                     {crudIcons.save && <FaSave className="w-3 h-3"/>}
                                 </Button>
@@ -219,13 +256,13 @@ const ReservationPage = () => {
                                     className="rounded-full bg-[#fbb627] hover:bg-[#fbb627]"
                                     variant="secondary"
                                     size="sm"
-                                    onMouseEnter={()=>handleCrudIcons("edit")}
-                                    onMouseLeave={()=>handleCrudIcons("edit")}
+                                    onMouseEnter={() => handleCrudIcons("edit")}
+                                    onMouseLeave={() => handleCrudIcons("edit")}
                                 >
                                     {crudIcons.edit && <BsPencil className="w-3 h-3"/>}
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent className="me-2 bg-[#fbb627]"  side="left">
+                            <TooltipContent className="me-2 bg-[#fbb627]" side="left">
                                 <p>Edit current worksheet</p>
                             </TooltipContent>
                         </Tooltip>
@@ -240,7 +277,7 @@ const ReservationPage = () => {
                                             onMouseEnter={() => handleCrudIcons("add")}
                                             onMouseLeave={() => handleCrudIcons("add")}
                                         >
-                                            {crudIcons.add && <FaPlus className="w-3 h-3" />}
+                                            {crudIcons.add && <FaPlus className="w-3 h-3"/>}
                                         </Button>
                                     </DialogTrigger>
                                 </TooltipTrigger>
@@ -254,7 +291,7 @@ const ReservationPage = () => {
                                 <DialogDescription>
                                     Enter the worksheet name below and confirm to add a new worksheet layout.
                                 </DialogDescription>
-                                <hr />
+                                <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
                                     <NewWorksheetForm selectedRestaurant={selectedRestaurant}/>
                                 </div>
@@ -339,8 +376,8 @@ const ReservationPage = () => {
                                         text={`A${index + 1}`}
                                         fontSize={16}
                                         fill="#109841"
-                                        x={tile.width / 2 - 50} // W środku obrazu
-                                        y={tile.height / 2 - 8} // W środku obrazu
+                                        x={tile.width / 2 - 50}
+                                        y={tile.height / 2 - 8}
                                         width={100}
                                         align="center"
                                         verticalAlign="middle"
