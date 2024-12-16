@@ -59,7 +59,7 @@ export const updateActiveWorksheet = async (restaurantId: string, worksheetId: s
             }
         });
 
-        return {success: "Worksheet upadted successfully!"};
+        return {success: "Worksheet updated successfully!"};
     } catch (error) {
         return {error: "Failed to update worksheet."}
     }
@@ -106,26 +106,36 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
         return {error: "Invalid fields!"};
     }
 
-    const {name, description, tiles, restaurantId} = validateFields.data;
+    const {worksheetId, description, tiles, restaurantId} = validateFields.data;
 
 
     try {
-        const existingWorksheet = await db.worksheet.findFirst({
+
+        if (!worksheetId) {
+            return {error: "Invalid worksheet data. Worksheet ID is required."};
+        }
+
+        if (!restaurantId) {
+            return {error: "Invalid restaurant ID."};
+        }
+
+        const existingWorksheet = await db.worksheet.findUnique({
             where: {
-                name: name,
+                id: worksheetId,
                 restaurantId: restaurantId,
             },
         });
 
-        if (existingWorksheet) {
-            return {error: "Worksheet with this name already exists for this restaurant."};
+        if (!existingWorksheet) {
+            return {error: "Worksheet not found or does not belong to this restaurant."};
         }
 
-        const worksheet = await db.worksheet.create({
-            data: {
-                name: name,
-                description: description,
+        await db.worksheet.update({
+            where: {
+                id: worksheetId,
                 restaurantId: restaurantId,
+            },
+            data: {
                 tiles: {
                     create: tiles.map(tile => ({
                         type: tile.type,
@@ -140,9 +150,8 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
             },
         });
 
-        return {success: "Worksheet saved successfully!", worksheet};
+        return {success: "Worksheet saved successfully!"};
     } catch (error) {
-        console.error("Error saving worksheet:", error);
         return {error: "Failed to save worksheet."};
     }
 };

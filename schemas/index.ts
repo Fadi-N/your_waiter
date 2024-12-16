@@ -82,10 +82,10 @@ export const TileSchema = z.object({
 });
 
 export const SaveWorksheetSchema = z.object({
-    name: z.string().min(1),
+    worksheetId: z.string(),
     description: z.string().optional(),
     tiles: z.array(TileSchema),
-    restaurantId: z.string().min(1),
+    restaurantId: z.string(),
 });
 
 export const CreateNewWorksheetSchema = z.object({

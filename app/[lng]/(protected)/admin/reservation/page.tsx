@@ -176,8 +176,7 @@ const ReservationPage = () => {
 
     const handleSaveWorksheet = async () => {
         const response = await saveWorksheet({
-            name: "My Worksheet",
-            description: "Example layout of the restaurant",
+            worksheetId: activeWorksheet?.id || "",
             restaurantId: selectedRestaurant,
             tiles,
         });
@@ -201,7 +200,7 @@ const ReservationPage = () => {
             <div className="flex flex-row items-center space-x-4" ref={crudRef}>
                 <Carousel className="flex-1">
                     <CarouselContent className="m-0 gap-x-3">
-                        {loading ?(
+                        {loading ? (
                             <>
                                 {[...Array(6)].map(_ => (
                                     <>
@@ -224,7 +223,9 @@ const ReservationPage = () => {
                                                 className="w-full rounded-full"
                                                 size="sm"
                                                 variant={activeWorksheet?.name === worksheet.name ? "default" : "secondary"}
-                                                onClick={()=>{setActiveWorksheet(worksheet)}}
+                                                onClick={() => {
+                                                    setActiveWorksheet(worksheet)
+                                                }}
                                             >
                                                 {worksheet?.name}
                                             </Button>
@@ -278,11 +279,13 @@ const ReservationPage = () => {
                             <DialogContent>
                                 <DialogTitle>Edit {activeWorksheet?.name} Worksheet</DialogTitle>
                                 <DialogDescription>
-                                    Modify the worksheet details below. Save your changes or delete the worksheet if it is no longer needed.
+                                    Modify the worksheet details below. Save your changes or delete the worksheet if it
+                                    is no longer needed.
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <EditWorksheetForm restaurantId={selectedRestaurant} activeWorksheet={activeWorksheet}/>
+                                    <EditWorksheetForm restaurantId={selectedRestaurant}
+                                                       activeWorksheet={activeWorksheet}/>
                                 </div>
                             </DialogContent>
                         </Dialog>
