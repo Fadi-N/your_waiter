@@ -11,7 +11,7 @@ import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
-import {deleteActiveWorksheet} from "@/actions/admin/reservation";
+import {deleteActiveWorksheet, updateActiveWorksheet} from "@/actions/admin/reservation";
 
 interface EditWorksheetFormProps {
     restaurantId: string;
@@ -40,8 +40,17 @@ const EditRestaurantForm = ({restaurantId, activeWorksheet}: EditWorksheetFormPr
         setError("");
         setSuccess("");
 
-        startTransition(() => {
+        if (!activeWorksheet || !activeWorksheet.id) {
+            setError("No active worksheet to update.");
+            return;
+        }
 
+        startTransition(() => {
+            updateActiveWorksheet(restaurantId, activeWorksheet?.id, values)
+                .then((data) => {
+                    setError(data?.error);
+                    setSuccess(data?.success);
+                })
         });
     };
 

@@ -1,7 +1,7 @@
 'use server'
 
 import * as z from "zod";
-import {SaveWorksheetSchema} from "@/schemas";
+import {CreateNewWorksheetSchema, SaveWorksheetSchema} from "@/schemas";
 import {db} from "@/lib/db";
 
 
@@ -19,6 +19,44 @@ export const getWorksheets = async (restaurantId: string) => {
 
     return categories;
 };
+
+export const updateActiveWorksheet = async (restaurantId: string, worksheetId: string, values: z.infer<typeof CreateNewWorksheetSchema>) => {
+    try {
+        if (!worksheetId) {
+            return {error: "Invalid worksheet data. Worksheet ID is required."};
+        }
+
+        if (!restaurantId) {
+            return {error: "Invalid restaurant ID."};
+        }
+
+        const existingWorksheet = await db.worksheet.findUnique({
+            where: {
+                id: worksheetId,
+                restaurantId: restaurantId,
+            },
+        });
+
+        if (!existingWorksheet) {
+            return {error: "Worksheet not found or does not belong to this restaurant."};
+        }
+
+        await db.worksheet.update({
+            where: {
+                id: worksheetId,
+                restaurantId: restaurantId,
+            },
+            data:{
+                name: values.worksheetName
+            }
+        });
+
+        return {success: "Worksheet upadted successfully!"};
+    } catch (error) {
+        return {error: "Failed to update worksheet."}
+    }
+};
+
 
 export const deleteActiveWorksheet = async (restaurantId: string, worksheetId: string) => {
     try {
