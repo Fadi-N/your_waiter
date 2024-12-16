@@ -23,7 +23,7 @@ type Tile = {
     type: 'table' | 'bar' | 'image';
     width: number;
     height: number;
-    fill: string;
+    fill?: string;
     src?: string;
 };
 
@@ -79,6 +79,21 @@ const ReservationPage = () => {
 
         fetchWorksheets();
     }, [selectedRestaurant]);
+
+    useEffect(() => {
+        if (activeWorksheet?.tiles) {
+            activeWorksheet.tiles.forEach((tile) => {
+                if (tile.src && !loadedImages[tile.src]) {
+                    const img = new window.Image();
+                    img.src = tile.src;
+                    img.onload = () => {
+                        setLoadedImages((prev) => ({ ...prev, [tile.src]: img }));
+                    };
+                }
+            });
+            setTiles(activeWorksheet.tiles);
+        }
+    }, [activeWorksheet]);
 
     useEffect(() => {
         const sidebarElement = document.getElementById("sidebar-component");
@@ -144,8 +159,8 @@ const ReservationPage = () => {
                 type: draggedTile.type,
                 width: draggedTile.config?.width || 100,
                 height: draggedTile.config?.height || 100,
-                fill: draggedTile.type === 'table' ? '#121625' : 'red',
-                src: draggedTile.config?.src,
+                fill: draggedTile.type === 'table' ? '#121625' : undefined,
+                src: draggedTile.config?.src || undefined,
             },
         ]);
     };

@@ -154,7 +154,7 @@ model Tile {
   y      Float
   width  Float
   height Float
-  fill   String
+  fill   String?
   src    String?
 
   worksheetId String    @db.ObjectId

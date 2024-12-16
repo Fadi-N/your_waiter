@@ -11,6 +11,9 @@ export const getWorksheets = async (restaurantId: string) => {
         where: {
             restaurantId: restaurantId,
         },
+        include: {
+            tiles: true,
+        }
     });
 
     if (!categories || categories.length === 0) {
@@ -103,11 +106,11 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
     const validateFields = SaveWorksheetSchema.safeParse(values);
 
     if (!validateFields.success) {
+        console.log("Validation failed:", validateFields.error.format());
         return {error: "Invalid fields!"};
     }
 
     const {worksheetId, description, tiles, restaurantId} = validateFields.data;
-
 
     try {
 
@@ -143,7 +146,7 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
                         y: tile.y,
                         width: tile.width,
                         height: tile.height,
-                        fill: tile.fill,
+                        fill: tile.type === 'table' ? tile.fill : null,
                         src: tile.src || null,
                     })),
                 },
@@ -152,6 +155,7 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
 
         return {success: "Worksheet saved successfully!"};
     } catch (error) {
+        console.log(error);
         return {error: "Failed to save worksheet."};
     }
 };

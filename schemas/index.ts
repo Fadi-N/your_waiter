@@ -77,15 +77,15 @@ export const TileSchema = z.object({
     y: z.number(),
     width: z.number(),
     height: z.number(),
-    fill: z.string(),
+    fill: z.string().optional(),
     src: z.string().optional(),
 });
 
 export const SaveWorksheetSchema = z.object({
     worksheetId: z.string(),
     description: z.string().optional(),
-    tiles: z.array(TileSchema),
     restaurantId: z.string(),
+    tiles: z.array(TileSchema),
 });
 
 export const CreateNewWorksheetSchema = z.object({
