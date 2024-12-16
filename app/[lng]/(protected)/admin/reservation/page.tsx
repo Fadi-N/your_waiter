@@ -14,6 +14,7 @@ import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import NewWorksheetForm from "@/components/admin/new-worksheet-form";
+import EditWorksheetForm from "@/components/admin/edit-worksheet-form";
 
 type Tile = {
     id: string;
@@ -54,6 +55,7 @@ const ReservationPage = () => {
     });
     const [loading, setLoading] = useState(true);
     const [worksheets, setWorksheets] = useState<Worksheet[]>([]);
+    const [activeWorksheet, setActiveWorksheet] = useState<Worksheet | null>(null);
 
     const stageRef = useRef<any>(null);
     const crudRef = useRef<any>(null);
@@ -67,6 +69,7 @@ const ReservationPage = () => {
             try {
                 const worksheets = await getWorksheets(selectedRestaurant);
                 setWorksheets(worksheets);
+                setActiveWorksheet(worksheets[0]);
             } catch (error) {
                 console.error("Error fetching worksheets:", error);
             } finally {
@@ -218,8 +221,10 @@ const ReservationPage = () => {
                                     <>
                                         <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
                                             <Button
-                                                className="w-full rounded-full bg-gray-300"
+                                                className="w-full rounded-full"
                                                 size="sm"
+                                                variant={activeWorksheet?.name === worksheet.name ? "default" : "secondary"}
+                                                onClick={()=>{setActiveWorksheet(worksheet)}}
                                             >
                                                 {worksheet?.name}
                                             </Button>
@@ -250,22 +255,37 @@ const ReservationPage = () => {
                                 <p>Save current worksheet</p>
                             </TooltipContent>
                         </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    className="rounded-full bg-[#fbb627] hover:bg-[#fbb627]"
-                                    variant="secondary"
-                                    size="sm"
-                                    onMouseEnter={() => handleCrudIcons("edit")}
-                                    onMouseLeave={() => handleCrudIcons("edit")}
-                                >
-                                    {crudIcons.edit && <BsPencil className="w-3 h-3"/>}
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent className="me-2 bg-[#fbb627]" side="left">
-                                <p>Edit current worksheet</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        <Dialog>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            className="rounded-full bg-[#fbb627] hover:bg-[#fbb627]"
+                                            variant="secondary"
+                                            size="sm"
+                                            onMouseEnter={() => handleCrudIcons("edit")}
+                                            onMouseLeave={() => handleCrudIcons("edit")}
+                                        >
+                                            {crudIcons.edit && <BsPencil className="w-3 h-3"/>}
+                                        </Button>
+                                    </DialogTrigger>
+                                </TooltipTrigger>
+                                <TooltipContent className="me-2 bg-[#fbb627]" side="left">
+                                    <p>Edit current worksheet</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                            <DialogContent>
+                                <DialogTitle>Edit {activeWorksheet?.name} Worksheet</DialogTitle>
+                                <DialogDescription>
+                                    Modify the worksheet details below. Save your changes or delete the worksheet if it is no longer needed.
+                                </DialogDescription>
+                                <hr/>
+                                <div className="overflow-y-auto max-h-[70vh]">
+                                    <EditWorksheetForm restaurantId={selectedRestaurant} activeWorksheet={activeWorksheet}/>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
                         <Dialog>
                             <Tooltip>
                                 <TooltipTrigger asChild>
@@ -297,7 +317,6 @@ const ReservationPage = () => {
                                 </div>
                             </DialogContent>
                         </Dialog>
-
                     </TooltipProvider>
                 </div>
             </div>

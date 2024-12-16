@@ -14,20 +14,54 @@ export const getWorksheets = async (restaurantId: string) => {
     });
 
     if (!categories || categories.length === 0) {
-        return { error: "Worksheets not found for the specified restaurant." };
+        return {error: "Worksheets not found for the specified restaurant."};
     }
 
     return categories;
+};
+
+export const deleteActiveWorksheet = async (restaurantId: string, worksheetId: string) => {
+    try {
+        if (!worksheetId) {
+            return {error: "Invalid worksheet data. Worksheet ID is required."};
+        }
+
+        if (!restaurantId) {
+            return {error: "Invalid restaurant ID."};
+        }
+
+        const existingWorksheet = await db.worksheet.findUnique({
+            where: {
+                id: worksheetId,
+                restaurantId: restaurantId,
+            },
+        });
+
+        if (!existingWorksheet) {
+            return {error: "Worksheet not found or does not belong to this restaurant."};
+        }
+
+        await db.worksheet.delete({
+            where: {
+                id: worksheetId,
+                restaurantId: restaurantId,
+            },
+        });
+
+        return {success: "Worksheet deleted successfully!"};
+    } catch (error) {
+        return {error: "Failed to delete worksheet."}
+    }
 };
 
 export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>) => {
     const validateFields = SaveWorksheetSchema.safeParse(values);
 
     if (!validateFields.success) {
-        return { error: "Invalid fields!" };
+        return {error: "Invalid fields!"};
     }
 
-    const { name, description, tiles, restaurantId } = validateFields.data;
+    const {name, description, tiles, restaurantId} = validateFields.data;
 
 
     try {
@@ -39,7 +73,7 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
         });
 
         if (existingWorksheet) {
-            return { error: "Worksheet with this name already exists for this restaurant." };
+            return {error: "Worksheet with this name already exists for this restaurant."};
         }
 
         const worksheet = await db.worksheet.create({
@@ -61,9 +95,9 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
             },
         });
 
-        return { success: "Worksheet saved successfully!", worksheet };
+        return {success: "Worksheet saved successfully!", worksheet};
     } catch (error) {
         console.error("Error saving worksheet:", error);
-        return { error: "Failed to save worksheet." };
+        return {error: "Failed to save worksheet."};
     }
 };
