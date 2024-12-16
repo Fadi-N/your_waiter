@@ -21,6 +21,14 @@ export const getWorksheets = async (restaurantId: string) => {
 };
 
 export const updateActiveWorksheet = async (restaurantId: string, worksheetId: string, values: z.infer<typeof CreateNewWorksheetSchema>) => {
+    const validateFields = CreateNewWorksheetSchema.safeParse(values);
+
+    if (!validateFields.success) {
+        return {error: "Invalid fields!"};
+    }
+
+    const {worksheetName} = validateFields.data;
+
     try {
         if (!worksheetId) {
             return {error: "Invalid worksheet data. Worksheet ID is required."};
@@ -47,7 +55,7 @@ export const updateActiveWorksheet = async (restaurantId: string, worksheetId: s
                 restaurantId: restaurantId,
             },
             data:{
-                name: values.worksheetName
+                name: worksheetName
             }
         });
 
@@ -56,7 +64,6 @@ export const updateActiveWorksheet = async (restaurantId: string, worksheetId: s
         return {error: "Failed to update worksheet."}
     }
 };
-
 
 export const deleteActiveWorksheet = async (restaurantId: string, worksheetId: string) => {
     try {
