@@ -5,18 +5,18 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useForm} from "react-hook-form";
-import {CreateNewWorksheetSchema, CreateRestaurantWithQRCodeSchema} from "@/schemas";
+import {CreateNewWorksheetSchema} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
-import {useCurrentUser} from "@/hooks/use-current-user";
 import {createNewWorksheet} from "@/actions/admin/create-new-worksheet";
 
-const NewWorksheetForm = () => {
-    const user = useCurrentUser();
+interface NewWorksheetFormProps {
+    selectedRestaurant: string;
+}
 
+const NewWorksheetForm = ({selectedRestaurant}: NewWorksheetFormProps) => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -33,7 +33,7 @@ const NewWorksheetForm = () => {
         setSuccess("");
 
         startTransition(() => {
-            createNewWorksheet(values, user?.id || "")
+            createNewWorksheet(values, selectedRestaurant)
                 .then((data) => {
                     setError(data?.error);
                     setSuccess(data?.success);
@@ -53,7 +53,7 @@ const NewWorksheetForm = () => {
                         name="worksheetName"
                         render={({field}) => (
                             <FormItem>
-                                <FormLabel>Restaurant Name</FormLabel>
+                                <FormLabel>Worksheet Name</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}

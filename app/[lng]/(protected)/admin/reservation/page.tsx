@@ -12,11 +12,6 @@ import {BsPencil} from "react-icons/bs";
 import {FaSave} from "react-icons/fa";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {IoAddOutline} from "react-icons/io5";
-import RoleGate from "@/components/auth/role-gate";
-import {UserRole} from "@prisma/client";
-import NewRestaurantForm from "@/components/admin/new-restaurant-form";
-import DialogWrapper from "@/components/dialog-wrapper";
 import {
     Dialog,
     DialogContent,
@@ -25,6 +20,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
+import NewWorksheetForm from "@/components/admin/new-worksheet-form";
 
 type Tile = {
     id: string;
@@ -260,7 +256,7 @@ const ReservationPage = () => {
                                 </DialogDescription>
                                 <hr />
                                 <div className="overflow-y-auto max-h-[70vh]">
-
+                                    <NewWorksheetForm selectedRestaurant={selectedRestaurant}/>
                                 </div>
                             </DialogContent>
                         </Dialog>
