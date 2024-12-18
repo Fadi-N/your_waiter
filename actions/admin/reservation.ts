@@ -106,7 +106,6 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
     const validateFields = SaveWorksheetSchema.safeParse(values);
 
     if (!validateFields.success) {
-        console.log("Validation failed:", validateFields.error.format());
         return {error: "Invalid fields!"};
     }
 
@@ -140,15 +139,32 @@ export const saveWorksheet = async (values: z.infer<typeof SaveWorksheetSchema>)
             },
             data: {
                 tiles: {
-                    create: tiles.map(tile => ({
-                        type: tile.type,
-                        x: tile.x,
-                        y: tile.y,
-                        width: tile.width,
-                        height: tile.height,
-                        fill: tile.type === 'table' ? tile.fill : null,
-                        src: tile.src || null,
+                    upsert: tiles.map(tile => ({
+                        where: { uuid: tile.uuid },
+                        create: {
+                            uuid: tile.uuid,
+                            type: tile.type,
+                            x: tile.x,
+                            y: tile.y,
+                            width: tile.width,
+                            height: tile.height,
+                            fill: tile.fill || null,
+                            src: tile.src || null,
+                        },
+                        update: {
+                            type: tile.type,
+                            x: tile.x,
+                            y: tile.y,
+                            width: tile.width,
+                            height: tile.height,
+                            fill: tile.fill || null,
+                            src: tile.src || null,
+                        },
                     })),
+                    deleteMany: {
+                        worksheetId: worksheetId,
+                        uuid: { notIn: tiles.map(tile => tile.uuid) },
+                    },
                 },
             },
         });

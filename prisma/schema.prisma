@@ -149,6 +149,7 @@ model Worksheet {
 
 model Tile {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  uuid   String  @unique
   type   String
   x      Float
   y      Float

@@ -72,13 +72,14 @@ export const MenuItemSchema = z.object({
 });
 
 export const TileSchema = z.object({
+    uuid: z.string(),
     type: z.enum(['table', 'bar', 'image']),
     x: z.number(),
     y: z.number(),
     width: z.number(),
     height: z.number(),
-    fill: z.string().optional(),
-    src: z.string().optional(),
+    fill: z.string().nullable().optional(),
+    src: z.string().nullable().optional(),
 });
 
 export const SaveWorksheetSchema = z.object({

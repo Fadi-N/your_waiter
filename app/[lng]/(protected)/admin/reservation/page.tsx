@@ -13,11 +13,12 @@ import {FaSave} from "react-icons/fa";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import { v4 as uuidv4 } from 'uuid';
 import NewWorksheetForm from "@/components/admin/new-worksheet-form";
 import EditWorksheetForm from "@/components/admin/edit-worksheet-form";
 
 type Tile = {
-    id: string;
+    uuid: string;
     x: number;
     y: number;
     type: 'table' | 'bar' | 'image';
@@ -153,7 +154,7 @@ const ReservationPage = () => {
         setTiles((prev) => [
             ...prev,
             {
-                id: `tile-${Date.now()}`,
+                uuid: uuidv4(),
                 x: finalPositionX,
                 y: finalPositionY,
                 type: draggedTile.type,
@@ -165,18 +166,18 @@ const ReservationPage = () => {
         ]);
     };
 
-    const handleDragMove = (id: string, x: number, y: number) => {
+    const handleDragMove = (uuid: string, x: number, y: number) => {
         setTiles((prev) =>
             prev.map((tile) =>
-                tile.id === id ? {...tile, x, y} : tile
+                tile.uuid === uuid ? {...tile, x, y} : tile
             )
         );
     };
 
-    const handleTransform = (id: string, newAttrs: any) => {
+    const handleTransform = (uuid: string, newAttrs: any) => {
         setTiles((prev) =>
             prev.map((tile) =>
-                tile.id === id
+                tile.uuid === uuid
                     ? {
                         ...tile,
                         x: newAttrs.x,
@@ -382,18 +383,18 @@ const ReservationPage = () => {
                         {tiles.map((tile, index) =>
                             tile.type === 'image' && tile.src && loadedImages[tile.src] ? (
                                 <Group
-                                    key={tile.id}
-                                    id={tile.id}
+                                    key={tile.uuid}
+                                    id={tile.uuid}
                                     draggable
                                     x={tile.x}
                                     y={tile.y}
-                                    onClick={() => tile.type !== 'image' && setSelectedId(tile.id)}
+                                    onClick={() => tile.type !== 'image' && setSelectedId(tile.uuid)}
                                     onDragEnd={(e) =>
-                                        handleDragMove(tile.id, e.target.x(), e.target.y())
+                                        handleDragMove(tile.uuid, e.target.x(), e.target.y())
                                     }
                                     onTransformEnd={(e) => {
                                         const node = e.target;
-                                        handleTransform(tile.id, node.attrs);
+                                        handleTransform(tile.uuid, node.attrs);
                                     }}
                                 >
                                     <KonvaImage
@@ -422,21 +423,21 @@ const ReservationPage = () => {
                                 </Group>
                             ) : (
                                 <Rect
-                                    key={tile.id}
-                                    id={tile.id}
+                                    key={tile.uuid}
+                                    id={tile.uuid}
                                     x={tile.x}
                                     y={tile.y}
                                     width={tile.width}
                                     height={tile.height}
                                     fill={tile.fill}
                                     draggable
-                                    onClick={() => setSelectedId(tile.id)}
+                                    onClick={() => setSelectedId(tile.uuid)}
                                     onDragEnd={(e) =>
-                                        handleDragMove(tile.id, e.target.x(), e.target.y())
+                                        handleDragMove(tile.uuid, e.target.x(), e.target.y())
                                     }
                                     onTransformEnd={(e) => {
                                         const node = e.target;
-                                        handleTransform(tile.id, node.attrs);
+                                        handleTransform(tile.uuid, node.attrs);
                                     }}
                                 />
                             )
