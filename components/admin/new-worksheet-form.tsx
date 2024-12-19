@@ -11,6 +11,7 @@ import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {createNewWorksheet} from "@/actions/admin/create-new-worksheet";
+import FloatingInput from "@/components/ui/floating-input";
 
 interface NewWorksheetFormProps {
     selectedRestaurant: string;
@@ -47,26 +48,22 @@ const NewWorksheetForm = ({selectedRestaurant}: NewWorksheetFormProps) => {
                 className="space-y-6"
                 onSubmit={form.handleSubmit(onSubmit)}
             >
-                <div className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="worksheetName"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Worksheet Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Floor 1"
-                                        type="text"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                </div>
+                <FormField
+                    control={form.control}
+                    name="worksheetName"
+                    render={({field}) => (
+                        <FormItem>
+                            <FloatingInput
+                                id="worksheetName"
+                                label="Worksheet name"
+                                type="text"
+                                disabled={isPending}
+                                field={field}
+                            />
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
                 <FormError message={error}/>
                 <FormSuccess message={success}/>
                 <Button

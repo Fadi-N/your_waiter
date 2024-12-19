@@ -12,6 +12,7 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
 import {deleteActiveWorksheet, updateActiveWorksheet} from "@/actions/admin/reservation";
+import FloatingInput from "@/components/ui/floating-input";
 
 interface EditWorksheetFormProps {
     restaurantId: string;
@@ -86,15 +87,13 @@ const EditRestaurantForm = ({restaurantId, activeWorksheet}: EditWorksheetFormPr
                             name="worksheetName"
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Worksheet Name</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="Floor 1"
-                                            type="text"
-                                            disabled={isPending}
-                                        />
-                                    </FormControl>
+                                    <FloatingInput
+                                        id="worksheetName"
+                                        label="Worksheet name"
+                                        type="text"
+                                        disabled={isPending}
+                                        field={field}
+                                    />
                                     <FormMessage/>
                                 </FormItem>
                             )}
