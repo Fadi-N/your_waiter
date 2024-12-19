@@ -105,19 +105,13 @@ const Main: React.FC<SidebarProps> = ({menuItems, MenuCategories, loading}) => {
 
                 {/* Lista elementów menu */}
                 <div className="flex flex-col">
-                    <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(347.5px,1fr))]">
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {loading ? (
                             <SkeletonCard/>
                         ) : (
                             <>
-                                {searchedMenuItems.map((item) => (
-                                    <MenuItemCard
-                                        key={item.id}
-                                        item={item}
-                                        quantity={cart.items.find((cartItem) => cartItem.id === item.id)?.quantity || 0}
-                                        onIncrement={() => handleIncrement(item)}
-                                        onDecrement={() => handleDecrement(item)}
-                                    />
+                                {menuItems?.map((item: MenuItem) => (
+                                    <MenuItemCard key={item.id} item={item}/>
                                 ))}
                             </>
                         )}

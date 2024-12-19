@@ -12,8 +12,6 @@ import {BsPencil} from "react-icons/bs";
 import {FaPlus} from "react-icons/fa6";
 import {Separator} from "@/components/ui/separator";
 import MenuItemForm from "@/components/admin/menu-item-form";
-import {Card, CardContent} from "@/components/ui/card";
-import {Skeleton} from "@/components/ui/skeleton";
 import {getCategoriesByRestaurant} from "@/actions/admin/menu-category";
 import SkeletonCard from "@/components/skeleton-card";
 
@@ -127,16 +125,18 @@ const MenuPage = () => {
                 </div>
             </div>
             <Separator className="my-4"/>
-            <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(347.5px,1fr))]">
-                {loading ? (
-                    <SkeletonCard/>
-                ) : (
-                    <>
-                        {menuItems?.map((item: MenuItem) => (
-                            <MenuItemCard key={item.id} item={item}/>
-                        ))}
-                    </>
-                )}
+            <div className="flex flex-col">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {loading ? (
+                        <SkeletonCard/>
+                    ) : (
+                        <>
+                            {menuItems?.map((item: MenuItem) => (
+                                <MenuItemCard key={item.id} item={item}/>
+                            ))}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
