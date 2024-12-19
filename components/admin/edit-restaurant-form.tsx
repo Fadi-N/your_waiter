@@ -14,6 +14,7 @@ import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with
 import {useCurrentUser} from "@/hooks/use-current-user";
 import {Table as TableFromPrisma} from "@prisma/client";
 import TableList from "@/components/admin/table-list";
+import FloatingInput from "@/components/ui/floating-input";
 
 interface EditRestaurantFormProps {
     selectedRestaurant: string;
@@ -53,30 +54,26 @@ const EditRestaurantForm = ({selectedRestaurant, tables}: EditRestaurantFormProp
             {selectedRestaurant ? (
                 <Form {...form}>
                     <form
-                        className="space-y-6"
+                        className="space-y-4"
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <div className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="restaurantName"
-                                render={({field}) => (
-                                    <FormItem>
-                                        <FormLabel>Restaurant Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                placeholder="Your waiter"
-                                                type="text"
-                                                disabled={isPending}
-                                            />
-                                        </FormControl>
-                                        <FormMessage/>
-                                    </FormItem>
-                                )}
-                            />
-                            <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
-                        </div>
+                        <FormField
+                            control={form.control}
+                            name="restaurantName"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FloatingInput
+                                        id="restaurantName"
+                                        label="Restaurant name"
+                                        type="text"
+                                        disabled={isPending}
+                                        field={field}
+                                    />
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                        <TableList selectedRestaurant={selectedRestaurant} tables={tables}/>
                         <FormError message={error}/>
                         <FormSuccess message={success}/>
                         <div className="flex gap-x-2">

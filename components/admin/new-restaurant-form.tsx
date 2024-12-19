@@ -12,6 +12,7 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {createRestaurantWithQRCode} from "@/actions/admin/create-restaurant-with-qrcode";
 import {useCurrentUser} from "@/hooks/use-current-user";
+import FloatingInput from "@/components/ui/floating-input";
 
 const NewRestaurantForm = () => {
     const user = useCurrentUser();
@@ -45,47 +46,41 @@ const NewRestaurantForm = () => {
     return (
         <Form {...form}>
             <form
-                className="space-y-6"
+                className="space-y-4"
                 onSubmit={form.handleSubmit(onSubmit)}
             >
-                <div className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="restaurantName"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Restaurant Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Your waiter"
-                                        type="text"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="numberOfTables"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Number of tables</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="10"
-                                        type="text"
-                                        disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                </div>
+                <FormField
+                    control={form.control}
+                    name="restaurantName"
+                    render={({field}) => (
+                        <FormItem>
+                            <FloatingInput
+                                id="restaurantName"
+                                label="Restaurant name"
+                                type="text"
+                                disabled={isPending}
+                                field={field}
+                            />
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="numberOfTables"
+                    render={({field}) => (
+                        <FormItem>
+                            <FloatingInput
+                                id="numberOfTables"
+                                label="Number of tables"
+                                type="text"
+                                disabled={isPending}
+                                field={field}
+                            />
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
                 <FormError message={error}/>
                 <FormSuccess message={success}/>
                 <Button

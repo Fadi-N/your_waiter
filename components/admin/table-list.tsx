@@ -22,7 +22,6 @@ const TableList = ({selectedRestaurant, tables}: TableListProps) => {
                     {tables.length > 0 ? (
                         <>
                             <Table>
-                                <TableCaption>Tables for Restaurant</TableCaption>
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead className="w-[100px]">Table</TableHead>
