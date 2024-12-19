@@ -235,7 +235,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                     </TabsTrigger>
                 </TabsList>*/}
 
-                <TabsContent
+                {/*<TabsContent
                     value="restaurant"
                     className="bg-gray-100 p-4 rounded-xl overflow-y-auto md:w-10/12 md:mt-0"
                 >
@@ -253,7 +253,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             </Button>
                         </PDFDownloadLink>
                     </div>
-                </TabsContent>
+                </TabsContent>*/}
 
                 <TabsContent
                     value="category"
@@ -334,7 +334,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                         </DrawerWrapper>
                     )}
                 </TabsContent>
-                <TabsContent value="menu-item"
+                {/*<TabsContent value="menu-item"
                              className="bg-gray-100 p-4 rounded-xl overflow-y-auto md:w-10/12 md:mt-0">
                     {isDesktop ? (
                         <>
@@ -383,7 +383,7 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                             </RoleGate>
                         </DrawerWrapper>
                     )}
-                </TabsContent>
+                </TabsContent>*/}
             </Tabs>
         </main>
     );

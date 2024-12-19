@@ -1,8 +1,7 @@
 'use client'
 
-import React, {useEffect, useState, useTransition} from 'react';
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
+import React, {useState, useTransition} from 'react';
+import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import {Button} from "@/components/ui/button";
 import {useForm} from "react-hook-form";
 import {MenuItemSchema} from "@/schemas";
@@ -11,23 +10,26 @@ import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import SelectWrapper from "@/components/select-wrapper";
-import {MenuCategory, Table} from "@prisma/client";
-import {getCategoriesByRestaurant} from "@/actions/admin/menu-category";
+import {MenuCategory} from "@prisma/client";
 import {MenuItem} from "@/actions/admin/menu-item";
 import {useParams} from "next/navigation";
 import {useTranslation} from "@/app/i18n/client";
 import ImageUpload from "@/components/image-upload";
+import FloatingInput from "@/components/ui/floating-input";
 
-const MenuItemForm = ({selectedRestaurant}) => {
+interface MenuItemFormProps {
+    restaurantId: string;
+    menuCategories: MenuCategory[];
+}
+
+const MenuItemForm = ({restaurantId, menuCategories}: MenuItemFormProps) => {
     const {lng} = useParams();
-    const { t } = useTranslation(lng, "menu-item-form")
+    const {t} = useTranslation(lng, "menu-item-form")
 
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
 
-    const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
-    const [selectedMenuCategory, setSelectedMenuCategory] = useState<string>("");
 
     const form = useForm<z.infer<typeof MenuItemSchema>>({
         resolver: zodResolver(MenuItemSchema),
@@ -40,24 +42,12 @@ const MenuItemForm = ({selectedRestaurant}) => {
         }
     });
 
-    useEffect(() => {
-        if (selectedRestaurant) {
-            // Fetch categories for the selected restaurant
-            const fetchcategories = async () => {
-                const data = await getCategoriesByRestaurant(selectedRestaurant);
-                setMenuCategories(data);
-            };
-
-            fetchcategories();
-        }
-    }, [selectedRestaurant])
-
     const onSubmit = (values: z.infer<typeof MenuItemSchema>) => {
         setError("");
         setSuccess("");
 
         startTransition(() => {
-            MenuItem(values, selectedRestaurant || "")
+            MenuItem(values, restaurantId || "")
                 .then((data) => {
                     setError(data?.error);
                     setSuccess(data?.success);
@@ -71,100 +61,97 @@ const MenuItemForm = ({selectedRestaurant}) => {
                 className="space-y-6"
                 onSubmit={form.handleSubmit(onSubmit)}
             >
-                <div className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="imageUrl"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormControl>
-                                    <ImageUpload
-                                        value={field.value}
-                                        onChange={(url) => field.onChange(url)}
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        control={form.control}
-                        name="itemName"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>{`${t('itemName')}`}</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Spaghetti"
+                <div className="flex space-x-4">
+                    <div>
+                        <FormField
+                            control={form.control}
+                            name="imageUrl"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <ImageUpload
+                                            value={field.value}
+                                            onChange={(url) => field.onChange(url)}
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="flex flex-1 flex-col space-y-2 justify-center">
+                        <FormField
+                            control={form.control}
+                            name="itemName"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FloatingInput
+                                        id="itemName"
+                                        label={`${t('itemName')}`}
                                         type="text"
                                         disabled={isPending}
+                                        field={field}
                                     />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
 
-                    <FormField
-                        control={form.control}
-                        name="menuCategory"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormControl>
-                                    <SelectWrapper
-                                        items={menuCategories.map(category => ({
-                                            id: category.id,
-                                            label: category.name
-                                        }))}
-                                        placeholder={`${t('categorySelect')}`}
-                                        selectLabel="Categories"
-                                        onChange={(value) => field.onChange(value)}
-                                    />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="menuCategory"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <SelectWrapper
+                                            items={menuCategories.map(category => ({
+                                                id: category.id,
+                                                label: category.name
+                                            }))}
+                                            placeholder={`${t('categorySelect')}`}
+                                            selectLabel="Categories"
+                                            onChange={(value) => field.onChange(value)}
+                                        />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
 
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>{`${t('description')}`}</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="Spaghetti is a long, thin, solid, cylindrical pasta."
+                        {/*<FormField
+                            control={form.control}
+                            name="description"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FloatingInput
+                                        id="description"
+                                        label={`${t('description')}`}
                                         type="text"
                                         disabled={isPending}
+                                        field={field}
                                     />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="price"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>{`${t('price')}`}</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        placeholder="8.99 $"
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />*/}
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FloatingInput
+                                        id="price"
+                                        label={`${t('price')}`}
                                         type="text"
                                         disabled={isPending}
+                                        field={field}
                                     />
-                                </FormControl>
-                                <FormMessage/>
-                            </FormItem>
-                        )}
-                    />
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                 </div>
                 <FormError message={error}/>
                 <FormSuccess message={success}/>

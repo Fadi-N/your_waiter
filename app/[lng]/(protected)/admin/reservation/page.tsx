@@ -31,7 +31,8 @@ type Tile = {
 type Worksheet = {
     id: string;
     name: string;
-    description?: string; // Adjust based on your data
+    description?: string;
+    tiles: Tile[];
     restaurantId: string;
 };
 
