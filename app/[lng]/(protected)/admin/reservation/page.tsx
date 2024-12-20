@@ -140,6 +140,9 @@ const ReservationPage = () => {
         setDraggedTile({type: tileType, config});
     };
 
+    console.log("==========")
+    console.log(tiles)
+
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
 
@@ -233,22 +236,23 @@ const ReservationPage = () => {
                             </>
                         ) : (
                             <>
-                                {worksheets.map((worksheet, index) => (
-                                    <>
-                                        <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                {Array.isArray(worksheets) ? (
+                                    worksheets.map((worksheet, index) => (
+                                        <CarouselItem key={index} className="basis-1/3 p-0 md:basis-1/12">
                                             <Button
                                                 className="w-full rounded-full"
                                                 size="sm"
                                                 variant={activeWorksheet?.name === worksheet.name ? "default" : "secondary"}
-                                                onClick={() => {
-                                                    setActiveWorksheet(worksheet)
-                                                }}
+                                                onClick={() => setActiveWorksheet(worksheet)}
                                             >
                                                 {worksheet?.name}
                                             </Button>
                                         </CarouselItem>
-                                    </>
-                                ))}
+                                    ))
+                                ) : (
+                                    <p>No worksheets available</p>
+                                )}
+
                             </>
                         )}
 
@@ -426,8 +430,8 @@ const ReservationPage = () => {
                                 <Rect
                                     key={tile.uuid}
                                     id={tile.uuid}
-                                    x={tile.x}
-                                    y={tile.y}
+                                    x={tile.x || 200}
+                                    y={tile.y || 200}
                                     width={tile.width}
                                     height={tile.height}
                                     fill={tile.fill}

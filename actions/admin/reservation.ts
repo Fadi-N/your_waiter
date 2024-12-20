@@ -89,6 +89,12 @@ export const deleteActiveWorksheet = async (restaurantId: string, worksheetId: s
             return {error: "Worksheet not found or does not belong to this restaurant."};
         }
 
+        await db.tile.deleteMany({
+            where: {
+                worksheetId: worksheetId,
+            },
+        });
+
         await db.worksheet.delete({
             where: {
                 id: worksheetId,
@@ -96,8 +102,10 @@ export const deleteActiveWorksheet = async (restaurantId: string, worksheetId: s
             },
         });
 
+
         return {success: "Worksheet deleted successfully!"};
     } catch (error) {
+        console.log(error)
         return {error: "Failed to delete worksheet."}
     }
 };
