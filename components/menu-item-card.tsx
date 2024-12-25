@@ -54,7 +54,7 @@ const MenuItemCard = ({
                         </div>
                         <p className="font-medium">{item.MenuCategory.name}</p>
                     </div>
-                    <p className="text-gray-500 text-sm">
+                  {/*  <p className="text-gray-500 text-sm">
                         <span className="me-2">{displayedDescription}</span>
                         {item.description.length > maxLength && (
                             <button
@@ -64,7 +64,7 @@ const MenuItemCard = ({
                                 {isExpanded ? "read less" : "read more"}
                             </button>
                         )}
-                    </p>
+                    </p>*/}
                     <div className="flex items-center justify-between space-x-4">
                         <div className="flex items-start space-x-1 text-2xl font-bold">
                             <span className="text-xl font-semibold">$</span>

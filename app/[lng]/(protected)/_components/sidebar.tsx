@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
     const {t} = useTranslation(lng);
 
     const user = useCurrentUser();
-    const { selectedRestaurant, setSelectedRestaurant, tables, loading } = useRestaurantContext();
+    const {selectedRestaurant, setSelectedRestaurant, tables, loading} = useRestaurantContext();
     const router = useRouter();
 
     const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -61,7 +61,13 @@ const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
     return (
         <aside id="sidebar-component" className="flex flex-col gap-2 h-full w-72 p-4 rounded-xl border justify-between">
             <div className="flex flex-col space-y-4">
-                <p className="text-xl">LOGO</p>
+                <div className="flex items-center justify-center space-x-2">
+                    <p className="text-xl">YOUR WAITER</p>
+                    <div
+                        className="bg-black w-[32px] h-[32px] text-white rounded-full flex justify-center items-end pb-1.5 text-xs">
+                        ...
+                    </div>
+                </div>
                 <div className="flex flex-col space-y-2">
                     <div className="flex gap-2">
                         <Avatar>

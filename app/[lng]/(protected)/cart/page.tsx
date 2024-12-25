@@ -10,7 +10,7 @@ import {createPaymentIntent} from "@/actions/stripe/payment";
 import {useSession} from "next-auth/react";
 import {loadStripe} from "@stripe/stripe-js";
 import Image from "next/image";
-import {FaArrowLeftLong, FaXmark} from "react-icons/fa6";
+import {FaArrowLeftLong, FaMinus, FaXmark} from "react-icons/fa6";
 import {Input} from "@/components/ui/input";
 import {MenuItem} from "@prisma/client";
 import LoginForm from "@/components/auth/login-form";
@@ -118,7 +118,7 @@ const CartPage = () => {
                                                         size="icon"
                                                         onClick={() => handleDecrement(item)}
                                                     >
-                                                        <FaXmark className="w-4 h-4"/>
+                                                        <FaMinus className="w-4 h-4"/>
                                                     </Button>
                                                 </div>
                                             </div>

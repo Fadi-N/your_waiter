@@ -1,12 +1,12 @@
 import type {Metadata} from "next";
-import {Inter} from "next/font/google";
+import {Source_Sans_3} from "next/font/google";
 import "./globals.css";
 import {auth} from "@/auth";
 import {SessionProvider} from "next-auth/react";
 import { dir } from 'i18next';
 import {languages} from "@/app/i18n/settings";
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Source_Sans_3({subsets: ["latin"]});
 
 export async function generateStaticParams() {
     return languages.map((lng) => ({ lng }))
