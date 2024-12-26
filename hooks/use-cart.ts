@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
+import {MenuCategory} from "@prisma/client";
 
 interface MenuItem {
     id: string;
     name: string;
     price: number;
+    imageUrl?: string;
+    MenuCategory: MenuCategory;
 }
 
 interface CartItem extends MenuItem {
