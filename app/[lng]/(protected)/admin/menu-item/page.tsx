@@ -117,7 +117,7 @@ const MenuPage = () => {
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <MenuItemForm restaurantId={selectedRestaurant} menuCategories={menuCategories}/>
+                                    <MenuItemForm restaurantId={selectedRestaurant.id} menuCategories={menuCategories}/>
                                 </div>
                             </DialogContent>
                         </Dialog>

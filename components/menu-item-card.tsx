@@ -5,11 +5,8 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import Image from "next/image";
 
-const MenuItemCard = ({
-                          item, onIncrement = () => {
-    }, onDecrement = () => {
-    }, quantity = 0
-                      }) => {
+const MenuItemCard = (
+    {item, onIncrement = () => {}, onDecrement = () => {}, quantity = 0}) => {
     const [whole, decimal] = item.price.toFixed(2).split(".");
     const [isExpanded, setIsExpanded] = useState(false);
     const maxLength = 40;
@@ -54,7 +51,7 @@ const MenuItemCard = ({
                         </div>
                         <p className="font-medium">{item.MenuCategory.name}</p>
                     </div>
-                  {/*  <p className="text-gray-500 text-sm">
+                    {/*  <p className="text-gray-500 text-sm">
                         <span className="me-2">{displayedDescription}</span>
                         {item.description.length > maxLength && (
                             <button

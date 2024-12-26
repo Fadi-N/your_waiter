@@ -8,8 +8,6 @@ import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel"
 import MenuItemCard from "@/components/menu-item-card";
 import {MenuCategory, MenuItem} from "@prisma/client";
 import {useCartContext} from "@/context/cart-context";
-import {Card, CardContent} from "@/components/ui/card";
-import {Skeleton} from "@/components/ui/skeleton";
 import SkeletonCard from "@/components/skeleton-card";
 
 interface SidebarProps {
@@ -62,20 +60,18 @@ const Main: React.FC<SidebarProps> = ({menuItems, MenuCategories, loading}) => {
                 <Carousel>
                     <CarouselContent className="m-0 gap-x-3">
                         {loading ? (
-                            [...Array(12)].map(_ => (
-                                <>
-                                    <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
-                                        <Button
-                                            className="w-full rounded-full bg-gray-300"
-                                            size="sm"
-                                        >
-                                        </Button>
-                                    </CarouselItem>
-                                </>
+                            [...Array(12)].map((_, index) => (
+                                <CarouselItem key={`placeholder-${index}`} className="basis-1/3 p-0 md:basis-1/12">
+                                    <Button
+                                        className="w-full rounded-full bg-gray-300"
+                                        size="sm"
+                                    >
+                                    </Button>
+                                </CarouselItem>
                             ))
                         ) : (
                             <>
-                                <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
+                                <CarouselItem key="all-category" className="basis-1/3 p-0 md:basis-1/12">
                                     <Button
                                         className="w-full rounded-full"
                                         variant={selectedCategory === "all" ? "default" : "secondary"}
@@ -85,8 +81,8 @@ const Main: React.FC<SidebarProps> = ({menuItems, MenuCategories, loading}) => {
                                         All
                                     </Button>
                                 </CarouselItem>
-                                {MenuCategories.map((category, key) => (
-                                    <CarouselItem key={key} className="basis-1/3 p-0 md:basis-1/12">
+                                {MenuCategories.map((category) => (
+                                    <CarouselItem key={`menu-category-${category.name}`} className="basis-1/3 p-0 md:basis-1/12">
                                         <Button
                                             className="w-full rounded-full"
                                             variant={selectedCategory === category.name ? "default" : "secondary"}
@@ -99,7 +95,6 @@ const Main: React.FC<SidebarProps> = ({menuItems, MenuCategories, loading}) => {
                                 ))}
                             </>
                         )}
-
                     </CarouselContent>
                 </Carousel>
 

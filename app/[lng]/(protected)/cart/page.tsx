@@ -28,7 +28,7 @@ const CartPage = () => {
     const [isReviewCompleted, setIsReviewCompleted] = useState<boolean>(false);
 
     const tax = 0.23;
-    const subtotal = cart.total - (cart.total * tax).toFixed(2);
+    const subtotal = (cart.total - (cart.total * tax)).toFixed(2);
 
 
     const amount = 49;
@@ -143,7 +143,7 @@ const CartPage = () => {
                                 <div className="flex flex-col space-y-4">
                                     <div className="flex flex-row items-center justify-between">
                                         <p className="text-sm text-gray-500">Subtotal</p>
-                                        <span className="text-sm font-semibold text-gray-700">${subtotal}</span>
+                                        <span className="text-sm font-semibold text-gray-700">${parseFloat(subtotal).toFixed(2)}</span>
                                     </div>
                                     <div className="flex flex-row items-center justify-between">
                                         <p className="text-sm text-gray-500">Tax</p>
@@ -158,7 +158,7 @@ const CartPage = () => {
                                     </div>
                                     <div className="flex flex-row items-center justify-between">
                                         <p className="text-sm text-gray-500">Total</p>
-                                        <span className="text-sm font-semibold text-gray-700">{cart.total}</span>
+                                        <span className="text-sm font-semibold text-gray-700">${parseFloat(cart.total.toString()).toFixed(2)}</span>
                                     </div>
                                 </div>
                                 <Button onClick={handleContinueToPayment}>
