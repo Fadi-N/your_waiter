@@ -11,7 +11,6 @@ import MenuItemCard from "@/components/menu-item-card";
 import {MenuCategory, MenuItem} from "@prisma/client";
 import {useCartContext} from "@/context/cart-context";
 import SkeletonCard from "@/components/skeleton-card";
-import {isEmptyArray} from "@nextui-org/shared-utils";
 import Image from "next/image";
 import {useParams} from "next/navigation";
 

@@ -9,22 +9,19 @@ import {useTranslation} from "@/app/i18n/client";
 import {SlBasket} from "react-icons/sl";
 import {useSession} from "next-auth/react";
 import {useCartContext} from "@/context/cart-context";
-import Image from "next/image";
 
 const Navbar = () => {
     const pathname = usePathname();
     const session = useSession();
     const {cart} = useCartContext();
-    const {lng} = useParams();
+    const {lng, restaurantId} = useParams();
     const {t} = useTranslation(lng, "navbar");
     const userId = session.data?.user?.id;
 
-    console.log(pathname)
-
     const navItems = [
-        {href: "/menu", label: t('menu')},
-        {href: "/reservation", label: t('bookATable')},
-        {href: "/admin/menu-item", label: t('admin')},
+        { href: `/${lng}/${restaurantId}/menu`, label: t('menu') },
+        { href: `/${lng}/${restaurantId}/reservation`, label: t('bookATable') },
+        { href: `/${lng}/admin/menu-item`, label: t('admin') },
     ];
 
     const isActive = (href: string) => pathname === `/${lng}${href}` ? "text-gray-900 font-medium" : "text-gray-500";
@@ -57,7 +54,7 @@ const Navbar = () => {
                 {/* Koszyk i użytkownik */}
                 <div className="flex flex-grow items-center justify-end gap-4">
                     <Button variant="outline" size="icon" className="relative rounded-full" asChild>
-                        <Link href={userId ? `/${lng}/cart?userId=${userId}` : `/${lng}/cart`}>
+                        <Link href={userId ? `/${lng}/${restaurantId}/cart?userId=${userId}` : `/${lng}/${restaurantId}/cart`}>
                             <div className="relative">
                                 <SlBasket className="h-4 w-4"/>
                                 {cart.totalQuantity > 0 && (

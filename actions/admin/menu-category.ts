@@ -4,18 +4,18 @@ import * as z from "zod";
 import {CategorySchema} from "@/schemas";
 import {db} from "@/lib/db";
 
-const capitalizeFirstLetter = (string:string) => {
+/*const capitalizeFirstLetter = (string:string) => {
     if (!string) return '';
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
+}*/
 
-export const getMenuCategory = async (restaurantName:string) => {
-    const formattedName = capitalizeFirstLetter(restaurantName);
+export const getMenuCategory = async (restaurantId:string) => {
+    //const formattedName = capitalizeFirstLetter(restaurantName);
 
     const categories = await db.menuCategory.findMany({
         where: {
             Restaurant: {
-                id: formattedName,
+                id: restaurantId,
             },
         },
     });
