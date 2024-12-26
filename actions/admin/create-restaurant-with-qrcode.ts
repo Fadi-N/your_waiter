@@ -36,7 +36,7 @@ export const createRestaurantWithQRCode  = async (values: z.infer<typeof CreateR
         });
 
         // Generate tables and QR codes
-        for (let i = 1; i <= numberOfTables; i++) {
+        for (let i = 1; i <= parseInt(numberOfTables); i++) {
             const url = `http://localhost:3000/menu?table=${i}`;
             const qrCode = await QRCode.toDataURL(url);
 

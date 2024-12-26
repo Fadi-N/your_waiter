@@ -4,7 +4,8 @@ import * as z from "zod";
 import {NewPasswordSchema} from "@/schemas";
 import {getPasswordResetTokenByToken} from "@/data/password-reset-token";
 import {getUserByEmail} from "@/data/user";
-import bcrypt from "bcryptjs";
+/*todo to check previously it was bcryptjs*/
+import bcrypt from "bcrypt";
 import {db} from "@/lib/db";
 
 export const newPassword = async (values: z.infer<typeof NewPasswordSchema>, token?: string | null) => {
