@@ -14,11 +14,11 @@ import {createNewWorksheet} from "@/actions/admin/create-new-worksheet";
 import FloatingInput from "@/components/ui/floating-input";
 
 interface NewWorksheetFormProps {
-    selectedRestaurant: string;
+    selectedRestaurantId: string;
     onWorksheetCreated?: () => void;
 }
 
-const NewWorksheetForm = ({selectedRestaurant, onWorksheetCreated}: NewWorksheetFormProps) => {
+const NewWorksheetForm = ({selectedRestaurantId, onWorksheetCreated}: NewWorksheetFormProps) => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -35,7 +35,7 @@ const NewWorksheetForm = ({selectedRestaurant, onWorksheetCreated}: NewWorksheet
         setSuccess("");
 
         startTransition(() => {
-            createNewWorksheet(values, selectedRestaurant)
+            createNewWorksheet(values, selectedRestaurantId)
                 .then((data) => {
                     setError(data?.error);
                     setSuccess(data?.success);

@@ -1,14 +1,12 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import {cn} from "@/lib/utils"; // Utility function for conditional classes
+import React, {useState} from 'react';
+import {cn} from "@/lib/utils";
 import {useParams, useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {CiEdit, CiSearch} from "react-icons/ci";
 import {useTranslation} from "@/app/i18n/client";
-import UserButton from "@/components/auth/user-button";
-import {DropdownMenuItem} from "@/components/ui/dropdown-menu";
 import {IoAddOutline, IoExitOutline} from "react-icons/io5";
 import LogoutButton from "@/components/auth/logout-button";
 import {MdOutlineCategory} from "react-icons/md";
@@ -16,10 +14,8 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FaUser} from "react-icons/fa";
 import {useCurrentUser} from "@/hooks/use-current-user";
 import SelectWrapper from "@/components/wrappers/select-wrapper";
-import {getTablesByRestaurant} from "@/actions/admin/restaurant";
-import {getMenuItemsByRestaurantId} from "@/actions/admin/menu";
 import {useMediaQuery} from "@/hooks/use-media-query";
-import {Restaurant, Table, UserRole} from "@prisma/client";
+import {Restaurant, UserRole} from "@prisma/client";
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import PdfDocument from "@/components/pdf-document";
 import {IoMdDownload} from "react-icons/io";
@@ -93,14 +89,19 @@ const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
                 <div className="flex flex-col space-y-1">
                     <p className="text-xs">Restaurants</p>
                     <SelectWrapper
-                        defaultValue={selectedRestaurant}
+                        defaultValue={selectedRestaurant?.name || ''}
                         items={restaurants.map(restaurant => ({
                             id: restaurant.id,
                             label: restaurant.name
                         }))}
                         placeholder={`${t('restaurantSelect')}`}
                         selectLabel="Restaurants"
-                        onChange={setSelectedRestaurant}
+                        onChange={(value) => {
+                            const restaurant = restaurants.find(r => r.name === value);
+                            if (restaurant) {
+                                setSelectedRestaurant(restaurant);
+                            }
+                        }}
                     />
                     {isDesktop ? (
                         <>

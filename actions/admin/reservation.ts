@@ -7,7 +7,9 @@ import {db} from "@/lib/db";
 
 export const getWorksheets = async (restaurantId: string) => {
 
-    const categories = await db.worksheet.findMany({
+
+
+    const worksheets = await db.worksheet.findMany({
         where: {
             restaurantId: restaurantId,
         },
@@ -16,11 +18,11 @@ export const getWorksheets = async (restaurantId: string) => {
         }
     });
 
-    if (!categories || categories.length === 0) {
+    if (!worksheets || worksheets.length === 0) {
         return {error: "Worksheets not found for the specified restaurant."};
     }
 
-    return categories;
+    return worksheets;
 };
 
 export const updateActiveWorksheet = async (restaurantId: string, worksheetId: string, values: z.infer<typeof CreateNewWorksheetSchema>) => {

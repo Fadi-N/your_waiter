@@ -13,7 +13,7 @@ import {FaSave} from "react-icons/fa";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import NewWorksheetForm from "@/components/admin/new/new-worksheet-form";
 import EditWorksheetForm from "@/components/admin/edit/edit-worksheet-form";
 
@@ -69,7 +69,7 @@ const ReservationPage = () => {
         const fetchWorksheets = async () => {
             setLoading(true);
             try {
-                const worksheets = await getWorksheets(selectedRestaurant);
+                const worksheets = await getWorksheets(selectedRestaurant.id);
                 setWorksheets(worksheets);
                 setActiveWorksheet(worksheets[0]);
             } catch (error) {
@@ -89,7 +89,7 @@ const ReservationPage = () => {
                     const img = new window.Image();
                     img.src = tile.src;
                     img.onload = () => {
-                        setLoadedImages((prev) => ({ ...prev, [tile.src]: img }));
+                        setLoadedImages((prev) => ({...prev, [tile.src]: img}));
                     };
                 }
             });
@@ -194,7 +194,7 @@ const ReservationPage = () => {
     const handleSaveWorksheet = async () => {
         const response = await saveWorksheet({
             worksheetId: activeWorksheet?.id || "",
-            restaurantId: selectedRestaurant,
+            restaurantId: selectedRestaurant.id,
             tiles,
         });
 
@@ -213,7 +213,7 @@ const ReservationPage = () => {
     }
 
     const refreshWorksheets = async () => {
-        const updatedWorksheets = await getWorksheets(selectedRestaurant);
+        const updatedWorksheets = await getWorksheets(selectedRestaurant.id);
         setWorksheets(updatedWorksheets);
     };
 
@@ -223,41 +223,32 @@ const ReservationPage = () => {
                 <Carousel className="flex-1">
                     <CarouselContent className="m-0 gap-x-3">
                         {loading ? (
-                            <>
-                                {[...Array(6)].map(_ => (
-                                    <>
-                                        <CarouselItem className="basis-1/3 p-0 md:basis-1/12">
-                                            <Button
-                                                className="w-full rounded-full bg-gray-300"
-                                                size="sm"
-                                            >
-                                            </Button>
-                                        </CarouselItem>
-                                    </>
-                                ))}
-                            </>
+                            [...Array(6)].map((_, index) => (
+                                <CarouselItem key={`placeholder-${index}`} className="basis-1/3 p-0 md:basis-1/12">
+                                    <Button
+                                        className="w-full rounded-full bg-gray-300"
+                                        size="sm"
+                                    />
+                                </CarouselItem>
+                            ))
                         ) : (
-                            <>
-                                {Array.isArray(worksheets) ? (
-                                    worksheets.map((worksheet, index) => (
-                                        <CarouselItem key={index} className="basis-1/3 p-0 md:basis-1/12">
-                                            <Button
-                                                className="w-full rounded-full"
-                                                size="sm"
-                                                variant={activeWorksheet?.name === worksheet.name ? "default" : "secondary"}
-                                                onClick={() => setActiveWorksheet(worksheet)}
-                                            >
-                                                {worksheet?.name}
-                                            </Button>
-                                        </CarouselItem>
-                                    ))
-                                ) : (
-                                    <p>No worksheets available</p>
-                                )}
-
-                            </>
+                            Array.isArray(worksheets) ? (
+                                worksheets.map((worksheet, index) => (
+                                    <CarouselItem key={`worksheet-${index}`} className="basis-1/3 p-0 md:basis-1/12">
+                                        <Button
+                                            className="w-full rounded-full"
+                                            size="sm"
+                                            variant={activeWorksheet?.name === worksheet.name ? "default" : "secondary"}
+                                            onClick={() => setActiveWorksheet(worksheet)}
+                                        >
+                                            {worksheet?.name}
+                                        </Button>
+                                    </CarouselItem>
+                                ))
+                            ) : (
+                                <p>No worksheets available</p>
+                            )
                         )}
-
                     </CarouselContent>
                 </Carousel>
                 <div className="flex space-x-2 crud-container">
@@ -307,7 +298,7 @@ const ReservationPage = () => {
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <EditWorksheetForm restaurantId={selectedRestaurant}
+                                    <EditWorksheetForm restaurantId={selectedRestaurant.id}
                                                        activeWorksheet={activeWorksheet}/>
                                 </div>
                             </DialogContent>
@@ -339,7 +330,8 @@ const ReservationPage = () => {
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <NewWorksheetForm selectedRestaurant={selectedRestaurant} onWorksheetCreated={refreshWorksheets}/>
+                                    <NewWorksheetForm selectedRestaurantId={selectedRestaurant.id}
+                                                      onWorksheetCreated={refreshWorksheets}/>
                                 </div>
                             </DialogContent>
                         </Dialog>

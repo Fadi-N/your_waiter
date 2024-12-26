@@ -42,19 +42,18 @@ const BottomNavbar = () => {
             <div
                 className="z-50 flex justify-evenly items-center w-96 h-[56px] bg-black rounded-full navbar-container mb-6">
                 {navItems.map(({href, icon, label}, index) => (
-                    <>
+                    <React.Fragment key={`nav-item-${index}`}>
                         {index === 2 && (
                             <UserButton/>
                         )}
 
-                        <Button key={index} className="text-white w-[40px] h-[40px] rounded-full" variant="ghost"
-                                size="sm"
-                                asChild>
+                        <Button className="text-white w-[40px] h-[40px] rounded-full" variant="ghost"
+                                size="sm" asChild>
                             <Link className="flex flex-col rounded-full items-center" href={href}>
                                 {icon}
                             </Link>
                         </Button>
-                    </>
+                    </React.Fragment>
                 ))}
             </div>
         </div>

@@ -1,22 +1,23 @@
-'use client'
+'use client';
 
-import React, {createContext, useContext, useEffect, useState} from 'react';
-import {MenuItem, Table} from "@prisma/client";
-import {getTablesByRestaurant} from "@/actions/admin/restaurant";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import {MenuItem, Restaurant, Table} from "@prisma/client";
+import { getTablesByRestaurant } from "@/actions/admin/restaurant";
 import {getMenuItemsByRestaurantId} from "@/actions/admin/menu";
-
-interface RestaurantContextProps {
-    selectedRestaurant: string;
-    setSelectedRestaurant: (id: string) => void;
-    tables: Table[];
-    menuItems: MenuItem[] | null;
-    loading: boolean;
-}
 
 const RestaurantContext = createContext<RestaurantContextProps | undefined>(undefined);
 
-export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [selectedRestaurant, setSelectedRestaurant] = useState<string>(''); // Default value
+interface RestaurantContextProps {
+    selectedRestaurant: Restaurant | null;
+    setSelectedRestaurant: (restaurant: Restaurant | null) => void;
+    tables: Table[];
+    menuItems: MenuItem[] | null;
+    restaurants: Restaurant[];
+    loading: boolean;
+}
+
+export const RestaurantProvider: React.FC<{ children: React.ReactNode, restaurants: Restaurant[] }> = ({ children, restaurants }) => {
+    const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(restaurants[0] || null);
     const [tables, setTables] = useState<Table[]>([]);
     const [menuItems, setMenuItems] = useState<MenuItem[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -25,14 +26,23 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         if (!selectedRestaurant) return;
 
         const fetchTables = async () => {
-            const data = await getTablesByRestaurant(selectedRestaurant);
-            setTables(data);
+            try {
+                const data = await getTablesByRestaurant(selectedRestaurant.id);
+                setTables(data);
+            } catch (error) {
+                console.error("Error fetching tables:", error);
+            }
         };
 
         const fetchMenuItems = async () => {
-            const data = await getMenuItemsByRestaurantId(selectedRestaurant);
-            setMenuItems(data);
-            setLoading(false);
+            try {
+                const data = await getMenuItemsByRestaurantId(selectedRestaurant.id);
+                setMenuItems(data);
+            } catch (error) {
+                console.error("Error fetching menu items:", error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         setLoading(true);
@@ -58,7 +68,9 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 export const useRestaurantContext = (): RestaurantContextProps => {
     const context = useContext(RestaurantContext);
     if (!context) {
-        throw new Error('useRestaurantContext must be used within a RestaurantProvider');
+        throw new Error('useRestaurantContext must be used within a RestaurantProviderClient');
     }
     return context;
 };
+
+export default RestaurantProvider;

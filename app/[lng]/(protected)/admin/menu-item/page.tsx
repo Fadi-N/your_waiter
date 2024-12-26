@@ -28,13 +28,13 @@ const MenuPage = () => {
 
     useEffect(() => {
         const fetchMenuCategory = async () => {
-            if (selectedRestaurant === '') {
+            if (selectedRestaurant.id === '') {
                 return
             }
 
             setLoading(true);
             try {
-                const categories = await getCategoriesByRestaurant(selectedRestaurant);
+                const categories = await getCategoriesByRestaurant(selectedRestaurant.id);
                 setMenuCategories(categories);
             } catch (error) {
                 console.error("Error fetching categories:", error);

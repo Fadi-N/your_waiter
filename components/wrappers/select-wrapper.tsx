@@ -33,7 +33,7 @@ const SelectWrapper = (
                 <SelectGroup>
                     <SelectLabel>{selectLabel}</SelectLabel>
                     {items.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
+                        <SelectItem key={item.id} value={item.label}>
                             {item.label}
                         </SelectItem>
                     ))}
