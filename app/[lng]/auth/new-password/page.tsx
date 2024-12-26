@@ -1,7 +1,7 @@
 import React from 'react';
-import NewPasswordForm from "@/components/auth/new-password-form";
+import NewPasswordForm from "@/components/auth/forms/new-password-form";
 import Image from "next/image";
-import LoginForm from "@/components/auth/login-form";
+import LoginForm from "@/components/auth/forms/login-form";
 
 const NewPasswordPage = () => {
     return (

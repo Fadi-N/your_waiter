@@ -15,7 +15,7 @@ import {MdOutlineCategory} from "react-icons/md";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {FaUser} from "react-icons/fa";
 import {useCurrentUser} from "@/hooks/use-current-user";
-import SelectWrapper from "@/components/select-wrapper";
+import SelectWrapper from "@/components/wrappers/select-wrapper";
 import {getTablesByRestaurant} from "@/actions/admin/restaurant";
 import {getMenuItemsByRestaurantId} from "@/actions/admin/menu";
 import {useMediaQuery} from "@/hooks/use-media-query";
@@ -23,11 +23,11 @@ import {Restaurant, Table, UserRole} from "@prisma/client";
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import PdfDocument from "@/components/pdf-document";
 import {IoMdDownload} from "react-icons/io";
-import DialogWrapper from "@/components/dialog-wrapper";
+import DialogWrapper from "@/components/wrappers/dialog-wrapper";
 import RoleGate from "@/components/auth/role-gate";
-import NewRestaurantForm from "@/components/admin/new-restaurant-form";
-import DrawerWrapper from "@/components/drawer-wrapper";
-import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
+import NewRestaurantForm from "@/components/admin/new/new-restaurant-form";
+import DrawerWrapper from "@/components/wrappers/drawer-wrapper";
+import EditRestaurantForm from "@/components/admin/edit/edit-restaurant-form";
 import {useRestaurantContext} from "@/context/restaurant-context";
 
 interface SidebarProps {

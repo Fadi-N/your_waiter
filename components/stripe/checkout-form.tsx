@@ -1,6 +1,6 @@
 import React, {FormEvent} from 'react';
 import {AddressElement, PaymentElement, useElements, useStripe} from "@stripe/react-stripe-js";
-import DialogWrapper from "@/components/dialog-wrapper";
+import DialogWrapper from "@/components/wrappers/dialog-wrapper";
 import {IoAddOutline} from "react-icons/io5";
 import {Button} from "@/components/ui/button";
 

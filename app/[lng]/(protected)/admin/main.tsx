@@ -1,21 +1,21 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import SelectWrapper from "../../../../components/select-wrapper";
+import SelectWrapper from "../../../../components/wrappers/select-wrapper";
 import {CiEdit, CiSearch} from "react-icons/ci";
 import {Input} from "@/components/ui/input";
-import DialogWrapper from "@/components/dialog-wrapper";
+import DialogWrapper from "@/components/wrappers/dialog-wrapper";
 import {IoAddOutline, IoFastFoodOutline, IoRestaurantOutline} from "react-icons/io5";
 import RoleGate from "@/components/auth/role-gate";
 import {MenuCategory, MenuItem, Restaurant, Table, UserRole} from "@prisma/client";
-import NewRestaurantForm from "@/components/admin/new-restaurant-form";
+import NewRestaurantForm from "@/components/admin/new/new-restaurant-form";
 import {Button} from "@/components/ui/button";
 import {IoMdDownload} from "react-icons/io";
 import Sidebar from "@/app/[lng]/(protected)/Sidebar";
 import TableList from "@/components/admin/table-list";
 import {getTablesByRestaurant} from "@/actions/admin/restaurant";
-import CategoryForm from "@/components/admin/category-form";
-import MenuItemForm from "@/components/admin/menu-item-form";
+import CategoryForm from "@/components/admin/forms/category-form";
+import MenuItemForm from "@/components/admin/forms/menu-item-form";
 import {useParams} from "next/navigation";
 import {useTranslation} from "@/app/i18n/client";
 import {
@@ -25,11 +25,11 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import {useMediaQuery} from "@/hooks/use-media-query";
-import DrawerWrapper from "@/components/drawer-wrapper";
+import DrawerWrapper from "@/components/wrappers/drawer-wrapper";
 import {LiaQrcodeSolid} from "react-icons/lia";
 import {TbCategoryPlus} from "react-icons/tb";
 import {RxCardStackPlus} from "react-icons/rx";
-import EditRestaurantForm from "@/components/admin/edit-restaurant-form";
+import EditRestaurantForm from "@/components/admin/edit/edit-restaurant-form";
 import {GiWoodenChair} from "react-icons/gi";
 import {MdAttachMoney} from "react-icons/md";
 import PdfDocument from "@/components/pdf-document";

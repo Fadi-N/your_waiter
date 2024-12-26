@@ -13,7 +13,7 @@ import Image from "next/image";
 import {FaArrowLeftLong, FaMinus, FaXmark} from "react-icons/fa6";
 import {Input} from "@/components/ui/input";
 import {MenuItem} from "@prisma/client";
-import LoginForm from "@/components/auth/login-form";
+import LoginForm from "@/components/auth/forms/login-form";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 

@@ -9,7 +9,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import SelectWrapper from "@/components/select-wrapper";
+import SelectWrapper from "@/components/wrappers/select-wrapper";
 import {MenuCategory} from "@prisma/client";
 import {MenuItem} from "@/actions/admin/menu-item";
 import {useParams} from "next/navigation";

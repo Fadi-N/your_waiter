@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from "@/components/auth/login-form";
+import LoginForm from "@/components/auth/forms/login-form";
 import Image from "next/image";
 
 

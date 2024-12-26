@@ -1,7 +1,7 @@
 import React from 'react';
-import NewVerificationForm from "@/components/auth/new-verification-form";
+import NewVerificationForm from "@/components/auth/forms/new-verification-form";
 import Image from "next/image";
-import LoginForm from "@/components/auth/login-form";
+import LoginForm from "@/components/auth/forms/login-form";
 
 const NewVerificationPage = () => {
     return (

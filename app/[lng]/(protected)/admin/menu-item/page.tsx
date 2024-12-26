@@ -11,7 +11,7 @@ import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} fr
 import {BsPencil} from "react-icons/bs";
 import {FaPlus} from "react-icons/fa6";
 import {Separator} from "@/components/ui/separator";
-import MenuItemForm from "@/components/admin/menu-item-form";
+import MenuItemForm from "@/components/admin/forms/menu-item-form";
 import {getCategoriesByRestaurant} from "@/actions/admin/menu-category";
 import SkeletonCard from "@/components/skeleton-card";
 

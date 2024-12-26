@@ -15,9 +15,10 @@ import FloatingInput from "@/components/ui/floating-input";
 
 interface NewWorksheetFormProps {
     selectedRestaurant: string;
+    onWorksheetCreated?: () => void;
 }
 
-const NewWorksheetForm = ({selectedRestaurant}: NewWorksheetFormProps) => {
+const NewWorksheetForm = ({selectedRestaurant, onWorksheetCreated}: NewWorksheetFormProps) => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -38,6 +39,7 @@ const NewWorksheetForm = ({selectedRestaurant}: NewWorksheetFormProps) => {
                 .then((data) => {
                     setError(data?.error);
                     setSuccess(data?.success);
+                    onWorksheetCreated?.();
                 })
         });
     };

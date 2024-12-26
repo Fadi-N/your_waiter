@@ -1,5 +1,5 @@
 import React from 'react';
-import ResetForm from "@/components/auth/reset-form";
+import ResetForm from "@/components/auth/forms/reset-form";
 import Image from "next/image";
 
 const ResetPage = () => {

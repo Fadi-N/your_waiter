@@ -14,8 +14,8 @@ import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import { v4 as uuidv4 } from 'uuid';
-import NewWorksheetForm from "@/components/admin/new-worksheet-form";
-import EditWorksheetForm from "@/components/admin/edit-worksheet-form";
+import NewWorksheetForm from "@/components/admin/new/new-worksheet-form";
+import EditWorksheetForm from "@/components/admin/edit/edit-worksheet-form";
 
 type Tile = {
     uuid: string;
@@ -140,9 +140,6 @@ const ReservationPage = () => {
         setDraggedTile({type: tileType, config});
     };
 
-    console.log("==========")
-    console.log(tiles)
-
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
 
@@ -214,6 +211,11 @@ const ReservationPage = () => {
             [value]: !prev[value],
         }))
     }
+
+    const refreshWorksheets = async () => {
+        const updatedWorksheets = await getWorksheets(selectedRestaurant);
+        setWorksheets(updatedWorksheets);
+    };
 
     return (
         <div className="border rounded-xl w-full h-full p-4">
@@ -337,7 +339,7 @@ const ReservationPage = () => {
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <NewWorksheetForm selectedRestaurant={selectedRestaurant}/>
+                                    <NewWorksheetForm selectedRestaurant={selectedRestaurant} onWorksheetCreated={refreshWorksheets}/>
                                 </div>
                             </DialogContent>
                         </Dialog>
