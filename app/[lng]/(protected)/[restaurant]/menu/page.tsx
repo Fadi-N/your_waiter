@@ -1,25 +1,27 @@
 'use client'
 
-import { getMenuItems } from "@/actions/admin/menu";
-import { getMenuCategory } from "@/actions/admin/menu-category";
-import { useState, useEffect, useCallback } from "react";
-import { CiSearch } from "react-icons/ci";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import {getMenuItems} from "@/actions/admin/menu";
+import {getMenuCategory} from "@/actions/admin/menu-category";
+import React, {useState, useEffect, useCallback} from "react";
+import {CiSearch} from "react-icons/ci";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import MenuItemCard from "@/components/menu-item-card";
-import { MenuCategory, MenuItem } from "@prisma/client";
-import { useCartContext } from "@/context/cart-context";
+import {MenuCategory, MenuItem} from "@prisma/client";
+import {useCartContext} from "@/context/cart-context";
 import SkeletonCard from "@/components/skeleton-card";
+import {isEmptyArray} from "@nextui-org/shared-utils";
+import Image from "next/image";
 
-export default function MenuPage({ params: { lng, restaurant } }) {
+export default function MenuPage({params: {lng, restaurant}}) {
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [MenuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-    const { cart, increment, decrement } = useCartContext();
+    const {cart, increment, decrement} = useCartContext();
 
     // Pobranie danych o menu i kategoriach
     useEffect(() => {
@@ -58,7 +60,7 @@ export default function MenuPage({ params: { lng, restaurant } }) {
 
                 {/* Wyszukiwarka */}
                 <div className="relative flex-1">
-                    <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
+                    <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
                     <Input
                         type="text"
                         placeholder="Search"
@@ -94,7 +96,8 @@ export default function MenuPage({ params: { lng, restaurant } }) {
                                     </Button>
                                 </CarouselItem>
                                 {MenuCategories.map((category) => (
-                                    <CarouselItem key={`menu-category-${category.name}`} className="basis-1/3 p-0 md:basis-1/12">
+                                    <CarouselItem key={`menu-category-${category.name}`}
+                                                  className="basis-1/3 p-0 md:basis-1/12">
                                         <Button
                                             className="w-full rounded-full"
                                             variant={selectedCategory === category.name ? "default" : "secondary"}
@@ -112,20 +115,37 @@ export default function MenuPage({ params: { lng, restaurant } }) {
 
                 {/* Lista elementów menu */}
                 <div className="flex flex-col">
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {loading ? (
-                            <SkeletonCard />
-                        ) : (
-                            filteredMenuItems.map((item: MenuItem) => (
-                                <MenuItemCard
-                                    key={item.id}
-                                    item={item}
-                                    onIncrement={() => handleIncrement(item)}
-                                    onDecrement={() => handleDecrement(item)}
-                                />
-                            ))
-                        )}
-                    </div>
+                    {filteredMenuItems.length > 0 || loading ? (
+                        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                            {loading ? (
+                                <SkeletonCard/>
+                            ) : (
+                                <>
+                                    {filteredMenuItems.map((item: MenuItem) => (
+                                        <MenuItemCard
+                                            key={item.id}
+                                            item={item}
+                                            onIncrement={() => handleIncrement(item)}
+                                            onDecrement={() => handleDecrement(item)}
+                                        />
+                                    ))}
+
+                                </>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="flex flex-col justify-center items-center">
+                            <Image
+                                className="rounded-xl"
+                                width={500}
+                                height={500}
+                                src={`/assets/no-item-found.jpg`}
+                                alt="no-item-found"
+                            />
+                            <p className="text-lg lg:text-xl">Our chefs are still looking for that one!</p>
+                            <p className="lg:text-lg">How about something else?</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </main>
