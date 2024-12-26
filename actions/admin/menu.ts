@@ -13,7 +13,7 @@ export const getMenuItems = async (restaurantName) => {
     const restaurant = await db.menuItem.findMany({
         where: {
             Restaurant: {
-                name: formattedName,
+                id: formattedName,
             },
         },
         include: {

@@ -19,11 +19,12 @@ const Navbar = () => {
     const {t} = useTranslation(lng, "navbar");
     const userId = session.data?.user?.id;
 
+    console.log(pathname)
+
     const navItems = [
         {href: "/menu", label: t('menu')},
-        {href: "/book-a-table", label: t('bookATable')},
-        {href: "/client", label: t('client')},
-        {href: "/admin", label: t('admin')},
+        {href: "/reservation", label: t('bookATable')},
+        {href: "/admin/menu-item", label: t('admin')},
     ];
 
     const isActive = (href: string) => pathname === `/${lng}${href}` ? "text-gray-900 font-medium" : "text-gray-500";

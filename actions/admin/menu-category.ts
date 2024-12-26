@@ -15,7 +15,7 @@ export const getMenuCategory = async (restaurantName:string) => {
     const categories = await db.menuCategory.findMany({
         where: {
             Restaurant: {
-                name: formattedName,
+                id: formattedName,
             },
         },
     });

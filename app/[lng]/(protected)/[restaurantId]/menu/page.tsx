@@ -13,8 +13,11 @@ import {useCartContext} from "@/context/cart-context";
 import SkeletonCard from "@/components/skeleton-card";
 import {isEmptyArray} from "@nextui-org/shared-utils";
 import Image from "next/image";
+import {useParams} from "next/navigation";
 
-export default function MenuPage({params: {lng, restaurant}}) {
+export default function MenuPage() {
+    const {restaurantId} = useParams();
+
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [MenuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
     const [loading, setLoading] = useState(true);
@@ -28,10 +31,10 @@ export default function MenuPage({params: {lng, restaurant}}) {
         const fetchMenuItems = async () => {
             setLoading(true);
             try {
-                const items = await getMenuItems(restaurant);
+                const items = await getMenuItems(restaurantId);
                 setMenuItems(items);
 
-                const categories = await getMenuCategory(restaurant);
+                const categories = await getMenuCategory(restaurantId);
                 setMenuCategories(categories);
             } catch (error) {
                 console.error("Error fetching menu data:", error);
@@ -41,7 +44,7 @@ export default function MenuPage({params: {lng, restaurant}}) {
         };
 
         fetchMenuItems();
-    }, [restaurant]);
+    }, [restaurantId]);
 
     // Filtrowanie elementów menu
     const filteredMenuItems = menuItems.filter(item => {
