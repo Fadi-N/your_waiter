@@ -57,99 +57,97 @@ export default function MenuPage() {
     const handleDecrement = useCallback((item: MenuItem) => decrement(item), [decrement]);
 
     return (
-        <main className="container">
-            <div className="flex flex-col space-y-4 my-6">
+        <>
 
-                {/* Wyszukiwarka */}
-                <div className="relative flex-1">
-                    <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
-                    <Input
-                        type="text"
-                        placeholder="Search"
-                        className="pl-10 w-full rounded-full"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
+            {/* Wyszukiwarka */}
+            <div className="relative flex-1">
+                <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"/>
+                <Input
+                    type="text"
+                    placeholder="Search"
+                    className="pl-10 w-full rounded-full"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
 
-                {/* Kategoria */}
-                <Carousel>
-                    <CarouselContent className="m-0 gap-x-3">
-                        {loading ? (
-                            [...Array(12)].map((_, index) => (
-                                <CarouselItem key={`placeholder-${index}`} className="basis-1/3 p-0 md:basis-1/12">
-                                    <Button
-                                        className="w-full rounded-full bg-gray-300"
-                                        size="sm"
-                                    >
-                                    </Button>
-                                </CarouselItem>
-                            ))
-                        ) : (
-                            <>
-                                <CarouselItem key="all-category" className="basis-1/3 p-0 md:basis-1/12">
+            {/* Kategoria */}
+            <Carousel>
+                <CarouselContent className="m-0 gap-x-3">
+                    {loading ? (
+                        [...Array(12)].map((_, index) => (
+                            <CarouselItem key={`placeholder-${index}`} className="basis-1/3 p-0 md:basis-1/12">
+                                <Button
+                                    className="w-full rounded-full bg-gray-300"
+                                    size="sm"
+                                >
+                                </Button>
+                            </CarouselItem>
+                        ))
+                    ) : (
+                        <>
+                            <CarouselItem key="all-category" className="basis-1/3 p-0 md:basis-1/12">
+                                <Button
+                                    className="w-full rounded-full"
+                                    variant={selectedCategory === "all" ? "default" : "secondary"}
+                                    size="sm"
+                                    onClick={() => setSelectedCategory("all")}
+                                >
+                                    All
+                                </Button>
+                            </CarouselItem>
+                            {MenuCategories.map((category) => (
+                                <CarouselItem key={`menu-category-${category.name}`}
+                                              className="basis-1/3 p-0 md:basis-1/12">
                                     <Button
                                         className="w-full rounded-full"
-                                        variant={selectedCategory === "all" ? "default" : "secondary"}
+                                        variant={selectedCategory === category.name ? "default" : "secondary"}
                                         size="sm"
-                                        onClick={() => setSelectedCategory("all")}
+                                        onClick={() => setSelectedCategory(category.name)}
                                     >
-                                        All
+                                        {category.name}
                                     </Button>
                                 </CarouselItem>
-                                {MenuCategories.map((category) => (
-                                    <CarouselItem key={`menu-category-${category.name}`}
-                                                  className="basis-1/3 p-0 md:basis-1/12">
-                                        <Button
-                                            className="w-full rounded-full"
-                                            variant={selectedCategory === category.name ? "default" : "secondary"}
-                                            size="sm"
-                                            onClick={() => setSelectedCategory(category.name)}
-                                        >
-                                            {category.name}
-                                        </Button>
-                                    </CarouselItem>
+                            ))}
+                        </>
+                    )}
+                </CarouselContent>
+            </Carousel>
+
+            {/* Lista elementów menu */}
+            <div className="flex flex-col">
+                {filteredMenuItems.length > 0 || loading ? (
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {loading ? (
+                            <SkeletonCard/>
+                        ) : (
+                            <>
+                                {filteredMenuItems.map((item: MenuItem) => (
+                                    <MenuItemCard
+                                        key={item.id}
+                                        item={item}
+                                        onIncrement={() => handleIncrement(item)}
+                                        onDecrement={() => handleDecrement(item)}
+                                    />
                                 ))}
+
                             </>
                         )}
-                    </CarouselContent>
-                </Carousel>
-
-                {/* Lista elementów menu */}
-                <div className="flex flex-col">
-                    {filteredMenuItems.length > 0 || loading ? (
-                        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                            {loading ? (
-                                <SkeletonCard/>
-                            ) : (
-                                <>
-                                    {filteredMenuItems.map((item: MenuItem) => (
-                                        <MenuItemCard
-                                            key={item.id}
-                                            item={item}
-                                            onIncrement={() => handleIncrement(item)}
-                                            onDecrement={() => handleDecrement(item)}
-                                        />
-                                    ))}
-
-                                </>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="flex flex-col justify-center items-center">
-                            <Image
-                                className="rounded-xl"
-                                width={500}
-                                height={500}
-                                src={`/assets/no-item-found.jpg`}
-                                alt="no-item-found"
-                            />
-                            <p className="text-lg lg:text-xl">Our chefs are still looking for that one!</p>
-                            <p className="lg:text-lg">How about something else?</p>
-                        </div>
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col justify-center items-center">
+                        <Image
+                            className="rounded-xl"
+                            width={500}
+                            height={500}
+                            src={`/assets/no-item-found.jpg`}
+                            alt="no-item-found"
+                        />
+                        <p className="text-lg lg:text-xl">Our chefs are still looking for that one!</p>
+                        <p className="lg:text-lg">How about something else?</p>
+                    </div>
+                )}
             </div>
-        </main>
+        </>
     );
 }
