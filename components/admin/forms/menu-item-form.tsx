@@ -23,7 +23,7 @@ interface MenuItemFormProps {
 }
 
 const MenuItemForm = ({restaurantId, menuCategories}: MenuItemFormProps) => {
-    const {lng} = useParams();
+    const {lng} = useParams<{ lng: string }>();
     const {t} = useTranslation(lng, "menu-item-form")
 
     const [error, setError] = useState<string | undefined>("");

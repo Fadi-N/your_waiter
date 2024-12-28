@@ -17,7 +17,13 @@ import TableList from "@/components/admin/table-list";
 import FloatingInput from "@/components/ui/floating-input";
 
 interface EditRestaurantFormProps {
-    selectedRestaurant: string;
+    selectedRestaurant: {
+        id: string;
+        name: string;
+        userId: string;
+        createdAt: Date;
+        updatedAt: Date;
+    } | null;
     tables: TableFromPrisma[];
 }
 

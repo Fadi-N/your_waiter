@@ -10,14 +10,15 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import {useCurrentUser} from "@/hooks/use-current-user";
 import {categoryMenu} from "@/actions/admin/menu-category";
 import {useParams} from "next/navigation";
 import {useTranslation} from "@/app/i18n/client";
+import {useRestaurantContext} from "@/context/restaurant-context";
 
-const CategoryForm = ({selectedRestaurant}) => {
-    const {lng} = useParams();
-    const { t } = useTranslation(lng, "category-form")
+const CategoryForm = () => {
+    const {lng} = useParams<{ lng: string }>();
+    const {t} = useTranslation(lng, "category-form");
+    const {selectedRestaurant} = useRestaurantContext();
 
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
@@ -31,11 +32,15 @@ const CategoryForm = ({selectedRestaurant}) => {
     });
 
     const onSubmit = (values: z.infer<typeof CategorySchema>) => {
+        if (!selectedRestaurant) {
+            return;
+        }
+
         setError("");
         setSuccess("");
 
         startTransition(() => {
-            categoryMenu(values, selectedRestaurant || "")
+            categoryMenu(values, selectedRestaurant.id)
                 .then((data) => {
                     setError(data?.error);
                     setSuccess(data?.success);

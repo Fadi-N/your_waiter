@@ -31,7 +31,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({restaurants}) => {
-    const {lng} = useParams();
+    const {lng} = useParams<{ lng: string }>();
     const {t} = useTranslation(lng);
 
     const user = useCurrentUser();

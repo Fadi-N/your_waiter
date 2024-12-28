@@ -67,6 +67,10 @@ const ReservationPage = () => {
 
     useEffect(() => {
         const fetchWorksheets = async () => {
+            if (!selectedRestaurant) {
+                return;
+            }
+
             setLoading(true);
             try {
                 const worksheets = await getWorksheets(selectedRestaurant.id);
@@ -89,7 +93,7 @@ const ReservationPage = () => {
                     const img = new window.Image();
                     img.src = tile.src;
                     img.onload = () => {
-                        setLoadedImages((prev) => ({...prev, [tile.src]: img}));
+                        setLoadedImages((prev) => ({...prev, [tile.src as string]: img}));
                     };
                 }
             });
@@ -134,7 +138,7 @@ const ReservationPage = () => {
             const img = new window.Image();
             img.src = config.src;
             img.onload = () => {
-                setLoadedImages((prev) => ({...prev, [config.src]: img}));
+                setLoadedImages((prev) => ({...prev, [config.src as string]: img}));
             };
         }
         setDraggedTile({type: tileType, config});
@@ -192,6 +196,10 @@ const ReservationPage = () => {
     };
 
     const handleSaveWorksheet = async () => {
+        if (!selectedRestaurant) {
+            return;
+        }
+
         const response = await saveWorksheet({
             worksheetId: activeWorksheet?.id || "",
             restaurantId: selectedRestaurant.id,
@@ -213,6 +221,10 @@ const ReservationPage = () => {
     }
 
     const refreshWorksheets = async () => {
+        if (!selectedRestaurant) {
+            return;
+        }
+
         const updatedWorksheets = await getWorksheets(selectedRestaurant.id);
         setWorksheets(updatedWorksheets);
     };
@@ -298,8 +310,12 @@ const ReservationPage = () => {
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <EditWorksheetForm restaurantId={selectedRestaurant.id}
-                                                       activeWorksheet={activeWorksheet}/>
+                                    {selectedRestaurant && activeWorksheet && (
+                                        <EditWorksheetForm
+                                            restaurantId={selectedRestaurant.id}
+                                            activeWorksheet={activeWorksheet}
+                                        />
+                                    )}
                                 </div>
                             </DialogContent>
                         </Dialog>
@@ -330,8 +346,12 @@ const ReservationPage = () => {
                                 </DialogDescription>
                                 <hr/>
                                 <div className="overflow-y-auto max-h-[70vh]">
-                                    <NewWorksheetForm selectedRestaurantId={selectedRestaurant.id}
-                                                      onWorksheetCreated={refreshWorksheets}/>
+                                    {selectedRestaurant && (
+                                        <NewWorksheetForm
+                                            selectedRestaurantId={selectedRestaurant.id}
+                                            onWorksheetCreated={refreshWorksheets}
+                                        />
+                                    )}
                                 </div>
                             </DialogContent>
                         </Dialog>

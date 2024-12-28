@@ -13,15 +13,28 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { useParams } from "next/navigation";
 import { Group, Layer, Rect, Stage, Text, Image as KonvaImage } from "react-konva";
 
+interface WorksheetWithTiles extends Worksheet {
+    tiles: Array<{
+        uuid: string;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        fill?: string;
+        type?: string;
+        src?: string;
+    }>;
+}
+
 const ReservationPage = () => {
-    const { restaurantId } = useParams();
+    const { restaurantId } = useParams<{ restaurantId: string }>();
 
     const [date, setDate] = useState<Date>();
     const [loading, setLoading] = useState(true);
-    const [worksheets, setWorksheets] = useState<Worksheet[]>([]);
-    const [activeWorksheet, setActiveWorksheet] = useState<Worksheet | null>(null);
+    const [worksheets, setWorksheets] = useState<WorksheetWithTiles[]>([]);
+    const [activeWorksheet, setActiveWorksheet] = useState<WorksheetWithTiles | null>(null);
     const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
-    const [tiles, setTiles] = useState<any[]>([]);
+    const [tiles, setTiles] = useState<WorksheetWithTiles["tiles"]>([]);
     const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -53,7 +66,7 @@ const ReservationPage = () => {
                     const img = new window.Image();
                     img.src = tile.src;
                     img.onload = () => {
-                        setLoadedImages((prev) => ({ ...prev, [tile.src]: img }));
+                        setLoadedImages((prev) => ({ ...prev, [tile.src as string]: img }));
                     };
                 }
             });

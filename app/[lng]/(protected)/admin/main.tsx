@@ -1,46 +1,21 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import SelectWrapper from "../../../../components/wrappers/select-wrapper";
-import {CiEdit, CiSearch} from "react-icons/ci";
-import {Input} from "@/components/ui/input";
 import DialogWrapper from "@/components/wrappers/dialog-wrapper";
-import {IoAddOutline, IoFastFoodOutline, IoRestaurantOutline} from "react-icons/io5";
+import {IoAddOutline} from "react-icons/io5";
 import RoleGate from "@/components/auth/role-gate";
 import {MenuCategory, MenuItem, Restaurant, Table, UserRole} from "@prisma/client";
-import NewRestaurantForm from "@/components/admin/new/new-restaurant-form";
-import {Button} from "@/components/ui/button";
-import {IoMdDownload} from "react-icons/io";
-import Sidebar from "@/app/[lng]/(protected)/Sidebar";
-import TableList from "@/components/admin/table-list";
 import {getTablesByRestaurant} from "@/actions/admin/restaurant";
 import CategoryForm from "@/components/admin/forms/category-form";
-import MenuItemForm from "@/components/admin/forms/menu-item-form";
 import {useParams} from "next/navigation";
 import {useTranslation} from "@/app/i18n/client";
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs"
+import {Tabs, TabsContent,} from "@/components/ui/tabs"
 import {useMediaQuery} from "@/hooks/use-media-query";
 import DrawerWrapper from "@/components/wrappers/drawer-wrapper";
-import {LiaQrcodeSolid} from "react-icons/lia";
-import {TbCategoryPlus} from "react-icons/tb";
-import {RxCardStackPlus} from "react-icons/rx";
-import EditRestaurantForm from "@/components/admin/edit/edit-restaurant-form";
-import {GiWoodenChair} from "react-icons/gi";
-import {MdAttachMoney} from "react-icons/md";
-import PdfDocument from "@/components/pdf-document";
-import {PDFDownloadLink} from "@react-pdf/renderer";
-import {GrRestaurant} from "react-icons/gr";
 import MenuItemCard from "@/components/menu-item-card";
-import {getMenuItems, getMenuItemsByRestaurantId} from "@/actions/admin/menu";
+import {getMenuItemsByRestaurantId} from "@/actions/admin/menu";
 import {Skeleton} from "@/components/ui/skeleton";
-import {Card, CardContent, CardFooter} from "@/components/ui/card";
-import Image from "next/image";
-import {AiOutlineMinus, AiOutlinePlus} from "react-icons/ai";
+import {Card, CardContent} from "@/components/ui/card";
 
 interface MainProps {
     restaurants: Restaurant[]
@@ -49,7 +24,7 @@ interface MainProps {
 }
 
 const Main = ({restaurants, menuCategories}: MainProps) => {
-    const {lng} = useParams();
+    const {lng} = useParams<{ lng: string }>();
     const {t} = useTranslation(lng)
 
     const isDesktop = useMediaQuery("(min-width: 768px)")
@@ -289,7 +264,8 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                                             <div className="flex flex-col justify-between">
                                                                 <div className="flex items-center justify-between">
                                                                     <Skeleton className="h-4 w-28"/>
-                                                                    <Skeleton className="h-[24px] w-[24px] rounded-full"/>
+                                                                    <Skeleton
+                                                                        className="h-[24px] w-[24px] rounded-full"/>
                                                                 </div>
                                                                 <Skeleton className="h-4 w-16 "/>
                                                             </div>
@@ -299,9 +275,11 @@ const Main = ({restaurants, menuCategories}: MainProps) => {
                                                                 <Skeleton className="h-4 w-12 bg-gray-300"/>
                                                                 <div
                                                                     className="counter flex items-center justify-between border rounded-full p-1 h-auto space-x-1">
-                                                                    <Skeleton className="h-[32px] w-[32px] rounded-full"/>
+                                                                    <Skeleton
+                                                                        className="h-[32px] w-[32px] rounded-full"/>
                                                                     <Skeleton className=" h-[32px] w-[32px]"/>
-                                                                    <Skeleton className="h-[32px] w-[32px] bg-gray-300 rounded-full"/>
+                                                                    <Skeleton
+                                                                        className="h-[32px] w-[32px] bg-gray-300 rounded-full"/>
                                                                 </div>
                                                             </div>
                                                         </div>

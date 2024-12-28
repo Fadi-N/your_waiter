@@ -57,6 +57,7 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode, restauran
                 setSelectedRestaurant,
                 tables,
                 menuItems,
+                restaurants,
                 loading,
             }}
         >

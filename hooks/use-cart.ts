@@ -83,6 +83,7 @@ export const useCart = () => {
             items: cartItems,
             totalQuantity: totalQuantity,
             total: cartTotal,
+            discount: 0,
         },
         updateCart,
         increment,

@@ -8,6 +8,7 @@ interface CartContextType {
         items: [];
         totalQuantity: number;
         total: number;
+        discount: number;
     };
     increment: (item: MenuItem) => void;
     decrement: (item: MenuItem) => void;
@@ -19,7 +20,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Komponent dostarczający kontekst
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const cart = useCartHook(); // Używamy istniejącego hooka
+    const cart = useCartHook();
 
     return (
         <CartContext.Provider value={cart}>

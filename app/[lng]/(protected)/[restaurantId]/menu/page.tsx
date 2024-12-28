@@ -15,7 +15,7 @@ import Image from "next/image";
 import {useParams} from "next/navigation";
 
 export default function MenuPage() {
-    const {restaurantId} = useParams();
+    const {restaurantId} = useParams<{restaurantId: string}>();
 
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [MenuCategories, setMenuCategories] = useState<MenuCategory[]>([]);

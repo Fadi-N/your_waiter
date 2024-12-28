@@ -9,8 +9,8 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 
 const NewVerificationForm = () => {
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    const [error, setError] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
 
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
@@ -23,8 +23,8 @@ const NewVerificationForm = () => {
 
         newVerification(token)
             .then((data) => {
-                setSuccess(data.success);
-                setError(data.error);
+                setSuccess(data.success || "");
+                setError(data.error || "");
             })
             .catch(() => {
                 setError("Something went wrong!");

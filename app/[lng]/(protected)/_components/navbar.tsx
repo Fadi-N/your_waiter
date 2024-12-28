@@ -14,7 +14,7 @@ const Navbar = () => {
     const pathname = usePathname();
     const session = useSession();
     const {cart} = useCartContext();
-    const {lng, restaurantId} = useParams();
+    const {lng, restaurantId} = useParams<{lng: string, restaurantId:string}>();
     const {t} = useTranslation(lng, "navbar");
     const userId = session.data?.user?.id;
 

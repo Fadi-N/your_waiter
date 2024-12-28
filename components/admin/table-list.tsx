@@ -9,7 +9,13 @@ import PdfDocument from "@/components/pdf-document";
 
 
 interface TableListProps {
-    selectedRestaurant: string;
+    selectedRestaurant: {
+        id: string;
+        name: string;
+        userId: string;
+        createdAt: Date;
+        updatedAt: Date;
+    };
     tables: TableFromPrisma[];
 }
 
