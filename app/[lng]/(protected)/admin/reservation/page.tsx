@@ -179,20 +179,29 @@ const ReservationPage = () => {
         );
     };
 
-    const handleTransform = (uuid: string, newAttrs: any) => {
+    const handleTransform = (uuid: string, nodeAttrs: any) => {
         setTiles((prev) =>
-            prev.map((tile) =>
-                tile.uuid === uuid
-                    ? {
+            prev.map((tile) => {
+                if (tile.uuid === uuid) {
+                    const { x, y, width, height, scaleX, scaleY } = nodeAttrs;
+
+                    return {
                         ...tile,
-                        x: newAttrs.x,
-                        y: newAttrs.y,
-                        width: Math.max(5, newAttrs.width + newAttrs.scaleX),
-                        height: Math.max(5, newAttrs.height + newAttrs.scaleY),
-                    }
-                    : tile
-            )
+                        x,
+                        y,
+                        width: Math.max(5, width * scaleX),
+                        height: Math.max(5, height * scaleY),
+                    };
+                }
+                return tile;
+            })
         );
+
+        const node = stageRef.current.findOne(`#${uuid}`);
+        if (node) {
+            node.scaleX(1);
+            node.scaleY(1);
+        }
     };
 
     const handleSaveWorksheet = async () => {
