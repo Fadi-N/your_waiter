@@ -1,193 +1,125 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { format, startOfDay } from "date-fns";
-import { getWorksheets } from "@/actions/admin/reservation";
-import { Worksheet } from "@prisma/client";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useParams } from "next/navigation";
-import { Group, Layer, Rect, Stage, Text, Image as KonvaImage } from "react-konva";
-
-interface WorksheetWithTiles extends Worksheet {
-    tiles: Array<{
-        uuid: string;
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-        fill?: string;
-        type?: string;
-        src?: string;
-    }>;
-}
+import React, {useState} from 'react';
+import {Button} from "@/components/ui/button";
+import {useParams} from "next/navigation";
+import {Progress} from "@/components/ui/progress";
+import CustomerReservationForm from "@/components/customer-reservation-form";
+import CustomerSelectionForm from "@/components/customer-selection-form";
+import {FaArrowLeftLong} from "react-icons/fa6";
 
 const ReservationPage = () => {
-    const { restaurantId } = useParams<{ restaurantId: string }>();
+    const {restaurantId} = useParams<{ restaurantId: string }>();
 
-    const [date, setDate] = useState<Date>();
-    const [loading, setLoading] = useState(true);
-    const [worksheets, setWorksheets] = useState<WorksheetWithTiles[]>([]);
-    const [activeWorksheet, setActiveWorksheet] = useState<WorksheetWithTiles | null>(null);
-    const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
-    const [tiles, setTiles] = useState<WorksheetWithTiles["tiles"]>([]);
-    const [stageSize, setStageSize] = useState({ width: 0, height: 0 });
+    const [progress, setProgress] = useState({
+        currentStep: 'Details',
+        steps: {
+            Details: 100,
+            Selection: 0,
+            Summary: 0,
+        },
+    });
 
-    useEffect(() => {
-        const fetchWorksheets = async () => {
-            setLoading(true);
-            try {
-                const worksheets = await getWorksheets(restaurantId);
-                if (Array.isArray(worksheets)) {
-                    setWorksheets(worksheets);
-                    setActiveWorksheet(worksheets[0] || null);
-                } else {
-                    throw new Error("Invalid worksheets data");
-                }
-            } catch (error) {
-                console.error("Error fetching worksheets:", error);
-                setWorksheets([]);
-            } finally {
-                setLoading(false);
-            }
-        };
 
-        fetchWorksheets();
-    }, [restaurantId]);
+    const handleContinue = () => {
+        setProgress((prev) => {
+            const nextStep =
+                prev.currentStep === 'Details'
+                    ? 'Selection'
+                    : prev.currentStep === 'Selection'
+                        ? 'Summary'
+                        : 'Summary';
 
-    useEffect(() => {
-        if (activeWorksheet?.tiles) {
-            activeWorksheet.tiles.forEach((tile) => {
-                if (tile.src && !loadedImages[tile.src]) {
-                    const img = new window.Image();
-                    img.src = tile.src;
-                    img.onload = () => {
-                        setLoadedImages((prev) => ({ ...prev, [tile.src as string]: img }));
-                    };
-                }
-            });
-            setTiles(activeWorksheet.tiles);
-        }
-    }, [activeWorksheet]);
+            return {
+                currentStep: nextStep,
+                steps: {
+                    ...prev.steps,
+                    [nextStep]: 100,
+                },
+            };
+        });
+    };
 
-    useEffect(() => {
-        const updateSize = () => {
-            setStageSize({ width: window.innerWidth, height: window.innerHeight });
-        };
-        updateSize();
-        window.addEventListener("resize", updateSize);
-        return () => window.removeEventListener("resize", updateSize);
-    }, []);
+    const handleGoBack = () => {
+        setProgress((prev) => {
+            const previousStep =
+                prev.currentStep === 'Summary'
+                    ? 'Selection'
+                    : prev.currentStep === 'Selection'
+                        ? 'Details'
+                        : 'Details';
+
+            return {
+                currentStep: previousStep,
+                steps: {
+                    ...prev.steps,
+                    [prev.currentStep]: 0,
+                },
+            };
+        });
+    };
 
     return (
-        <>
-            <Popover>
-                <PopoverTrigger asChild>
+        <div className="flex flex-col justify-between h-full py-6">
+            <div className="flex flex-1 flex-col space-y-6 2xl:space-y-12">
+                <div>
                     <Button
-                        variant={"outline"}
-                        className={cn(
-                            "w-full justify-start text-left font-normal gap-2",
-                            !date && "text-muted-foreground"
-                        )}
+                        variant="default"
+                        size="sm"
+                        onClick={handleGoBack}
+                        disabled={progress.currentStep === 'Details'}
                     >
-                        <CalendarIcon />
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                        <FaArrowLeftLong className="w-4 h-4 me-2"/>
+                        Go Back
                     </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        disabled={(date) => date < startOfDay(new Date())}
-                        initialFocus
-                    />
-                </PopoverContent>
-            </Popover>
-            <Carousel className="flex-1">
-                {loading ? (
-                    <CarouselContent className="m-0 gap-x-3">
-                        {[...Array(6)].map((_, index) => (
-                            <CarouselItem key={`placeholder-${index}`} className="basis-1/3 p-0 md:basis-1/12">
-                                <Button
-                                    className="w-full rounded-full bg-gray-300"
-                                    size="sm"
-                                />
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                ) : worksheets.length > 0 ? (
-                    <CarouselContent className="m-0 gap-x-3">
-                        {worksheets.map((worksheet, index) => (
-                            <CarouselItem key={`worksheet-${index}`} className="basis-1/3 p-0 md:basis-1/12">
-                                <Button
-                                    className="w-full rounded-full"
-                                    size="sm"
-                                    variant={activeWorksheet?.name === worksheet.name ? "default" : "secondary"}
-                                    onClick={() => setActiveWorksheet(worksheet)}
-                                >
-                                    {worksheet?.name}
-                                </Button>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                ) : (
-                    <p>No worksheets available</p>
-                )}
-            </Carousel>
-            <Stage width={stageSize.width - 100} height={stageSize.height - 220} className="border rounded-2xl">
-                <Layer>
-                    {tiles.map((tile, index) =>
-                        tile.type === 'image' && tile.src && loadedImages[tile.src] ? (
-                            <Group
-                                key={tile.uuid}
-                                id={tile.uuid}
-                                x={tile.x || 200}
-                                y={tile.y || 200}
-                            >
-                                <KonvaImage
-                                    image={loadedImages[tile.src]}
-                                    width={tile.width || 100}
-                                    height={tile.height || 100}
-                                />
-                                <Rect
-                                    x={(tile.width || 100) / 2 - 30}
-                                    y={(tile.height || 100) / 2 - 16}
-                                    width={60}
-                                    height={32}
-                                    fill="#7feca5"
-                                    cornerRadius={4}
-                                />
-                                <Text
-                                    text={`A${index + 1}`}
-                                    fontSize={16}
-                                    fill="#109841"
-                                    x={(tile.width || 100) / 2 - 50}
-                                    y={(tile.height || 100) / 2 - 8}
-                                    width={100}
-                                    align="center"
-                                    verticalAlign="middle"
-                                />
-                            </Group>
-                        ) : (
-                            <Rect
-                                key={tile.uuid}
-                                id={tile.uuid}
-                                x={tile.x || 200}
-                                y={tile.y || 200}
-                                width={tile.width || 100}
-                                height={tile.height || 100}
-                                fill={tile.fill || "#cccccc"}
-                            />
-                        )
+                </div>
+                <div>
+                    {progress.currentStep === 'Details' && (
+                        <CustomerReservationForm/>
                     )}
-                </Layer>
-            </Stage>
-        </>
+                    {progress.currentStep === 'Selection' && (
+                        <CustomerSelectionForm restaurantId={restaurantId!}/>
+                    )}
+                    {progress.currentStep === 'Summary' && (
+                        <>List all details</>
+                    )}
+                </div>
+
+            </div>
+
+            <div className="flex flex-col space-y-6 2xl:space-y-12">
+                <Button
+                    size="sm"
+                    onClick={handleContinue}
+                >
+                    {progress.currentStep !== 'Summary' ? "Continue" : "Book Your Reservation"}
+                </Button>
+                <div className="flex gap-12 flex-1 items-end">
+                    <div className="flex flex-col gap-2 w-full">
+                        <p>Details</p>
+                        <Progress
+                            value={progress.steps.Details}
+                            className="w-full transition-transform !duration-1000"
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <p>Selection</p>
+                        <Progress
+                            value={progress.steps.Selection}
+                            className="w-full transition-transform !duration-1000"
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                        <p>Summary</p>
+                        <Progress
+                            value={progress.steps.Summary}
+                            className="w-full transition-transform !duration-1000"
+                        />
+                    </div>
+                </div>
+            </div>
+
+        </div>
     );
 };
 

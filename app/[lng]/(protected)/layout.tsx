@@ -8,19 +8,19 @@ import {useMediaQuery} from "@/hooks/use-media-query";
 import BottomNavbar from "@/app/[lng]/(protected)/_components/bottom-navbar";
 
 const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const {lng} = useParams();
+    const {lng, restaurantId} = useParams();
     const pathname = usePathname();
 
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
-    const showNavbar = !pathname.startsWith(`/${lng}/admin`) && !pathname.startsWith(`/${lng}/cart`);
+    const showNavbar = !pathname.startsWith(`/${lng}/admin`) && !pathname.startsWith(`/${lng}/${restaurantId}/cart`);
 
     return (
         <CartProvider>
             {showNavbar && isDesktop && <Navbar/>}
-            <div className="flex flex-col justify-between h-screen">
+            <div className="flex flex-col justify-between h-full">
                 {children}
-                {!isDesktop && <BottomNavbar/>}
+                {/*{!isDesktop && <BottomNavbar/>}*/}
             </div>
         </CartProvider>
     );

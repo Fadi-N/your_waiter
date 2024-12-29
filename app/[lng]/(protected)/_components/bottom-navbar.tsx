@@ -1,3 +1,5 @@
+'use client'
+
 import React, {useEffect, useState} from 'react';
 import {ImSpoonKnife} from "react-icons/im";
 import {FaChair, FaLock} from "react-icons/fa6";
@@ -44,9 +46,9 @@ const BottomNavbar = () => {
     ];
 
     return (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center sticky bottom-0">
             <div
-                className="z-50 flex justify-evenly items-center w-96 h-[56px] bg-black rounded-full navbar-container mb-6">
+                className="z-50 flex justify-evenly items-center w-full h-[56px] bg-black rounded-full navbar-container mb-6 mx-8">
                 {navItems.map(({href, icon, label}, index) => (
                     <React.Fragment key={`nav-item-${index}`}>
                         {index === 2 && <UserButton/>}
