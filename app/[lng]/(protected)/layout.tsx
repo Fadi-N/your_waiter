@@ -20,7 +20,7 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({children}) =>
             {showNavbar && isDesktop && <Navbar/>}
             <div className="flex flex-col justify-between h-full">
                 {children}
-                {/*{!isDesktop && <BottomNavbar/>}*/}
+                {!isDesktop && <BottomNavbar/>}
             </div>
         </CartProvider>
     );
